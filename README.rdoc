@@ -1,7 +1,11 @@
-== SXP for Ruby
+= SXP for Ruby
 
-This is the Git repository for the Ruby reference implementation of the SXP
-data interchange format.
+This is the Ruby reference implementation of the SXP data interchange
+format.
+
+* http://sxp.rubyforge.org
+* http://github.com/bendiken/sxp-ruby
+
 
 === About SXP
 
@@ -13,33 +17,81 @@ lists, trees and graphs.
 * http://en.wikipedia.org/wiki/S-expression
 
 
-== Download
+== Features
 
-* http://rubyforge.org/projects/sxp/
-* gem install sxp
-* git clone git://github.com/bendiken/sxp-ruby.git
-* git clone git://rubyforge.org/sxp.git
+* Parses S-expressions in SXP format.
+* Adds a #to_sxp method to Ruby objects.
 
 
-== Usage
+== Examples
 
   require 'sxp'
-  ...
 
 
-== Related Projects
+=== Parsing S-expressions
 
-* http://rubyforge.org/projects/lisp/
-* http://raa.ruby-lang.org/project/sfsexp/
-* http://rubyforge.org/projects/sexp/
+  SXP.read "(+ 1 2)"
+
+  => [:+, 1, 2]
+
+
+  SXP.read <<-EOF
+    (define (fact n)
+      (if (= n 0)
+          1
+          (* n (fact (- n 1)))))
+  EOF
+
+  => [:define, [:fact, :n],
+       [:if, [:"=", :n, 0],
+             1,
+             [:*, :n, [:fact, [:-, :n, 1]]]]]
+
+
+== Documentation
+
+* http://sxp.rubyforge.org
+
+
+== Download
+
+To get a local working copy of the development repository, do:
+
+  % git clone git://github.com/bendiken/sxp-ruby.git
+
+Alternatively, you can download the latest development version as a tarball
+as follows:
+
+  % wget http://github.com/bendiken/sxp-ruby/tarball/master
+
+
+== Installation
+
+The recommended installation method is via RubyGems. To install the latest
+official release from RubyForge, do:
+
+  % [sudo] gem install sxp
+
+To use the very latest bleeding-edge development version, install the gem
+directly from GitHub as follows:
+
+  % [sudo] gem install bendiken-sxp-ruby -s http://gems.github.com
+
+
+== Resources
+
+* http://sxp.rubyforge.org
+* http://github.com/bendiken/sxp
+* http://github.com/bendiken/sxp-ruby
+* http://rubyforge.org/projects/sxp
 
 
 == Author
 
-Arto Bendiken (mailto:arto.bendiken@gmail.com) - http://bendiken.net/
+Arto Bendiken (mailto:arto.bendiken@gmail.com) - http://ar.to
 
 
 == License
 
-Released under the terms of the MIT license. See the accompanying LICENSE
-file for more information.
+All source code is available under the terms of the MIT license. For more
+information, see the accompanying LICENSE file.
