@@ -10,6 +10,11 @@ module SXP
     Reader.new(input).read_all
   end
 
+  # Reads all S-expressions from the given input files.
+  def self.read_files(*filenames)
+    filenames.map { |filename| read_file(filename) }.inject { |sxps, sxp| sxps + sxp }
+  end
+
   # Reads all S-expressions from a given input file.
   def self.read_file(filename)
     File.open(filename, 'rb') { |io| read_all(io) }
@@ -21,11 +26,12 @@ module SXP
     open(uri, 'rb', nil, options) { |io| read_all(io) }
   end
 
-  class <<self
-    alias_method :parse, :read
-    alias_method :parse_all, :read_all
-    alias_method :parse_file, :read_file
-    alias_method :parse_uri, :read_uri
+  class << self
+    alias_method :parse,       :read
+    alias_method :parse_all,   :read_all
+    alias_method :parse_files, :read_files
+    alias_method :parse_file,  :read_file
+    alias_method :parse_uri,   :read_uri
   end
 
   class Reader
