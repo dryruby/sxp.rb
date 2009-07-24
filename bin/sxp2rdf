@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby -rubygems
+$:.unshift(File.expand_path(File.join(File.dirname(__FILE__), '..', 'lib')))
+require 'sxp'
+
+abort "Usage: #{File.basename($0)} input.sxp > output.rdf" if ARGV.empty?
