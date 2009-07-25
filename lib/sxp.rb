@@ -1,5 +1,7 @@
 require 'sxp/version'
 require 'sxp/extensions'
+require 'sxp/pair'
+require 'sxp/list'
 require 'sxp/reader'
 require 'sxp/writer'
 require 'sxp/generator'
