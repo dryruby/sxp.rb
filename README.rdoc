@@ -13,14 +13,14 @@ SXP is a data interchange format based on S-expressions, the simplest and
 most versatile known means of representing complex data structures such as
 lists, trees and graphs.
 
-* http://sxp.cc/
+* http://sxp.cc
 * http://en.wikipedia.org/wiki/S-expression
 
 
 == Features
 
 * Parses S-expressions in SXP format.
-* Adds a #to_sxp method to Ruby objects.
+* Adds a +#to_sxp+ method to Ruby objects.
 
 
 == Examples
