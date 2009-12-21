@@ -1,11 +1,14 @@
 module SXP
-
   module VERSION #:nodoc:
     MAJOR = 0
     MINOR = 0
     TINY  = 1
+    EXTRA = nil
 
     STRING = [MAJOR, MINOR, TINY].join('.')
-  end
+    STRING << "-#{EXTRA}" if EXTRA
 
+    def self.to_s()   STRING end
+    def self.to_str() STRING end
+  end
 end
