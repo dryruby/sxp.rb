@@ -93,5 +93,5 @@ Arto Bendiken (mailto:arto.bendiken@gmail.com) - http://ar.to
 
 == License
 
-All source code is available under the terms of the MIT license. For more
-information, see the accompanying LICENSE file.
+SXP.rb is free and unencumbered public domain software. For more
+information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
