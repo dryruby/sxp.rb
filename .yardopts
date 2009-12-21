@@ -1,4 +1,5 @@
 --title "SXP.rb: SXP for Ruby"
+--output-dir doc/yard
 --markup markdown
 --readme README.md
 -
