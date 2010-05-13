@@ -1,5 +1,8 @@
---title "SXP.rb: SXP for Ruby"
+--title "SXP: S-Expressions for Ruby"
 --output-dir doc/yard
+--protected
+--no-private
+--hide-void-return
 --markup markdown
 --readme README.md
 -
