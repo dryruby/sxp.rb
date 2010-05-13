@@ -1,29 +1,54 @@
 module SXP
-
-  # Reads one S-expression from the given input stream.
-  def self.read(input)
-    Reader.new(input).read
-  end
-
-  # Reads all S-expressions from the given input stream.
-  def self.read_all(input)
-    Reader.new(input).read_all
-  end
-
-  # Reads all S-expressions from the given input files.
-  def self.read_files(*filenames)
-    filenames.map { |filename| read_file(filename) }.inject { |sxps, sxp| sxps + sxp }
-  end
-
-  # Reads all S-expressions from a given input file.
-  def self.read_file(filename)
-    File.open(filename, 'rb') { |io| read_all(io) }
-  end
-
-  # Reads all S-expressions from a given input URI using the HTTP or FTP protocols.
-  def self.read_uri(uri, options = {})
+  ##
+  # Reads all S-expressions from a given input URI using the HTTP or FTP
+  # protocols.
+  #
+  # @param  [String, #to_s]          url
+  # @param  [Hash{Symbol => Object}] options
+  # @return [Enumerable<Object>]
+  def self.read_url(url, options = {})
     require 'openuri'
-    open(uri, 'rb', nil, options) { |io| read_all(io) }
+    open(url.to_s, 'rb', nil, options) { |io| read_all(io, options) }
+  end
+
+  ##
+  # Reads all S-expressions from the given input files.
+  #
+  # @param  [Enumerable<String>]     filenames
+  # @param  [Hash{Symbol => Object}] options
+  # @return [Enumerable<Object>]
+  def self.read_files(*filenames)
+    filenames.map { |filename| read_file(filename, options) }.inject { |sxps, sxp| sxps + sxp }
+  end
+
+  ##
+  # Reads all S-expressions from a given input file.
+  #
+  # @param  [String, #to_s]          filename
+  # @param  [Hash{Symbol => Object}] options
+  # @return [Enumerable<Object>]
+  def self.read_file(filename, options = {})
+    File.open(filename.to_s, 'rb') { |io| read_all(io, options) }
+  end
+
+  ##
+  # Reads all S-expressions from the given input stream.
+  #
+  # @param  [IO, StringIO, String]   input
+  # @param  [Hash{Symbol => Object}] options
+  # @return [Enumerable<Object>]
+  def self.read_all(input, options = {})
+    Reader.new(input, options).read_all
+  end
+
+  ##
+  # Reads one S-expression from the given input stream.
+  #
+  # @param  [IO, StringIO, String]   input
+  # @param  [Hash{Symbol => Object}] options
+  # @return [Object]
+  def self.read(input, options = {})
+    Reader.new(input, options).read
   end
 
   class << self
@@ -31,7 +56,9 @@ module SXP
     alias_method :parse_all,   :read_all
     alias_method :parse_files, :read_files
     alias_method :parse_file,  :read_file
-    alias_method :parse_uri,   :read_uri
+    alias_method :parse_url,   :read_url
+    alias_method :parse_uri,   :read_url # @deprecated
+    alias_method :read_uri,    :read_url # @deprecated
   end
 
   class Reader
@@ -50,7 +77,7 @@ module SXP
 
     attr_reader :input
 
-    def initialize(input)
+    def initialize(input, options = {})
       case
         when [:getc, :ungetc, :eof?].all? { |x| input.respond_to?(x) }
           @input = input
