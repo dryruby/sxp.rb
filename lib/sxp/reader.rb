@@ -67,7 +67,7 @@ module SXP
     class Error < StandardError; end
     class EOF < Error; end
 
-    FLOAT           = /^[+-]?(?:\d+)?\.\d*$/
+    FLOAT           = /^[+-]?(\d*)?\.\d*$/
     INTEGER_BASE_2  = /^[+-]?[01]+$/
     INTEGER_BASE_8  = /^[+-]?[0-7]+$/
     INTEGER_BASE_10 = /^[+-]?\d+$/
@@ -95,7 +95,7 @@ module SXP
 
     def read_all(options = {})
       list = []
-      catch (:eof) { list << read(:eof => :throw, *options) until eof? }
+      catch (:eof) { list << read(options.merge(:eof => :throw)) until eof? }
       list
     end
 
