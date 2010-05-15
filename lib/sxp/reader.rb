@@ -18,6 +18,7 @@ module SXP
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
   def self.read_files(*filenames)
+    options = filenames.last.is_a?(Hash) ? filenames.pop : {}
     filenames.map { |filename| read_file(filename, options) }.inject { |sxps, sxp| sxps + sxp }
   end
 
