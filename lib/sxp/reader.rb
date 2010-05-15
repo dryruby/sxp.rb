@@ -148,6 +148,7 @@ module SXP
         when ?x then read_integer(16)
         when ?\\ then read_character
         when ?; then skip; read
+        when ?! then skip_line # shebang
         else raise Error, "invalid sharp-sign read syntax: ##{char.chr}"
       end
     end
@@ -205,7 +206,7 @@ module SXP
     def skip_comments
       until eof?
         case (char = peek_char).chr
-          when /;/ then loop { break if eof? || read_char.chr == $/ }
+          when /;/   then skip_line
           when /\s+/ then skip_char
           else break
         end
@@ -224,7 +225,13 @@ module SXP
       char
     end
 
-    alias skip_char read_char
+    def skip_line
+      loop do
+        break if eof? || read_char.chr == $/
+      end
+    end
+
+    alias_method :skip_char, :read_char
 
     def peek_char
       char = @input.getc
