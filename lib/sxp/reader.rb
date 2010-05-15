@@ -74,7 +74,7 @@ module SXP
     INTEGER_BASE_10 = /^[+-]?\d+$/
     INTEGER_BASE_16 = /^[+-]?[\da-z]+$/i
     RATIONAL        = /^([+-]?\d+)\/(\d+)$/
-    ATOM            = /^[^\s()]+/
+    ATOM            = /^[^\s()\[\]]+/
 
     attr_reader :input
 
@@ -96,7 +96,9 @@ module SXP
 
     def read_all(options = {})
       list = []
-      catch (:eof) { list << read(options.merge(:eof => :throw)) until eof? }
+      catch (:eof) do
+        list << read(options.merge(:eof => :throw)) until eof?
+      end
       list
     end
 
@@ -108,22 +110,23 @@ module SXP
           throw :eof if options[:eof] == :throw
           raise EOF, 'unexpected end of input'
         when :list
-          if value == ?(
+          if value == ?( || value == ?[
             read_list
           else
-            throw :eol if options[:eol] == :throw
-            raise Error, 'unexpected list terminator: ?)'
+            throw :eol if options[:eol] == :throw # end of list
+            raise Error, "unexpected list terminator: ?#{value.chr}"
           end
         else value
       end
     end
 
-    alias skip read
+    alias_method :skip, :read
 
     def read_token
       case peek_char
         when nil    then :eof
         when ?(, ?) then [:list, read_char]
+        when ?[, ?] then [:list, read_char]
         when ?"     then [:atom, read_string]
         when ?#     then [:atom, read_sharp]
         else [:atom, read_atom]
@@ -132,7 +135,9 @@ module SXP
 
     def read_list
       list = []
-      catch (:eol) { list << read(:eol => :throw) while true }
+      catch (:eol) do
+        list << read(:eol => :throw) while true
+      end
       list
     end
 
