@@ -101,6 +101,7 @@ module SXP
     end
 
     def read(options = {})
+      skip_comments
       token, value = read_token
       case token
         when :eof
@@ -120,12 +121,11 @@ module SXP
     alias skip read
 
     def read_token
-      skip_comments
       case peek_char
-        when nil then :eof
+        when nil    then :eof
         when ?(, ?) then [:list, read_char]
-        when ?# then [:atom, read_sharp]
-        when ?" then [:atom, read_string]
+        when ?"     then [:atom, read_string]
+        when ?#     then [:atom, read_sharp]
         else [:atom, read_atom]
       end
     end
@@ -163,9 +163,10 @@ module SXP
 
     def read_atom
       case buffer = read_literal
-        when FLOAT then buffer.to_f
+        when '.'             then buffer.to_sym
+        when FLOAT           then buffer.to_f
         when INTEGER_BASE_10 then buffer.to_i
-        when RATIONAL then Rational($1.to_i, $2.to_i)
+        when RATIONAL        then Rational($1.to_i, $2.to_i)
         else buffer.to_sym
       end
     end
