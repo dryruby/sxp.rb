@@ -1,7 +1,25 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe SXP::Reader do
+  context "when reading empty input" do
+    it "should complain" do
+      lambda { SXP.read('') }.should raise_error(Reader::Error)
+      lambda { SXP.read(' ') }.should raise_error(Reader::Error)
+      lambda { SXP.read('#!/usr/bin/env sxp2json') }.should raise_error(Reader::Error)
+    end
+  end
+
+  context "when reading shebang scripts" do
+    it "should not choke on shebang lines" do
+      SXP.read_all("#!/usr/bin/env sxp2json\n(1 2 3)\n").should == [[1, 2, 3]]
+    end
+  end
+
   context "when reading valid symbols" do
+    it "should read ':' as a symbol" do
+      SXP.read(':').should == :':'
+    end
+
     it "should read '.' as a symbol" do
       SXP.read('.').should == :'.'
     end

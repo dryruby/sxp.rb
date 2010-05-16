@@ -144,16 +144,16 @@ module SXP
     def read_sharp
       skip_char # '#'
       case char = read_char
-        when ?n then nil
-        when ?f then false
-        when ?t then true
-        when ?b then read_integer(2)
-        when ?o then read_integer(8)
-        when ?d then read_integer(10)
-        when ?x then read_integer(16)
+        when ?n  then nil
+        when ?f  then false
+        when ?t  then true
+        when ?b  then read_integer(2)
+        when ?o  then read_integer(8)
+        when ?d  then read_integer(10)
+        when ?x  then read_integer(16)
         when ?\\ then read_character
-        when ?; then skip; read
-        when ?! then skip_line # shebang
+        when ?;  then skip; read
+        when ?!  then skip_line; read # shebang
         else raise Error, "invalid sharp-sign read syntax: ##{char.chr}"
       end
     end
