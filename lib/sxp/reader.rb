@@ -62,6 +62,8 @@ module SXP
     alias_method :read_uri,    :read_url # @deprecated
   end
 
+  ##
+  # The base class for S-expression parsers.
   class Reader
     include Enumerable
 
@@ -76,8 +78,12 @@ module SXP
     RATIONAL        = /^([+-]?\d+)\/(\d+)$/
     ATOM            = /^[^\s()\[\]]+/
 
+    # @return [Object]
     attr_reader :input
 
+    ##
+    # @param  [Object] input
+    # @param  [Hash{Symbol => Object}] options
     def initialize(input, options = {})
       case
         when [:getc, :ungetc, :eof?].all? { |x| input.respond_to?(x) }
@@ -90,10 +96,17 @@ module SXP
       end
     end
 
+    ##
+    # @yield  [object]
+    # @yieldparam [Object] object
+    # @return [Enumerator]
     def each(&block)
-      block.call(read)
+      block.call(read) if block_given? # FIXME
     end
 
+    ##
+    # @param  [Hash{Symbol => Object}] options
+    # @return [Array]
     def read_all(options = {})
       list = []
       catch (:eof) do
@@ -102,6 +115,9 @@ module SXP
       list
     end
 
+    ##
+    # @param  [Hash{Symbol => Object}] options
+    # @return [Object]
     def read(options = {})
       skip_comments
       token, value = read_token
@@ -122,6 +138,8 @@ module SXP
 
     alias_method :skip, :read
 
+    ##
+    # @return [Object]
     def read_token
       case peek_char
         when nil    then :eof
@@ -133,6 +151,8 @@ module SXP
       end
     end
 
+    ##
+    # @param [Array]
     def read_list
       list = []
       catch (:eol) do
@@ -141,6 +161,8 @@ module SXP
       list
     end
 
+    ##
+    # @return [Object]
     def read_sharp
       skip_char # '#'
       case char = read_char
@@ -158,6 +180,9 @@ module SXP
       end
     end
 
+    ##
+    # @param  [Integer] base
+    # @return [Integer]
     def read_integer(base = 10)
       case buffer = read_literal
         when self.class.const_get(:"INTEGER_BASE_#{base}")
@@ -166,6 +191,8 @@ module SXP
       end
     end
 
+    ##
+    # @return [Object]
     def read_atom
       case buffer = read_literal
         when '.'             then buffer.to_sym
@@ -176,6 +203,8 @@ module SXP
       end
     end
 
+    ##
+    # @return [String]
     def read_string
       buffer = String.new
       skip_char # '"'
@@ -190,6 +219,8 @@ module SXP
       buffer
     end
 
+    ##
+    # @return [String]
     def read_character
       case char = read_char
         when ?b then ?\b
@@ -203,12 +234,16 @@ module SXP
       end
     end
 
+    ##
+    # @return [String]
     def read_literal
       buffer = String.new
       buffer << read_char while !eof? && peek_char.chr =~ ATOM
       buffer
     end
 
+    ##
+    # @return [void]
     def skip_comments
       until eof?
         case (char = peek_char).chr
@@ -219,18 +254,25 @@ module SXP
       end
     end
 
+    ##
+    # @param  [Integer] count
+    # @return [String]
     def read_chars(count = 1)
       buffer = ''
       count.times { buffer << read_char.chr }
       buffer
     end
 
+    ##
+    # @return [String]
     def read_char
       char = @input.getc
       raise EOF, 'unexpected end of input' if char.nil?
       char
     end
 
+    ##
+    # @return [void]
     def skip_line
       loop do
         break if eof? || read_char.chr == $/
@@ -239,13 +281,18 @@ module SXP
 
     alias_method :skip_char, :read_char
 
+    ##
+    # @return [String]
     def peek_char
       char = @input.getc
       @input.ungetc char unless char.nil?
       char
     end
 
-    def eof?() @input.eof? end
-  end
-
-end
+    ##
+    # @return [Boolean]
+    def eof?
+      @input.eof?
+    end
+  end # class Reader
+end # module SXP

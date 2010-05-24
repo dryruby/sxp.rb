@@ -1,12 +1,57 @@
 module SXP
+  ##
   class Pair
+    # @return [Object]
     attr_accessor :head
+
+    # @return [Object]
     attr_accessor :tail
 
+    ##
+    # @param  [Object] head
+    # @param  [Object] tail
     def initialize(head = nil, tail = nil)
       @head, @tail = head, tail
     end
 
+    ##
+    # Returns `true` if the head and tail of this pair are both `nil`.
+    #
+    # @return [Boolean]
+    def empty?
+      head.nil? && tail.nil?
+    end
+
+    ##
+    # Returns `true` if the tail of this pair is not `nil` or another pair.
+    #
+    # @return [Boolean]
+    # @see    http://srfi.schemers.org/srfi-1/srfi-1.html#ImproperLists
+    def dotted?
+      !proper?
+    end
+
+    ##
+    # Returns `true` if the tail of this pair is `nil` or another pair.
+    #
+    # @return [Boolean]
+    # @see    http://srfi.schemers.org/srfi-1/srfi-1.html#ImproperLists
+    def proper?
+      tail.nil? || tail.is_a?(Pair)
+    end
+
+    ##
+    # Returns an array representation of this pair.
+    #
+    # @return [Array]
+    def to_a
+      [head, tail]
+    end
+
+    ##
+    # Returns a developer-friendly representation of this pair.
+    #
+    # @return [String]
     def inspect
       case
         when tail.nil?
@@ -15,25 +60,5 @@ module SXP
           "(#{head.inspect} . #{tail.inspect})"
       end
     end
-
-    def empty?
-      head.nil? && tail.nil?
-    end
-
-    ##
-    # @see http://srfi.schemers.org/srfi-1/srfi-1.html#ImproperLists
-    def dotted?
-      !proper?
-    end
-
-    ##
-    # @see http://srfi.schemers.org/srfi-1/srfi-1.html#ImproperLists
-    def proper?
-      tail.nil? || tail.is_a?(Pair)
-    end
-
-    def to_a
-      [head, tail]
-    end
-  end
-end
+  end # class Pair
+end # module SXP

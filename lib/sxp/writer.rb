@@ -1,34 +1,94 @@
+##
+# Extensions for Ruby's `Object` class.
 class Object
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
   def to_sxp
     to_s.to_json
   end
 end
 
+##
+# Extensions for Ruby's `NilClass` class.
 class NilClass
-  def to_sxp; '#n'; end
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
+  def to_sxp
+    '#n'
+  end
 end
 
+##
+# Extensions for Ruby's `FalseClass` class.
 class FalseClass
-  def to_sxp; '#f'; end
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
+  def to_sxp
+    '#f'
+  end
 end
 
+##
+# Extensions for Ruby's `TrueClass` class.
 class TrueClass
-  def to_sxp; '#t'; end
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
+  def to_sxp
+    '#t'
+  end
 end
 
+##
+# Extensions for Ruby's `String` class.
 class String
-  def to_sxp; inspect; end
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
+  def to_sxp
+    inspect
+  end
 end
 
+##
+# Extensions for Ruby's `Symbol` class.
 class Symbol
-  def to_sxp; to_s; end
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
+  def to_sxp
+    to_s
+  end
 end
 
+##
+# Extensions for Ruby's `Integer` class.
 class Integer
-  def to_sxp; to_s; end
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
+  def to_sxp
+    to_s
+  end
 end
 
+##
+# Extensions for Ruby's `Float` class.
 class Float
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
   def to_sxp
     case
       when nan? then 'nan.'
@@ -38,19 +98,37 @@ class Float
   end
 end
 
+##
+# Extensions for Ruby's `Array` class.
 class Array
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
   def to_sxp
     '(' << map { |x| x.to_sxp }.join(' ') << ')'
   end
 end
 
+##
+# Extensions for Ruby's `Time` class.
 class Time
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
   def to_sxp
     '#@' << (respond_to?(:xmlschema) ? xmlschema : to_i).to_s
   end
 end
 
+##
+# Extensions for Ruby's `Regexp` class.
 class Regexp
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
   def to_sxp
     '#' << inspect
   end
