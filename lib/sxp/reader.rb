@@ -46,11 +46,11 @@ module SXP
     # @yieldparam [Object] object
     # @return [Enumerator]
     def each(&block)
-      #block_given? ? 
-      #  to_enum
-      #else
-      #  block.call(read)
-      #end
+      unless block_given?
+        to_enum
+      else
+        read_all.each(&block) # TODO: lazy reading
+      end
     end
 
     ##
