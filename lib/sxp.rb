@@ -30,7 +30,7 @@ module SXP
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
   def self.read_url(url, options = {})
-    require 'openuri'
+    require 'open-uri'
     open(url.to_s, 'rb', nil, options) { |io| read_all(io, options) }
   end
 
@@ -62,7 +62,7 @@ module SXP
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
   def self.read_all(input, options = {})
-    Reader.new(input, options).read_all
+    Reader::Scheme.new(input, options).read_all
   end
 
   ##
@@ -72,7 +72,7 @@ module SXP
   # @param  [Hash{Symbol => Object}] options
   # @return [Object]
   def self.read(input, options = {})
-    Reader.new(input, options).read
+    Reader::Scheme.new(input, options).read
   end
 
   class << self

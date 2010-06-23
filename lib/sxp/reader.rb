@@ -2,34 +2,42 @@ module SXP
   ##
   # The base class for S-expression parsers.
   class Reader
-    include Enumerable
+    autoload :Basic,    'sxp/reader/basic'
+    autoload :Extended, 'sxp/reader/extended'
+    autoload :Scheme,   'sxp/reader/scheme'
 
     class Error < StandardError; end
     class EOF < Error; end
 
-    FLOAT           = /^[+-]?(\d*)?\.\d*$/
-    INTEGER_BASE_2  = /^[+-]?[01]+$/
-    INTEGER_BASE_8  = /^[+-]?[0-7]+$/
-    INTEGER_BASE_10 = /^[+-]?\d+$/
-    INTEGER_BASE_16 = /^[+-]?[\da-z]+$/i
-    RATIONAL        = /^([+-]?\d+)\/(\d+)$/
-    ATOM            = /^[^\s()\[\]]+/
+    include Enumerable
 
     # @return [Object]
     attr_reader :input
 
+    # @return [Hash{Symbol => Object}]
+    attr_reader :options
+
     ##
-    # @param  [Object] input
+    # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
-    def initialize(input, options = {})
+    def initialize(input, options = {}, &block)
+      @options = options.dup
+
       case
         when [:getc, :ungetc, :eof?].all? { |x| input.respond_to?(x) }
           @input = input
         when input.respond_to?(:to_str)
-          require 'stringio'
+          require 'stringio' unless defined?(StringIO)
           @input = StringIO.new(input.to_str)
         else
-          raise ArgumentError, "expected an IO or String input stream: #{input.inspect}"
+          raise ArgumentError, "expected an IO or String input stream, but got #{input.inspect}"
+      end
+
+      if block_given?
+        case block.arity
+          when 1 then block.call(self)
+          else self.instance_eval(&block)
+        end
       end
     end
 
@@ -38,7 +46,11 @@ module SXP
     # @yieldparam [Object] object
     # @return [Enumerator]
     def each(&block)
-      block.call(read) if block_given? # FIXME
+      #block_given? ? 
+      #  to_enum
+      #else
+      #  block.call(read)
+      #end
     end
 
     ##
@@ -61,9 +73,9 @@ module SXP
       case token
         when :eof
           throw :eof if options[:eof] == :throw
-          raise EOF, 'unexpected end of input'
+          raise EOF, "unexpected end of input"
         when :list
-          if value == ?( || value == ?[
+          if self.class.const_get(:LPARENS).include?(value)
             read_list
           else
             throw :eol if options[:eol] == :throw # end of list
@@ -74,19 +86,6 @@ module SXP
     end
 
     alias_method :skip, :read
-
-    ##
-    # @return [Object]
-    def read_token
-      case peek_char
-        when nil    then :eof
-        when ?(, ?) then [:list, read_char]
-        when ?[, ?] then [:list, read_char]
-        when ?"     then [:atom, read_string]
-        when ?#     then [:atom, read_sharp]
-        else [:atom, read_atom]
-      end
-    end
 
     ##
     # @param [Array]
@@ -100,21 +99,17 @@ module SXP
 
     ##
     # @return [Object]
-    def read_sharp
-      skip_char # '#'
-      case char = read_char
-        when ?n  then nil
-        when ?f  then false
-        when ?t  then true
-        when ?b  then read_integer(2)
-        when ?o  then read_integer(8)
-        when ?d  then read_integer(10)
-        when ?x  then read_integer(16)
-        when ?\\ then read_character
-        when ?;  then skip; read
-        when ?!  then skip_line; read # shebang
-        else raise Error, "invalid sharp-sign read syntax: ##{char.chr}"
+    def read_token
+      case peek_char
+        when nil    then :eof
+        else [:atom, read_atom]
       end
+    end
+
+    ##
+    # @return [Object]
+    def read_sharp
+      raise NotImplementedError.new("#{self.class}#read_sharp")
     end
 
     ##
@@ -131,63 +126,45 @@ module SXP
     ##
     # @return [Object]
     def read_atom
-      case buffer = read_literal
-        when '.'             then buffer.to_sym
-        when FLOAT           then buffer.to_f
-        when INTEGER_BASE_10 then buffer.to_i
-        when RATIONAL        then Rational($1.to_i, $2.to_i)
-        else buffer.to_sym
-      end
+      raise NotImplementedError.new("#{self.class}#read_atom")
     end
 
     ##
     # @return [String]
     def read_string
-      buffer = String.new
-      skip_char # '"'
-      until peek_char == ?"
-        buffer <<
-          case char = read_char
-            when ?\\ then read_character
-            else char
-          end
-      end
-      skip_char # '"'
-      buffer
+      raise NotImplementedError.new("#{self.class}#read_string")
     end
 
     ##
     # @return [String]
     def read_character
-      case char = read_char
-        when ?b then ?\b
-        when ?f then ?\f
-        when ?n then ?\n
-        when ?r then ?\r
-        when ?t then ?\t
-        when ?u then read_chars(4).to_i(16).chr
-        when ?U then read_chars(8).to_i(16).chr
-        else char
-      end
+      raise NotImplementedError.new("#{self.class}#read_character")
     end
 
     ##
     # @return [String]
     def read_literal
-      buffer = String.new
-      buffer << read_char while !eof? && peek_char.chr =~ ATOM
-      buffer
+      raise NotImplementedError.new("#{self.class}#read_literal")
     end
+
+  protected
 
     ##
     # @return [void]
     def skip_comments
       until eof?
         case (char = peek_char).chr
-          when /;/   then skip_line
           when /\s+/ then skip_char
           else break
         end
+      end
+    end
+
+    ##
+    # @return [void]
+    def skip_line
+      loop do
+        break if eof? || read_char.chr == $/
       end
     end
 
@@ -208,21 +185,13 @@ module SXP
       char
     end
 
-    ##
-    # @return [void]
-    def skip_line
-      loop do
-        break if eof? || read_char.chr == $/
-      end
-    end
-
     alias_method :skip_char, :read_char
 
     ##
     # @return [String]
     def peek_char
       char = @input.getc
-      @input.ungetc char unless char.nil?
+      @input.ungetc(char) unless char.nil?
       char
     end
 
