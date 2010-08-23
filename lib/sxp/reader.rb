@@ -2,10 +2,11 @@ module SXP
   ##
   # The base class for S-expression parsers.
   class Reader
-    autoload :Basic,    'sxp/reader/basic'
-    autoload :Extended, 'sxp/reader/extended'
-    autoload :Scheme,   'sxp/reader/scheme'
-    autoload :SSE,      'sxp/reader/sse'
+    autoload :Basic,      'sxp/reader/basic'
+    autoload :Extended,   'sxp/reader/extended'
+    autoload :Scheme,     'sxp/reader/scheme'
+    autoload :CommonLisp, 'sxp/reader/common_lisp'
+    autoload :SSE,        'sxp/reader/sse'
 
     class Error < StandardError; end
     class EOF < Error; end
@@ -15,10 +16,12 @@ module SXP
     # @return [Object]
     attr_reader :input
 
-    # @return [Hash{Symbol => Object}]
+    # @return [Hash]
     attr_reader :options
 
     ##
+    # Initializes the reader.
+    #
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
     def initialize(input, options = {}, &block)
