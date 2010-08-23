@@ -14,7 +14,7 @@ module SXP; class Reader
     def read_token
       case peek_char
         when ?(, ?) then [:list, read_char]
-        when ?"     then [:atom, read_string]
+        when ?"     then [:atom, read_string] #"
         else super
       end
     end
@@ -36,7 +36,7 @@ module SXP; class Reader
     def read_string
       buffer = String.new
       skip_char # '"'
-      until peek_char == ?"
+      until peek_char == ?" #"
         buffer <<
           case char = read_char
             when ?\\ then read_character
@@ -58,7 +58,7 @@ module SXP; class Reader
         when ?t  then ?\t
         when ?u  then read_chars(4).to_i(16).chr
         when ?U  then read_chars(8).to_i(16).chr
-        when ?"  then char
+        when ?"  then char #"
         when ?\\ then char
         else char
       end
