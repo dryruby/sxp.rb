@@ -72,5 +72,5 @@ module SXP; class Reader
       buffer << read_char while !eof? && peek_char.chr =~ grammar
       buffer
     end
-  end # class Reader
+  end # class Basic
 end; end # class SXP::Reader

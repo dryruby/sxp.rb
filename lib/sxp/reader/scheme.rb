@@ -48,5 +48,5 @@ module SXP; class Reader
         else raise Error, "invalid sharp-sign read syntax: ##{char.chr}"
       end
     end
-  end # class Reader
+  end # class Scheme
 end; end # class SXP::Reader
