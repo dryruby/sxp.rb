@@ -5,6 +5,7 @@ module SXP
     autoload :Basic,    'sxp/reader/basic'
     autoload :Extended, 'sxp/reader/extended'
     autoload :Scheme,   'sxp/reader/scheme'
+    autoload :SSE,      'sxp/reader/sse'
 
     class Error < StandardError; end
     class EOF < Error; end
