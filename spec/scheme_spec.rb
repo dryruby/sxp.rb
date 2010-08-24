@@ -139,10 +139,10 @@ describe SXP::Reader::Scheme do
   end
 
   def read(input, options = {})
-    SXP::Reader::Scheme.new(input, options).read
+    SXP::Reader::Scheme.new(input.freeze, options).read
   end
 
   def read_all(input, options = {})
-    SXP::Reader::Scheme.new(input, options).read_all
+    SXP::Reader::Scheme.new(input.freeze, options).read_all
   end
 end

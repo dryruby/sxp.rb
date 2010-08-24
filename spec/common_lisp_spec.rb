@@ -45,10 +45,10 @@ describe SXP::Reader::CommonLisp do
   end
 
   def read(input, options = {})
-    SXP::Reader::CommonLisp.new(input, options).read
+    SXP::Reader::CommonLisp.new(input.freeze, options).read
   end
 
   def read_all(input, options = {})
-    SXP::Reader::CommonLisp.new(input, options).read_all
+    SXP::Reader::CommonLisp.new(input.freeze, options).read_all
   end
 end

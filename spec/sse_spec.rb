@@ -119,10 +119,10 @@ describe SXP::Reader::SSE do
   end
 
   def read(input, options = {})
-    SXP::Reader::SSE.new(input, options).read
+    SXP::Reader::SSE.new(input.freeze, options).read
   end
 
   def read_all(input, options = {})
-    SXP::Reader::SSE.new(input, options).read_all
+    SXP::Reader::SSE.new(input.freeze, options).read_all
   end
 end

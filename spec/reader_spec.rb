@@ -74,10 +74,10 @@ describe SXP::Reader do
   end
 
   def read(input, options = {})
-    SXP.read(input, options)
+    SXP.read(input.freeze, options)
   end
 
   def read_all(input, options = {})
-    SXP.read_all(input, options)
+    SXP.read_all(input.freeze, options)
   end
 end
