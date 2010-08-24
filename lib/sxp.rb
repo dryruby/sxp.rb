@@ -26,15 +26,14 @@ module SXP
   autoload :Reader,    'sxp/reader'
 
   ##
-  # Reads all S-expressions from a given input URI using the HTTP or FTP
+  # Reads all S-expressions from a given input URL using the HTTP or FTP
   # protocols.
   #
   # @param  [String, #to_s]          url
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
   def self.read_url(url, options = {})
-    require 'open-uri'
-    open(url.to_s, 'rb', nil, options) { |io| read_all(io, options) }
+    Reader::Scheme.read_url(url, options)
   end
 
   ##
@@ -44,8 +43,7 @@ module SXP
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
   def self.read_files(*filenames)
-    options = filenames.last.is_a?(Hash) ? filenames.pop : {}
-    filenames.map { |filename| read_file(filename, options) }.inject { |sxps, sxp| sxps + sxp }
+    Reader::Scheme.read_files(*filenames)
   end
 
   ##
@@ -55,7 +53,7 @@ module SXP
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
   def self.read_file(filename, options = {})
-    File.open(filename.to_s, 'rb') { |io| read_all(io, options) }
+    Reader::Scheme.read_file(filename, options)
   end
 
   ##
@@ -65,7 +63,7 @@ module SXP
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
   def self.read_all(input, options = {})
-    Reader::Scheme.new(input, options).read_all
+    Reader::Scheme.read_all(input, options)
   end
 
   ##
@@ -75,7 +73,7 @@ module SXP
   # @param  [Hash{Symbol => Object}] options
   # @return [Object]
   def self.read(input, options = {})
-    Reader::Scheme.new(input, options).read
+    Reader::Scheme.read(input, options)
   end
 
   class << self
