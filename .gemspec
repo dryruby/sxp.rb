@@ -8,15 +8,11 @@ GEMSPEC = Gem::Specification.new do |gem|
   gem.name               = 'sxp'
   gem.homepage           = 'http://sxp.rubyforge.org/'
   gem.license            = 'Public Domain' if gem.respond_to?(:license=)
-  gem.summary            = 'A pure-Ruby implementation of the SXP data interchange format.'
-  gem.description        = <<-EOF
-    SXP is a data interchange format based on S-expressions, the simplest and
-    most versatile known means of representing complex data structures such as
-    lists, trees and graphs.
-  EOF
+  gem.summary            = 'A pure-Ruby implementation of a universal S-expression parser.'
+  gem.description        = gem.summary
   gem.rubyforge_project  = 'sxp'
 
-  gem.authors            = ['Arto Bendiken']
+  gem.author             = 'Arto Bendiken'
   gem.email              = 'arto.bendiken@gmail.com'
 
   gem.platform           = Gem::Platform::RUBY

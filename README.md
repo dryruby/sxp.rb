@@ -1,38 +1,27 @@
-SXP.rb: SXP for Ruby
-====================
+SXP.rb: S-Expressions for Ruby
+==============================
 
-This is the Ruby reference implementation of the SXP data interchange
-format.
+This is a Ruby implementation of a universal [S-expression][] parser.
 
 * <http://sxp.rubyforge.org/>
 * <http://github.com/bendiken/sxp-ruby>
 
-### About SXP
-
-SXP is a data interchange format based on S-expressions, the simplest and
-most versatile known means of representing complex data structures such as
-lists, trees and graphs.
-
-* <http://sxp.cc/>
-* <http://en.wikipedia.org/wiki/S-expression>
-
 Features
 --------
 
-* Parses S-expressions in SXP format.
+* Parses S-expressions in universal, [Scheme][], [Common Lisp][], or
+  [SPARQL][] syntax.
 * Adds a `#to_sxp` method to Ruby objects.
+* Compatible with Ruby 1.8.7+, Ruby 1.9.x, and JRuby 1.4/1.5.
 
 Examples
 --------
 
     require 'sxp'
 
-### Parsing S-expressions
+### Parsing S-expressions using universal syntax
 
-    SXP.read "(+ 1 2)"
-    
-    => [:+, 1, 2]
-
+    SXP.read "(* 6 7)"  #=> [:*, 6, 7]
 
     SXP.read <<-EOF
       (define (fact n)
@@ -41,15 +30,42 @@ Examples
             (* n (fact (- n 1)))))
     EOF
     
-    => [:define, [:fact, :n],
-         [:if, [:"=", :n, 0],
-               1,
-               [:*, :n, [:fact, [:-, :n, 1]]]]]
+    #=> [:define, [:fact, :n],
+          [:if, [:"=", :n, 0],
+                1,
+                [:*, :n, [:fact, [:-, :n, 1]]]]]
+
+### Parsing S-expressions using Scheme syntax
+
+    SXP::Reader::Scheme.read %q((and #t #f))             #=> [:and, true, false]
+
+### Parsing S-expressions using Common Lisp syntax
+
+    SXP::Reader::CommonLisp.read %q((or t nil))          #=> [:or, true, nil]
+
+### Parsing S-expressions using SPARQL syntax
+
+    SXP::Reader::SPARQL.read %q((base <http://ar.to/>))  #=> [:base, RDF::URI('http://ar.to/')]
 
 Documentation
 -------------
 
 * <http://sxp.rubyforge.org/>
+
+Dependencies
+------------
+
+* [Ruby](http://ruby-lang.org/) (>= 1.8.7) or (>= 1.8.1 with [Backports][])
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.2.0), only needed for SPARQL
+  S-expressions
+
+Installation
+------------
+
+The recommended installation method is via [RubyGems](http://rubygems.org/).
+To install the latest official release of the SXP.rb gem, do:
+
+    % [sudo] gem install sxp
 
 Download
 --------
@@ -63,21 +79,13 @@ as follows:
 
     % wget http://github.com/bendiken/sxp-ruby/tarball/master
 
-Installation
-------------
-
-The recommended installation method is via RubyGems. To install the latest
-official release from Gemcutter, do:
-
-    % [sudo] gem install sxp
-
 Resources
 ---------
 
 * <http://sxp.rubyforge.org/>
 * <http://github.com/bendiken/sxp>
 * <http://github.com/bendiken/sxp-ruby>
-* <http://gemcutter.org/gems/sxp>
+* <http://rubygems.org/gems/sxp>
 * <http://rubyforge.org/projects/sxp/>
 * <http://raa.ruby-lang.org/project/sxp>
 
@@ -91,3 +99,9 @@ License
 
 SXP.rb is free and unencumbered public domain software. For more
 information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
+
+[S-expression]: http://en.wikipedia.org/wiki/S-expression
+[Scheme]:       http://scheme.info/
+[Common Lisp]:  http://en.wikipedia.org/wiki/Common_Lisp
+[SPARQL]:       http://openjena.org/wiki/SSE
+[Backports]:    http://rubygems.org/gems/backports
