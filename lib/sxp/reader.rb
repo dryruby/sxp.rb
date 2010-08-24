@@ -32,7 +32,8 @@ module SXP
           @input = input
         when input.respond_to?(:to_str)
           require 'stringio' unless defined?(StringIO)
-          @input = StringIO.new(input.to_str)
+          # NOTE: StringIO#ungetc mutates the string, so we use #dup to take a copy.
+          @input = StringIO.new(input.to_str.dup)
         else
           raise ArgumentError, "expected an IO or String input stream, but got #{input.inspect}"
       end
