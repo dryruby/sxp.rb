@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
-describe SXP::Reader::SSE do
+describe SXP::Reader::SPARQL do
   context "when reading empty input" do
     it "raises an error" do
       lambda { read('') }.should raise_error(Reader::Error)
@@ -119,10 +119,10 @@ describe SXP::Reader::SSE do
   end
 
   def read(input, options = {})
-    SXP::Reader::SSE.new(input.freeze, options).read
+    SXP::Reader::SPARQL.new(input.freeze, options).read
   end
 
   def read_all(input, options = {})
-    SXP::Reader::SSE.new(input.freeze, options).read_all
+    SXP::Reader::SPARQL.new(input.freeze, options).read_all
   end
 end

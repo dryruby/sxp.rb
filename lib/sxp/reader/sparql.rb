@@ -7,7 +7,7 @@ module SXP; class Reader
   # Requires [RDF.rb](http://rdf.rubyforge.org/).
   #
   # @see http://openjena.org/wiki/SSE
-  class SSE < Extended
+  class SPARQL < Extended
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
     BNODE_NEW = /^_:$/.freeze
     VARIABLE = /^\?([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
@@ -76,5 +76,5 @@ module SXP; class Reader
         end
       end
     end
-  end # class SSE
+  end # class SPARQL
 end; end # class SXP::Reader

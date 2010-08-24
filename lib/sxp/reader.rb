@@ -6,7 +6,7 @@ module SXP
     autoload :Extended,   'sxp/reader/extended'
     autoload :Scheme,     'sxp/reader/scheme'
     autoload :CommonLisp, 'sxp/reader/common_lisp'
-    autoload :SSE,        'sxp/reader/sse'
+    autoload :SPARQL,     'sxp/reader/sparql'
 
     class Error < StandardError; end
     class EOF < Error; end
