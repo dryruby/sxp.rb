@@ -114,21 +114,21 @@ describe SXP::Reader::Scheme do
 
   context "when reading lists" do
     it "reads '()' as an empty list" do
-      read('()').should == [] # FIXME
+      read(%q(())).should == [] # FIXME
     end
 
     it "reads '(1 2 3)' as a list" do
-      read('(1 2 3)').should == [1, 2, 3]
+      read(%((1 2 3))).should == [1, 2, 3]
     end
   end
 
   context "when reading vectors" do
     it "reads '#()' as an empty vector" do
-      read('#()').should == []
+      read(%(#())).should == []
     end
 
     it "reads '#(1 2 3)' as a vector" do
-      read('#(1 2 3)').should == [1, 2, 3]
+      read(%q(#(1 2 3))).should == [1, 2, 3]
     end
   end
 
@@ -139,10 +139,10 @@ describe SXP::Reader::Scheme do
   end
 
   def read(input, options = {})
-    SXP::Reader::Scheme.new(input.freeze, options).read
+    SXP::Reader::Scheme.new(input.freeze, options.freeze).read
   end
 
   def read_all(input, options = {})
-    SXP::Reader::Scheme.new(input.freeze, options).read_all
+    SXP::Reader::Scheme.new(input.freeze, options.freeze).read_all
   end
 end
