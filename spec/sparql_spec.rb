@@ -54,15 +54,23 @@ describe SXP::Reader::SPARQL do
     it "reads '?x' as a variable" do
       read('?x').should == RDF::Query::Variable.new(:x)
     end
+
+    it "reads '??0' as a non-distinguished variable" do
+      read('??0').should == RDF::Query::Variable.new(:'0') # FIXME?
+    end
+
+    it "reads '??' as a fresh non-distinguished variable with a random identifier" do
+      read('??').should be_a(RDF::Query::Variable)
+    end
   end
 
   context "when reading blank nodes" do
-    it "reads '_:' as a blank node with a random identifier" do
-      read('_:').should be_a(RDF::Node)
-    end
-
     it "reads '_:abc' as a blank node with identifier :abc" do
       read('_:abc').should == RDF::Node(:abc)
+    end
+
+    it "reads '_:' as a fresh blank node with a random identifier" do
+      read('_:').should be_a(RDF::Node)
     end
   end
 
