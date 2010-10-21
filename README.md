@@ -19,7 +19,7 @@ Examples
 
     require 'sxp'
 
-### Parsing S-expressions using universal syntax
+### Parsing basic S-expressions
 
     SXP.read "(* 6 7)"  #=> [:*, 6, 7]
 
@@ -35,15 +35,15 @@ Examples
                 1,
                 [:*, :n, [:fact, [:-, :n, 1]]]]]
 
-### Parsing S-expressions using Scheme syntax
+### Parsing Scheme S-expressions
 
     SXP::Reader::Scheme.read %q((and #t #f))             #=> [:and, true, false]
 
-### Parsing S-expressions using Common Lisp syntax
+### Parsing Common Lisp S-expressions
 
     SXP::Reader::CommonLisp.read %q((or t nil))          #=> [:or, true, nil]
 
-### Parsing S-expressions using SPARQL syntax
+### Parsing SPARQL S-expressions
 
     SXP::Reader::SPARQL.read %q((base <http://ar.to/>))  #=> [:base, RDF::URI('http://ar.to/')]
 
