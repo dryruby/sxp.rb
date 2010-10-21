@@ -26,5 +26,5 @@ module SXP; class Reader
         end
       end
     end
-  end # class Extended
-end; end # class SXP::Reader
+  end # Extended
+end; end # SXP::Reader

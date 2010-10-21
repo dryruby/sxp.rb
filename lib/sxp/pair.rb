@@ -60,5 +60,5 @@ module SXP
           "(#{head.inspect} . #{tail.inspect})"
       end
     end
-  end # class Pair
-end # module SXP
+  end # Pair
+end # SXP

@@ -86,5 +86,5 @@ module SXP
     def decrease_indent!
       @indent -= 1
     end
-  end # class Generator
-end # module SXP
+  end # Generator
+end # SXP

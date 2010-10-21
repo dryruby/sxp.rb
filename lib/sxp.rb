@@ -85,4 +85,4 @@ module SXP
     alias_method :parse_uri,   :read_url # @deprecated
     alias_method :read_uri,    :read_url # @deprecated
   end
-end # module SXP
+end # SXP

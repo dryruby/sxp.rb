@@ -82,5 +82,5 @@ module SXP; class Reader
         end
       end
     end
-  end # class SPARQL
-end; end # class SXP::Reader
+  end # SPARQL
+end; end # SXP::Reader

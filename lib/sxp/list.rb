@@ -498,5 +498,5 @@ module SXP
     def values_at(*selector)
       self.class.new(to_a.values_at(*selector))
     end
-  end # class List
-end # module SXP
+  end # List
+end # SXP

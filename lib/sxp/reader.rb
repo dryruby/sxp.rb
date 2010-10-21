@@ -258,5 +258,5 @@ module SXP
     def eof?
       @input.eof?
     end
-  end # class Reader
-end # module SXP
+  end # Reader
+end # SXP

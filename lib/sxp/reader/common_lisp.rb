@@ -123,5 +123,5 @@ module SXP; class Reader
         end
       end
     end
-  end # class CommonLisp
-end; end # class SXP::Reader
+  end # CommonLisp
+end; end # SXP::Reader
