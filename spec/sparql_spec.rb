@@ -38,6 +38,12 @@ describe SXP::Reader::SPARQL do
     end
   end
 
+  context "when reading floating-point literals" do
+    it "reads '123.0' as an xsd:double" do
+      read('123.0').should == RDF::Literal(123.0)
+    end
+  end
+
   context "when reading datatyped literals" do
     it "reads '\"lex\"^^<http://example/thing>' as a datatyped literal" do
       read(%q("lex"^^<http://example.org/thing>)).should == RDF::Literal("lex", :datatype => 'http://example.org/thing')
@@ -81,6 +87,10 @@ describe SXP::Reader::SPARQL do
 
     it "reads '@xyz' as a symbol" do
       read('@xyz').should == :@xyz
+    end
+
+    it "reads '<' as a symbol" do
+      read('<').should == :'<'
     end
   end
 
