@@ -10,8 +10,8 @@ module SXP; class Reader
   class SPARQL < Extended
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
     BNODE_NEW = /^_:$/.freeze
-    VARIABLE = /^\?([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
-    URIREF   = /^<([^>]+)>/.freeze
+    VARIABLE  = /^\?([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
+    URIREF    = /^<([^>]+)>/.freeze
 
     ##
     # @return [Object]
@@ -44,6 +44,7 @@ module SXP; class Reader
     def read_rdf_uri
       buffer = String.new
       skip_char # '<'
+      return :< if (char = peek_char).nil? || /\s+/ === char # special case for '< symbol
       until peek_char == ?>
         buffer << read_char # TODO: unescaping
       end
