@@ -10,7 +10,9 @@ module SXP; class Reader
   class SPARQL < Extended
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
     BNODE_NEW = /^_:$/.freeze
-    VARIABLE  = /^\?([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
+    VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
+    VAR_GEN   = /^\?\?([0-9]+)/
+    VAR_NEW   = '??'
     URIREF    = /^<([^>]+)>/.freeze
 
     ##
@@ -61,7 +63,9 @@ module SXP; class Reader
         when INTEGER   then RDF::Literal(Integer(buffer))
         when BNODE_ID  then RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
-        when VARIABLE  then RDF::Query::Variable.new($1)
+        when VAR_ID    then RDF::Query::Variable.new($1)
+        when VAR_GEN   then RDF::Query::Variable.new("?#{$1}") # FIXME?
+        when VAR_NEW   then RDF::Query::Variable.new
         else buffer.to_sym
       end
     end

@@ -56,7 +56,7 @@ describe SXP::Reader::SPARQL do
     end
 
     it "reads '??0' as a non-distinguished variable" do
-      read('??0').should == RDF::Query::Variable.new(:'0') # FIXME?
+      read('??0').should == RDF::Query::Variable.new(:'?0') # FIXME?
     end
 
     it "reads '??' as a fresh non-distinguished variable with a random identifier" do
