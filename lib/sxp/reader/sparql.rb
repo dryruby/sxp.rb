@@ -36,7 +36,7 @@ module SXP; class Reader
           {:datatype => read_rdf_uri} # TODO: support prefixed names
         else {}
       end
-      RDF::Literal.new(value, options)
+      RDF::Literal(value, options)
     end
 
     ##
@@ -49,7 +49,7 @@ module SXP; class Reader
         buffer << read_char # TODO: unescaping
       end
       skip_char # '>'
-      RDF::URI.new(buffer)
+      RDF::URI(buffer)
     end
 
     ##
@@ -57,8 +57,9 @@ module SXP; class Reader
     def read_atom
       case buffer = read_literal
         when '.'       then buffer.to_sym
-        when INTEGER   then RDF::Literal.new(Integer(buffer))
-        when BNODE_ID  then RDF::Node.new($1)
+        when DECIMAL   then RDF::Literal(Float(buffer))
+        when INTEGER   then RDF::Literal(Integer(buffer))
+        when BNODE_ID  then RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
         when VARIABLE  then RDF::Query::Variable.new($1)
         else buffer.to_sym
