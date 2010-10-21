@@ -92,6 +92,7 @@ describe SXP::Reader::SPARQL do
     it "reads '<' as a symbol" do
       read('< ').should == :'<'
       read('<').should == :'<'
+      read('(<)').should == [:'<']
     end
   end
 
