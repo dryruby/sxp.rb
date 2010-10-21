@@ -2,12 +2,12 @@ module SXP; class Reader
   ##
   # A basic S-expression parser.
   class Basic < Reader
-    LPARENS  = [?(].freeze
-    RPARENS  = [?)].freeze
-    ATOM     = /^[^\s()]+/.freeze
-    RATIONAL = /^([+-]?\d+)\/(\d+)$/.freeze
-    DECIMAL  = /^[+-]?(\d*)?\.\d*$/.freeze
-    INTEGER  = /^[+-]?\d+$/.freeze
+    LPARENS  = [?(]
+    RPARENS  = [?)]
+    ATOM     = /^[^\s()]+/
+    RATIONAL = /^([+-]?\d+)\/(\d+)$/
+    DECIMAL  = /^[+-]?(\d*)?\.\d*$/
+    INTEGER  = /^[+-]?\d+$/
 
     ##
     # @return [Object]

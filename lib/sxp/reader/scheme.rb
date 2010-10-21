@@ -4,12 +4,12 @@ module SXP; class Reader
   #
   # @see http://people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
   class Scheme < Extended
-    DECIMAL         = /^[+-]?(\d*)?\.\d*$/.freeze
-    INTEGER_BASE_2  = /^[+-]?[01]+$/.freeze
-    INTEGER_BASE_8  = /^[+-]?[0-7]+$/.freeze
-    INTEGER_BASE_10 = /^[+-]?\d+$/.freeze
-    INTEGER_BASE_16 = /^[+-]?[\da-z]+$/i.freeze
-    RATIONAL        = /^([+-]?\d+)\/(\d+)$/.freeze
+    DECIMAL         = /^[+-]?(\d*)?\.\d*$/
+    INTEGER_BASE_2  = /^[+-]?[01]+$/
+    INTEGER_BASE_8  = /^[+-]?[0-7]+$/
+    INTEGER_BASE_10 = /^[+-]?\d+$/
+    INTEGER_BASE_16 = /^[+-]?[\da-z]+$/i
+    RATIONAL        = /^([+-]?\d+)\/(\d+)$/
 
     ##
     # Initializes the reader.

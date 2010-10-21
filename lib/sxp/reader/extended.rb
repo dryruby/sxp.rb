@@ -2,9 +2,9 @@ module SXP; class Reader
   ##
   # An extended S-expression parser.
   class Extended < Basic
-    LPARENS  = [?(, ?[].freeze
-    RPARENS  = [?), ?]].freeze
-    ATOM     = /^[^\s()\[\]]+/.freeze
+    LPARENS  = [?(, ?[]
+    RPARENS  = [?), ?]]
+    ATOM     = /^[^\s()\[\]]+/
 
     ##
     # @return [Object]

@@ -8,12 +8,12 @@ module SXP; class Reader
   #
   # @see http://openjena.org/wiki/SSE
   class SPARQL < Extended
-    BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
-    BNODE_NEW = /^_:$/.freeze
-    VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)/.freeze # FIXME
+    BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/ # FIXME
+    BNODE_NEW = /^_:$/
+    VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)/ # FIXME
     VAR_GEN   = /^\?\?([0-9]+)/
     VAR_NEW   = '??'
-    URIREF    = /^<([^>]+)>/.freeze
+    URIREF    = /^<([^>]+)>/
 
     ##
     # @return [Object]
