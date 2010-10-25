@@ -36,11 +36,23 @@ describe SXP::Reader::SPARQL do
     it "reads '123' as an xsd:integer" do
       read('123').should == RDF::Literal(123)
     end
+
+    it "reads '-18' as an xsd:integer" do
+      read('-18').should == RDF::Literal(-18)
+    end
   end
 
   context "when reading floating-point literals" do
     it "reads '123.0' as an xsd:double" do
       read('123.0').should == RDF::Literal(123.0)
+    end
+
+    it "reads '456.' as an xsd:double" do
+      read('456.').should == RDF::Literal(456.0)
+    end
+
+    it "reads '456.0' as an xsd:double" do
+      read('456.0').should == RDF::Literal(456.0)
     end
   end
 
