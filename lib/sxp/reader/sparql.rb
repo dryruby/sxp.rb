@@ -46,7 +46,8 @@ module SXP; class Reader
     def read_rdf_uri
       buffer = String.new
       skip_char # '<'
-      return :< if (char = peek_char).nil? || char.chr !~ ATOM # FIXME: nasty special case for '< symbol
+      return :< if (char = peek_char).nil? || char.chr !~ ATOM # FIXME: nasty special case for the '< symbol
+      return :<= if peek_char.chr.eql?(?=) && read_char        # FIXME: nasty special case for the '<= symbol
       until peek_char == ?>
         buffer << read_char # TODO: unescaping
       end

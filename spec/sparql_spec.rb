@@ -114,6 +114,12 @@ describe SXP::Reader::SPARQL do
       read('<').should == :'<'
       read('(<)').should == [:'<']
     end
+
+    it "reads '<=' as a symbol" do
+      read('<= ').should == :'<='
+      read('<=').should == :'<='
+      read('(<=)').should == [:'<=']
+    end
   end
 
   context "when reading URIs" do
