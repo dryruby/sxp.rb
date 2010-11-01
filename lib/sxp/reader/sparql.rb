@@ -8,6 +8,8 @@ module SXP; class Reader
   #
   # @see http://openjena.org/wiki/SSE
   class SPARQL < Extended
+    EXPONENT  = /[eE][+-]?[0-9]+/
+    DECIMAL   = /^[+-]?(\d*)?\.\d*#{EXPONENT}?$/
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/ # FIXME
     BNODE_NEW = /^_:$/
     VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)/ # FIXME
@@ -60,7 +62,7 @@ module SXP; class Reader
     def read_atom
       case buffer = read_literal
         when '.'       then buffer.to_sym
-        when DECIMAL   then RDF::Literal(Float(buffer + '0'))
+        when DECIMAL   then RDF::Literal(Float(buffer[-1].eql?(?.) ? buffer + '0' : buffer))
         when INTEGER   then RDF::Literal(Integer(buffer))
         when BNODE_ID  then RDF::Node($1)
         when BNODE_NEW then RDF::Node.new

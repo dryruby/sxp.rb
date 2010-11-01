@@ -54,6 +54,18 @@ describe SXP::Reader::SPARQL do
     it "reads '456.0' as an xsd:double" do
       read('456.0').should == RDF::Literal(456.0)
     end
+
+    it "reads '1.0e0' as an xsd:double" do
+      read('1.0e0').should == RDF::Literal(1.0)
+    end
+
+    it "reads '1.0E+6' as an xsd:double" do
+      read('1.0E+6').should == RDF::Literal(1_000_000.0)
+    end
+
+    it "reads '1.0E-6' as an xsd:double" do
+      read('1.0E-6').should == RDF::Literal(1/1_000_000.0)
+    end
   end
 
   context "when reading datatyped literals" do
