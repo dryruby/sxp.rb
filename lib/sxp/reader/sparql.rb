@@ -47,7 +47,7 @@ module SXP; class Reader
       buffer = String.new
       skip_char # '<'
       return :< if (char = peek_char).nil? || char.chr !~ ATOM # FIXME: nasty special case for the '< symbol
-      return :<= if peek_char.chr.eql?(?=) && read_char        # FIXME: nasty special case for the '<= symbol
+      return :<= if peek_char.chr.eql?(?=.chr) && read_char    # FIXME: nasty special case for the '<= symbol
       until peek_char == ?>
         buffer << read_char # TODO: unescaping
       end
