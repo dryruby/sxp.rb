@@ -32,6 +32,16 @@ describe SXP::Reader::SPARQL do
     end
   end
 
+  context "when reading boolean literals" do
+    it "reads 'true' as an xsd:boolean" do
+      read('true').should == RDF::Literal(true)
+    end
+
+    it "reads 'false' as an xsd:boolean" do
+      read('false').should == RDF::Literal(false)
+    end
+  end
+
   context "when reading integer literals" do
     it "reads '123' as an xsd:integer" do
       read('123').should == RDF::Literal(123)
