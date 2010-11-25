@@ -1,0 +1,6 @@
+# The latest released version from RubyGems.org:
+source 'http://rubygems.org'
+git 'sxp', '>= 0.0.12'
+
+# The latest development version from GitHub:
+gem 'sxp', :git => 'git://github.com/bendiken/sxp-ruby.git'
