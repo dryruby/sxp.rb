@@ -8,6 +8,12 @@ describe SXP::Reader::SPARQL do
     end
   end
 
+  context "when reading nil" do
+    it "reads 'nil' as nil" do
+      read(%q(nil)).should be_nil
+    end
+  end
+
   context "when reading plain literals" do
     it "reads '\"\"' as a plain string literal" do
       read(%q("")).should == RDF::Literal("")
