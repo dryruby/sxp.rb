@@ -92,7 +92,12 @@ Resources
 Author
 ------
 
-* [Arto Bendiken](mailto:arto.bendiken@gmail.com) - <http://ar.to/>
+* [Arto Bendiken](https://github.com/bendiken) - <http://ar.to/>
+
+Contributors
+------------
+
+* [Ben Lavender](https://github.com/bhuga) - <http://bhuga.net/>
 
 License
 -------
