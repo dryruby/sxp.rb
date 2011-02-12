@@ -115,8 +115,16 @@ describe SXP::Reader::SPARQL do
   end
 
   context "when reading prefixed names" do
-    it "reads 'ex:thing' as a prefixed name" do
-      # TODO
+    it "reads 'ex:thing' as a symbol" do
+      read('ex:thing').should == :"ex:thing"
+    end
+
+    it "reads '(prefix ex: <foo#> ex:bar)' as <foo#bar>" do
+      read('(prefix ex: <foo#> ex:bar)').should == [:prefix, :"ex:", RDF::URI("foo#"), RDF::URI("foo#bar")]
+    end
+
+    it "reads adds qname to URI" do
+      read('(prefix ex: <foo#> ex:bar)').last.qname.should == "ex:bar"
     end
   end
 
@@ -153,6 +161,10 @@ describe SXP::Reader::SPARQL do
   context "when reading URIs" do
     it "reads '<...>' as a URI" do
       read('<>').should be_a(RDF::URI)
+    end
+
+    it "reads (base <prefix/> <suffix>) as <prefix/suffix>" do
+      read(%q((base <prefix/> <suffix>))).should == [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
     end
   end
 
