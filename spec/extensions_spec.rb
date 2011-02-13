@@ -18,10 +18,10 @@ describe "RDF::Query::Variable#to_sxp" do
   specify { RDF::Query::Variable.new("a").to_sxp.should == %q(?a)}
 end
 
-describe "RDF::Statement#to_sxp" do
+describe "RDF::Query::Pattern#to_sxp" do
   {
-    RDF::Statement.new(RDF::URI("a"), RDF::URI("b"), RDF::URI("c")) => %q((triple <a> <b> <c>)),
-    RDF::Statement.new(RDF::URI("a"), RDF::Query::Variable.new("b"), RDF::Literal.new("c")) =>
+    RDF::Query::Pattern.new(RDF::URI("a"), RDF::URI("b"), RDF::URI("c")) => %q((triple <a> <b> <c>)),
+    RDF::Query::Pattern.new(RDF::URI("a"), RDF::Query::Variable.new("b"), RDF::Literal.new("c")) =>
       %q((triple <a> ?b "c"))
   }.each_pair do |st, sxp|
     it "generates #{sxp} given #{st}" do
