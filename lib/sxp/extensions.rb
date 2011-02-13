@@ -1,3 +1,5 @@
+require 'rdf'
+
 ##
 # Extensions for Ruby's `Symbol` class.
 class Symbol
@@ -9,3 +11,12 @@ class Symbol
     to_s[-1] == ?:
   end
 end
+
+##
+# Extensions for RDF::URI
+class RDF::URI
+  # Override qname to save value for SXP serialization
+  def qname=(value); @qname = value; end
+  def qname; @qname; end
+end
+
