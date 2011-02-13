@@ -164,14 +164,6 @@ class RDF::Literal
   end
 end
 
-class RDF::Statement
-  # Transform Statement into an SXP
-  # @return [String]
-  def to_sxp
-    [:triple, subject, predicate, object].to_sxp
-  end
-end
-
 class RDF::Query
   # Transform Query into an Array form of an SXP
   #
@@ -181,6 +173,14 @@ class RDF::Query
   def to_sxp
     res = [:bgp] + patterns
     (respond_to?(:named?) && named? ? [:graph, context, res] : res).to_sxp
+  end
+end
+
+class RDF::Query::Pattern
+  # Transform Query Pattern into an SXP
+  # @return [String]
+  def to_sxp
+    [:triple, subject, predicate, object].to_sxp
   end
 end
 
