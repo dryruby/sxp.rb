@@ -193,17 +193,14 @@ module SXP; class Reader
     def variable(id, distinguished = true)
       id = nil if id.to_s.empty?
       
-      STDERR.puts("var(#{id}, #{distinguished})")
       if id
         @vars ||= {}
         @vars[id] ||= begin
-          STDERR.puts("alloc #{id}")
           v = RDF::Query::Variable.new(id)
           v.distinguished = distinguished
           v
         end
       else
-        STDERR.puts("new")
         v = RDF::Query::Variable.new
         v.distinguished = distinguished
         v
