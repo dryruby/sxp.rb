@@ -95,12 +95,30 @@ describe SXP::Reader::SPARQL do
       read('?x').should == RDF::Query::Variable.new(:x)
     end
 
+    it "reads '?' as a variable" do
+      v = read('?')
+      v.should be_a(RDF::Query::Variable)
+      v.should be_distinguished
+    end
+    
+    it "reads ?x .. ?x as the identical variable" do
+      sxp = read('(?x ?x)')
+      sxp[0].should == RDF::Query::Variable.new(:x)
+      sxp[1].should == RDF::Query::Variable.new(:x)
+      sxp[0].should be_equal(sxp[1])
+      sxp[0].should be_distinguished
+    end
+
     it "reads '??0' as a non-distinguished variable" do
-      read('??0').should == RDF::Query::Variable.new(:'?0') # FIXME?
+      v = read('??0')
+      v.should == RDF::Query::Variable.new(:"0")
+      v.should_not be_distinguished
     end
 
     it "reads '??' as a fresh non-distinguished variable with a random identifier" do
-      read('??').should be_a(RDF::Query::Variable)
+      v = read('??')
+      v.should be_a(RDF::Query::Variable)
+      v.should_not be_distinguished
     end
   end
 

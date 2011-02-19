@@ -17,9 +17,8 @@ module SXP; class Reader
     DECIMAL   = /^[+-]?(\d*)?\.\d*#{EXPONENT}?$/
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/ # FIXME
     BNODE_NEW = /^_:$/
-    VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)/ # FIXME
-    VAR_GEN   = /^\?\?([0-9]+)/
-    VAR_NEW   = '??'
+    VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)?/ # FIXME
+    VAR_GEN   = /^\?\?([0-9]*)/
     URIREF    = /^<([^>]+)>/
 
     ##
@@ -163,9 +162,8 @@ module SXP; class Reader
         when INTEGER   then RDF::Literal(Integer(buffer))
         when BNODE_ID  then RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
-        when VAR_ID    then RDF::Query::Variable.new($1)
-        when VAR_GEN   then RDF::Query::Variable.new("?#{$1}") # FIXME?
-        when VAR_NEW   then RDF::Query::Variable.new
+        when VAR_GEN   then variable($1, false)
+        when VAR_ID    then variable($1, true)
         else buffer.to_sym
       end
     end
@@ -180,6 +178,35 @@ module SXP; class Reader
           when /#/   then skip_line
           else break
         end
+      end
+    end
+    
+    ##
+    # Return variable allocated to an ID.
+    # If no ID is provided, a new variable
+    # is allocated. Otherwise, any previous assignment will be used.
+    #
+    # The variable has a #distinguished? method applied depending on if this
+    # is a disinguished or non-distinguished variable. Non-distinguished
+    # variables are effectively the same as BNodes.
+    # @return [RDF::Query::Variable]
+    def variable(id, distinguished = true)
+      id = nil if id.to_s.empty?
+      
+      STDERR.puts("var(#{id}, #{distinguished})")
+      if id
+        @vars ||= {}
+        @vars[id] ||= begin
+          STDERR.puts("alloc #{id}")
+          v = RDF::Query::Variable.new(id)
+          v.distinguished = distinguished
+          v
+        end
+      else
+        STDERR.puts("new")
+        v = RDF::Query::Variable.new
+        v.distinguished = distinguished
+        v
       end
     end
   end # SPARQL
