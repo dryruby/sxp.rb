@@ -137,8 +137,18 @@ describe SXP::Reader::SPARQL do
       read('ex:thing').should == :"ex:thing"
     end
 
-    it "reads '(prefix ex: <foo#> ex:bar)' as <foo#bar>" do
-      read('(prefix ex: <foo#> ex:bar)').should == [:prefix, :"ex:", RDF::URI("foo#"), RDF::URI("foo#bar")]
+    it "reads '(prefix ((ex: <foo#>)) ex:bar)' as <foo#bar>" do
+      read('(prefix ((ex: <foo#>)) ex:bar)').should == [:prefix, [[:"ex:", RDF::URI("foo#")]], RDF::URI("foo#bar")]
+    end
+
+    it "reads '(prefix ((ex: <foo#>) (: <bar#>)) ex:bar bar:baz)' as <foo#bar> <bar#baz>" do
+      read('
+        (prefix
+          ((ex: <foo#>) (: <bar#>))
+          ex:bar :baz)').should ==
+        [:prefix,
+          [[:"ex:", RDF::URI("foo#")], [:":", RDF::URI("bar#")]],
+          RDF::URI("foo#bar"), RDF::URI("bar#baz")]
     end
 
     it "reads adds qname to URI" do

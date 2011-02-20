@@ -54,7 +54,7 @@ module SXP; class Reader
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
     def initialize(input, options = {}, &block)
-      super { @prefixes = {} }
+      super { @prefixes = {}; @list_depth = 0 }
 
       if block_given?
         case block.arity
@@ -73,14 +73,27 @@ module SXP; class Reader
       else
         tok = super
         
-        # If we just parsed "PREFIX", use this token for associating a URI
-        # This is used again when we actually parse the URI
+        # If we just parsed "PREFIX", and this is an opening list, then
+        # record list depth and process following as token, URI pairs
+        #
+        # Once we've closed the list, go out of prefix mode
+        if tok.is_a?(Array) && tok[0] == :list
+          if '(['.include?(tok[1])
+            @list_depth += 1
+          else
+            @list_depth -= 1
+            @prefix_depth = nil if @prefix_depth && @list_depth < @prefix_depth
+          end
+        end
+
         if tok.is_a?(Array) && tok[0] == :atom && tok[1].is_a?(Symbol)
           value = tok[1].to_s
 
           # We previously parsed a PREFIX, this will be the map value
-          @parsed_prefix = value.chop if @parsed_prefix == true
-          @parsed_prefix = true if value =~ PREFIX
+          @parsed_prefix = value.chop if @prefix_depth && @prefix_depth > 0
+          
+          # If we just saw PREFIX, then this starts the parsing mode
+          @prefix_depth = @list_depth + 1 if value =~ PREFIX
           
           # If the token is of the form 'prefix:suffix', create a URI and give it the
           # token as a QName
