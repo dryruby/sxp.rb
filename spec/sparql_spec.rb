@@ -88,6 +88,10 @@ describe SXP::Reader::SPARQL do
     it "reads '\"lex\"^^<http://example/thing>' as a datatyped literal" do
       read(%q("lex"^^<http://example.org/thing>)).should == RDF::Literal("lex", :datatype => 'http://example.org/thing')
     end
+
+    it "reads '(prefix ((: <http://example.org/>)) \"lex\"^^:thing)' as a datatyped literal" do
+      read(%q((prefix ((: <http://example.org/>)) "lex"^^:thing))).should == [:prefix, [[:":", RDF::URI("http://example.org/")]], RDF::Literal("lex", :datatype => 'http://example.org/thing')]
+    end
   end
 
   context "when reading variables" do

@@ -126,7 +126,7 @@ module SXP; class Reader
           {:language => read_atom}
         when ?^
           2.times { skip_char } # '^^'
-          {:datatype => read_rdf_uri} # TODO: support prefixed names
+          {:datatype => read_token.last}
         else {}
       end
       RDF::Literal(value, options)
