@@ -123,7 +123,7 @@ module SXP; class Reader
       options = case peek_char
         when ?@
           skip_char # '@'
-          {:language => read_atom}
+          {:language => read_atom.downcase}
         when ?^
           2.times { skip_char } # '^^'
           {:datatype => read_token.last}

@@ -34,7 +34,11 @@ describe SXP::Reader::SPARQL do
     end
 
     it "reads '\"hello\"@en-US' as a language-tagged literal" do
-      read(%q("hello"@en-US)).should == RDF::Literal("hello", :language => :'en-US')
+      read(%q("hello"@en-US)).should == RDF::Literal("hello", :language => :'en-us')
+    end
+
+    it "reads '\"hello\"@EN' as a language-tagged literal" do
+      read(%q("hello"@EN)).should == RDF::Literal("hello", :language => :'en')
     end
   end
 
