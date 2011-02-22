@@ -14,7 +14,8 @@ module SXP; class Reader
     FALSE     = /^false$/i
     TRUE      = /^true$/i
     EXPONENT  = /[eE][+-]?[0-9]+/
-    DECIMAL   = /^[+-]?(\d*)?\.\d*#{EXPONENT}?$/
+    DECIMAL   = /^[+-]?(\d*)?\.\d*$/
+    DOUBLE    = /^[+-]?(\d*)?\.\d*#{EXPONENT}$/
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/ # FIXME
     BNODE_NEW = /^_:$/
     VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)?/ # FIXME
@@ -171,7 +172,8 @@ module SXP; class Reader
         when NIL       then nil
         when FALSE     then RDF::Literal(false)
         when TRUE      then RDF::Literal(true)
-        when DECIMAL   then RDF::Literal(Float(buffer[-1].eql?(?.) ? buffer + '0' : buffer))
+        when DOUBLE    then RDF::Literal(Float(buffer[-1].eql?(?.) ? buffer + '0' : buffer))
+        when DECIMAL   then RDF::Literal(BigDecimal(buffer))
         when INTEGER   then RDF::Literal(Integer(buffer))
         when BNODE_ID  then RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
