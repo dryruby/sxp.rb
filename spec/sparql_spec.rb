@@ -72,20 +72,21 @@ describe SXP::Reader::SPARQL do
 
     it "reads '456.' as an xsd:decimal" do
       read('456.').should == RDF::Literal::Decimal.new(456.0)
-      read('456.').should be_eql(RDF::Literal::Decimal.new(456.0))
+      read('456.').should_not be_eql(RDF::Literal::Decimal.new(456.0))
+      read('456.').should be_eql(RDF::Literal::Decimal.new('456.'))
     end
 
     it "reads '1.0e0' as an xsd:double" do
       read('1.0e0').should == RDF::Literal::Double.new(1.0e0)
       read('1.0e0').should == RDF::Literal::Double.new('1.0e0')
-      read('1.0e0').should be_eql(RDF::Literal::Double.new(1.0e0))
+      read('1.0e0').should be_eql(RDF::Literal::Double.new('1.0e0'))
     end
 
     it "reads '1.0E+6' as an xsd:double" do
       read('1.0E+6').should == RDF::Literal::Double.new(1_000_000.0)
       read('1.0E+6').should == RDF::Literal::Double.new(1.0e6)
       read('1.0E+6').should == RDF::Literal::Double.new('1.0e6')
-      read('1.0E+6').should be_eql(RDF::Literal::Double.new(1.0e6))
+      read('1.0E+6').should be_eql(RDF::Literal::Double.new('1.0E+6'))
     end
 
     it "reads '1.0E-6' as an xsd:double" do

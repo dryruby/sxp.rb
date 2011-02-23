@@ -172,9 +172,9 @@ module SXP; class Reader
         when NIL       then nil
         when FALSE     then RDF::Literal(false)
         when TRUE      then RDF::Literal(true)
-        when DOUBLE    then RDF::Literal(Float(buffer[-1].eql?(?.) ? buffer + '0' : buffer))
-        when DECIMAL   then RDF::Literal(BigDecimal(buffer))
-        when INTEGER   then RDF::Literal(Integer(buffer))
+        when DOUBLE    then RDF::Literal::Double.new(buffer)
+        when DECIMAL   then RDF::Literal::Decimal.new(buffer)
+        when INTEGER   then RDF::Literal::Integer.new(buffer)
         when BNODE_ID  then RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
         when VAR_GEN   then variable($1, false)
