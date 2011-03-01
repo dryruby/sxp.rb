@@ -28,6 +28,11 @@ module SXP; class Reader
     attr_accessor :base_uri
 
     ##
+    # Prefixes defined while parsing
+    # @return [Hash{Object => RDF::URI}]
+    attr_accessor :prefixes
+
+    ##
     # Defines the given named URI prefix for this parser.
     #
     # @example Defining a URI prefix
