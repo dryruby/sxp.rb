@@ -60,7 +60,7 @@ module SXP; class Reader
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
     def initialize(input, options = {}, &block)
-      super { @prefixes = {}; @list_depth = 0 }
+      super { @prefixes = {}; @bnodes = {}; @list_depth = 0 }
 
       if block_given?
         case block.arity
@@ -180,7 +180,7 @@ module SXP; class Reader
         when DOUBLE    then RDF::Literal::Double.new(buffer)
         when DECIMAL   then RDF::Literal::Decimal.new(buffer)
         when INTEGER   then RDF::Literal::Integer.new(buffer)
-        when BNODE_ID  then RDF::Node($1)
+        when BNODE_ID  then @bnodes[$1] ||= RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
         when VAR_GEN   then variable($1, false)
         when VAR_ID    then variable($1, true)
