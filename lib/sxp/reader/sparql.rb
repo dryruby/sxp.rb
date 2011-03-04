@@ -21,6 +21,7 @@ module SXP; class Reader
     VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)?/ # FIXME
     VAR_GEN   = /^\?\?([0-9]*)/
     URIREF    = /^<([^>]+)>/
+    PNAME     = /([^:]*):([^:]*)/
 
     ##
     # Base URI as specified or when parsing parsing a BASE token using the immediately following
@@ -71,6 +72,13 @@ module SXP; class Reader
     end
 
     ##
+    # Reads SSE Tokens, including {RDF::Literal}, {RDF::URI} and RDF::Node.
+    #
+    # Performs forward reference for prefix and base URI representations and saves in
+    # {#base_uri} and {#prefixes} accessors.
+    #
+    # Transforms tokens matching a {PNAME} pattern into {RDF::URI} instances if a match is
+    # found with a previously identified {PREFIX}.
     # @return [Object]
     def read_token
       case peek_char
@@ -103,7 +111,7 @@ module SXP; class Reader
           
           # If the token is of the form 'prefix:suffix', create a URI and give it the
           # token as a QName
-          if value.to_s =~ /([^:]*):([^:]*)/ && base = prefix($1)
+          if value.to_s =~ PNAME && base = prefix($1)
             suffix = $2
             #STDERR.puts "read_tok qname: pfx: #{$1.inspect} => #{prefix($1).inspect}, sfx: #{suffix.inspect}"
             suffix = suffix.sub(/^\#/, "") if base.to_s.index("#")
@@ -123,6 +131,14 @@ module SXP; class Reader
     end
 
     ##
+    # Reads literals corresponding to SPARQL/Turtle/Notation-3 syntax
+    #
+    # @example
+    #   "a plain literal"
+    #   "a literal with a language"@en
+    #   "a typed literal"^^<http://example/>
+    #   "a typed literal with a PNAME"^^xsd:string
+    #
     # @return [RDF::Literal]
     def read_rdf_literal
       value   = read_string
@@ -139,6 +155,11 @@ module SXP; class Reader
     end
 
     ##
+    # Reads a URI in SPARQL/Turtle/Notation-3 syntax
+    #
+    # @example
+    #   <http://example/>
+    #
     # @return [RDF::URI]
     def read_rdf_uri
       buffer = String.new
@@ -169,6 +190,12 @@ module SXP; class Reader
     end
 
     ##
+    # Reads an SSE Atom
+    #
+    # Atoms parsed including `base`, `prefix`, `true`, `false`, numeric, BNodes and variables.
+    #
+    # Creates {RDF::Literal}, RDF::Node, or {RDF::Query::Variable} instances where appropriate.
+    #
     # @return [Object]
     def read_atom
       case buffer = read_literal

@@ -45,12 +45,31 @@ Examples
 
 ### Parsing SPARQL S-expressions
 
+    require 'rdf'
+
     SXP::Reader::SPARQL.read %q((base <http://ar.to/>))  #=> [:base, RDF::URI('http://ar.to/')]
 
 Documentation
 -------------
 
 * <http://sxp.rubyforge.org/>
+
+* {SXP}
+
+### Parsing SXP
+  * {SXP::Reader}
+    * {SXP::Reader::Basic}
+      * {SXP::Reader::CommonLisp}
+      * {SXP::Reader::Extended}
+        * {SXP::Reader::Scheme}
+        * {SXP::Reader::SPARQL}
+
+### Manipulating SXP
+  * {SXP::Pair}
+    * {SXP::List}
+
+### Generating SXP
+  * {SXP::Generator}
 
 Dependencies
 ------------
@@ -98,6 +117,7 @@ Contributors
 ------------
 
 * [Ben Lavender](https://github.com/bhuga) - <http://bhuga.net/>
+* [Gregg Kellogg](http://github.com/gkellogg) - <http://kellogg-assoc.com/>
 
 License
 -------
