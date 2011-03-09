@@ -19,7 +19,7 @@ module SXP; class Reader
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/ # FIXME
     BNODE_NEW = /^_:$/
     VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)?/ # FIXME
-    VAR_GEN   = /^\?\?([0-9]*)/
+    ND_VAR   = /^\?\?([0-9]*)/
     URIREF    = /^<([^>]+)>/
     PNAME     = /([^:]*):([^:]*)/
 
@@ -209,7 +209,7 @@ module SXP; class Reader
         when INTEGER   then RDF::Literal::Integer.new(buffer)
         when BNODE_ID  then @bnodes[$1] ||= RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
-        when VAR_GEN   then variable($1, false)
+        when ND_VAR   then variable($1, false)
         when VAR_ID    then variable($1, true)
         else buffer.to_sym
       end

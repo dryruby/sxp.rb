@@ -146,6 +146,14 @@ class RDF::URI
   def to_sxp; qname || "<#{self}>"; end
 end
 
+class RDF::Node
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
+  def to_sxp; to_s; end
+end
+
 class RDF::Literal
   ##
   # Returns the SXP representation of a Literal.
@@ -185,5 +193,5 @@ class RDF::Query::Pattern
 end
 
 class RDF::Query::Variable
-  def to_sxp; to_s; end
+  def to_sxp; distinguished? ? to_s : "?#{to_s}"; end
 end

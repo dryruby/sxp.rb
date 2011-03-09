@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe "RDF::Node#to_sxp" do
-  specify { RDF::Node.new("a").to_sxp.should == %q("_:a")}
+  specify { RDF::Node.new("a").to_sxp.should == %q(_:a)}
 end
 
 describe "RDF::Literal#to_sxp" do
@@ -12,10 +12,21 @@ end
 
 describe "RDF::URI#to_sxp" do
   specify { RDF::URI("http://example.com").to_sxp.should == %q(<http://example.com>)}
+
+  it "uses qname if defined" do
+    u = RDF::URI("http://example.com/a")
+    u.qname = "foo:a"
+    u.to_sxp.should == %q(foo:a)
+  end
 end
 
 describe "RDF::Query::Variable#to_sxp" do
   specify { RDF::Query::Variable.new("a").to_sxp.should == %q(?a)}
+  it "generates ??0 for non-distinguished variable" do
+    v = RDF::Query::Variable.new("0")
+    v.distinguished = false
+    v.to_sxp.should == %q(??0)
+  end
 end
 
 describe "RDF::Query::Pattern#to_sxp" do
@@ -47,6 +58,7 @@ describe "RDF::Query#to_sxp" do
   end
   
   {
+    RDF::Query.new(nil, :context => false) {} => %q((bgp)),
     RDF::Query.new(nil, :context => RDF::URI("http://example.com/")) {
       pattern [RDF::URI("a"), RDF::URI("b"), RDF::URI("c")]
     } => %q((graph <http://example.com/> (bgp (triple <a> <b> <c>)))),
