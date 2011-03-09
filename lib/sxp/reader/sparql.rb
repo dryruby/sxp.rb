@@ -8,7 +8,12 @@ module SXP; class Reader
   #
   # @see http://openjena.org/wiki/SSE
   class SPARQL < Extended
+    # Alias for rdf:type
+    A         = /^a$/
+    # Base token, causes next URI to be treated as the `base_uri` for further URI expansion
     BASE      = /^base$/i
+    # Prefix token, causes following prefix and URI pairs to be used for transforming
+    # {PNAME} tokens into URIs.
     PREFIX    = /^prefix$/i
     NIL       = /^nil$/i
     FALSE     = /^false$/i
@@ -16,12 +21,20 @@ module SXP; class Reader
     EXPONENT  = /[eE][+-]?[0-9]+/
     DECIMAL   = /^[+-]?(\d*)?\.\d*$/
     DOUBLE    = /^[+-]?(\d*)?\.\d*#{EXPONENT}$/
+    # BNode with identifier
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/ # FIXME
+    # Anonymous BNode
     BNODE_NEW = /^_:$/
+    # Distinguished variable with an optional name
     VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)?/ # FIXME
+    # Non-distinguished variable with an optional identifier
     ND_VAR   = /^\?\?([0-9]*)/
+    # A URI reference, subject to expansion using `base_uri`
     URIREF    = /^<([^>]+)>/
+    # A QName, subject to expansion to URIs using {PREFIX}
     PNAME     = /([^:]*):([^:]*)/
+    
+    RDF_TYPE  = (a = RDF.type.dup; a.qname = 'a'; a).freeze
 
     ##
     # Base URI as specified or when parsing parsing a BASE token using the immediately following
@@ -172,7 +185,13 @@ module SXP; class Reader
       skip_char # '>'
 
       # If we have a base URI, use that when constructing a new URI
-      uri = self.base_uri ? self.base_uri.join(buffer) : RDF::URI(buffer)
+      uri = if self.base_uri
+        u = self.base_uri.join(buffer)
+        u.qname = "<#{buffer}>" unless u.to_s == buffer  # So that it can be re-serialized properly
+        u
+      else
+        RDF::URI(buffer)
+      end
       
       # If we previously parsed a "BASE" element, then this URI is used to set that value
       if @parsed_base
@@ -200,6 +219,7 @@ module SXP; class Reader
     def read_atom
       case buffer = read_literal
         when '.'       then buffer.to_sym
+        when A         then RDF_TYPE
         when BASE      then @parsed_base = true; buffer.to_sym
         when NIL       then nil
         when FALSE     then RDF::Literal(false)

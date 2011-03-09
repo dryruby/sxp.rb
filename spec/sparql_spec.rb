@@ -150,7 +150,7 @@ describe SXP::Reader::SPARQL do
     it "reads 'ex:thing' as a symbol" do
       read('ex:thing').should == :"ex:thing"
     end
-
+    
     it "reads '(prefix ((ex: <foo#>)) ex:bar)' as <foo#bar>" do
       read('(prefix ((ex: <foo#>)) ex:bar)').should == [:prefix, [[:"ex:", RDF::URI("foo#")]], RDF::URI("foo#bar")]
     end
@@ -198,6 +198,11 @@ describe SXP::Reader::SPARQL do
       read('<=').should == :'<='
       read('(<=)').should == [:'<=']
     end
+
+    it "reads 'a' as rdf:type" do
+      read('a').should == RDF.type
+      read('a').qname.should == 'a'
+    end
   end
 
   context "when reading URIs" do
@@ -206,7 +211,10 @@ describe SXP::Reader::SPARQL do
     end
 
     it "reads (base <prefix/> <suffix>) as <prefix/suffix>" do
-      read(%q((base <prefix/> <suffix>))).should == [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
+      sse = read(%q((base <prefix/> <suffix>)))
+      sse.should == [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
+      sse.last.should == RDF::URI('prefix/suffix')
+      sse.last.qname.should == '<suffix>'
     end
   end
 
