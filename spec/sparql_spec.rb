@@ -165,8 +165,8 @@ describe SXP::Reader::SPARQL do
           RDF::URI("foo#bar"), RDF::URI("bar#baz")]
     end
 
-    it "reads adds qname to URI" do
-      read('(prefix ex: <foo#> ex:bar)').last.qname.should == "ex:bar"
+    it "reads adds lexical to URI" do
+      read('(prefix ex: <foo#> ex:bar)').last.lexical.should == "ex:bar"
     end
   end
 
@@ -201,7 +201,7 @@ describe SXP::Reader::SPARQL do
 
     it "reads 'a' as rdf:type" do
       read('a').should == RDF.type
-      read('a').qname.should == 'a'
+      read('a').lexical.should == 'a'
     end
   end
 
@@ -214,7 +214,7 @@ describe SXP::Reader::SPARQL do
       sse = read(%q((base <prefix/> <suffix>)))
       sse.should == [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
       sse.last.should == RDF::URI('prefix/suffix')
-      sse.last.qname.should == '<suffix>'
+      sse.last.lexical.should == '<suffix>'
     end
   end
 

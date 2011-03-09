@@ -13,9 +13,9 @@ end
 describe "RDF::URI#to_sxp" do
   specify { RDF::URI("http://example.com").to_sxp.should == %q(<http://example.com>)}
 
-  it "uses qname if defined" do
+  it "uses lexical if defined" do
     u = RDF::URI("http://example.com/a")
-    u.qname = "foo:a"
+    u.lexical = "foo:a"
     u.to_sxp.should == %q(foo:a)
   end
 end

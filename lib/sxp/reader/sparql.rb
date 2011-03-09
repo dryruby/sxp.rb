@@ -34,7 +34,7 @@ module SXP; class Reader
     # A QName, subject to expansion to URIs using {PREFIX}
     PNAME     = /([^:]*):([^:]*)/
     
-    RDF_TYPE  = (a = RDF.type.dup; a.qname = 'a'; a).freeze
+    RDF_TYPE  = (a = RDF.type.dup; a.lexical = 'a'; a).freeze
 
     ##
     # Base URI as specified or when parsing parsing a BASE token using the immediately following
@@ -126,13 +126,13 @@ module SXP; class Reader
           # token as a QName
           if value.to_s =~ PNAME && base = prefix($1)
             suffix = $2
-            #STDERR.puts "read_tok qname: pfx: #{$1.inspect} => #{prefix($1).inspect}, sfx: #{suffix.inspect}"
+            #STDERR.puts "read_tok lexical: pfx: #{$1.inspect} => #{prefix($1).inspect}, sfx: #{suffix.inspect}"
             suffix = suffix.sub(/^\#/, "") if base.to_s.index("#")
             uri = RDF::URI(base.to_s + suffix)
-            #STDERR.puts "read_tok qname uri: #{uri.inspect}"
+            #STDERR.puts "read_tok lexical uri: #{uri.inspect}"
 
-            # Cause URI to be serialized as a qname
-            uri.qname = value
+            # Cause URI to be serialized as a lexical
+            uri.lexical = value
             [:atom, uri]
           else
             tok
@@ -187,7 +187,7 @@ module SXP; class Reader
       # If we have a base URI, use that when constructing a new URI
       uri = if self.base_uri
         u = self.base_uri.join(buffer)
-        u.qname = "<#{buffer}>" unless u.to_s == buffer  # So that it can be re-serialized properly
+        u.lexical = "<#{buffer}>" unless u.to_s == buffer  # So that it can be re-serialized properly
         u
       else
         RDF::URI(buffer)

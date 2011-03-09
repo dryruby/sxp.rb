@@ -15,8 +15,8 @@ end
 ##
 # Extensions for RDF::URI
 class RDF::URI
-  # Override qname to save value for SXP serialization
-  def qname=(value); @qname = value; end
-  def qname; @qname; end
+  # Original lexical value of this URI to allow for round-trip serialization.
+  def lexical=(value); @lexical = value; end
+  def lexical; @lexical; end
 end
 

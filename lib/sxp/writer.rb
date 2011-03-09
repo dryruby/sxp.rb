@@ -143,7 +143,7 @@ class RDF::URI
   # Returns the SXP representation of this object.
   #
   # @return [String]
-  def to_sxp; qname || "<#{self}>"; end
+  def to_sxp; lexical || "<#{self}>"; end
 end
 
 class RDF::Node
