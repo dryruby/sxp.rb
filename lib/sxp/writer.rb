@@ -193,5 +193,5 @@ class RDF::Query::Pattern
 end
 
 class RDF::Query::Variable
-  def to_sxp; distinguished? ? to_s : "?#{to_s}"; end
+  def to_sxp; to_s; end
 end
