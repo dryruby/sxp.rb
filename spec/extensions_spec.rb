@@ -1,5 +1,30 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
+describe "Core objects #to_sxp" do
+  [
+    [nil, '#n'],
+    [false, '#f'],
+    [true, '#t'],
+    ['', '""'],
+    ['string', '"string"'],
+    [:symbol, 'symbol'],
+    [1, '1'],
+    [1.0, '1.0'],
+    [BigDecimal("10"), '10.0'],
+    [1.0e1, '10.0'],
+    [Float::INFINITY, "+inf."],
+    [-Float::INFINITY, "-inf."],
+    [Float::NAN, "nan."],
+    [['a', 2], '("a" 2)'],
+    [Time.parse("2011-03-13T11:22:33Z"), '#@2011-03-13T11:22:33Z'],
+    [/foo/, '#/foo/'],
+  ].each do |(value, result)|
+    it "returns #{result.inspect} for #{value.inspect}" do
+      value.to_sxp.should == result
+    end
+  end
+end
+
 describe "RDF::Node#to_sxp" do
   specify { RDF::Node.new("a").to_sxp.should == %q(_:a)}
 end
