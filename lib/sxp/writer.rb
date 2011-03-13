@@ -85,6 +85,18 @@ class Integer
 end
 
 ##
+# Extensions for Ruby's `BigDecimal` class.
+class BigDecimal
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @return [String]
+  def to_sxp
+    to_f.to_s
+  end
+end
+
+##
 # Extensions for Ruby's `Float` class.
 class Float
   ##
