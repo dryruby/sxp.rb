@@ -34,7 +34,11 @@ describe SXP::Reader::SPARQL do
     end
 
     it "reads '\"hello\"@en-US' as a language-tagged literal" do
-      read(%q("hello"@en-US)).should == RDF::Literal("hello", :language => :'en-US')
+      read(%q("hello"@en-US)).should == RDF::Literal("hello", :language => :'en-us')
+    end
+
+    it "reads '\"hello\"@EN' as a language-tagged literal" do
+      read(%q("hello"@EN)).should == RDF::Literal("hello", :language => :'en')
     end
   end
 
@@ -51,42 +55,52 @@ describe SXP::Reader::SPARQL do
   context "when reading integer literals" do
     it "reads '123' as an xsd:integer" do
       read('123').should == RDF::Literal(123)
+      read('123').should be_eql(RDF::Literal(123))
     end
 
     it "reads '-18' as an xsd:integer" do
       read('-18').should == RDF::Literal(-18)
+      read('-18').should be_eql(RDF::Literal(-18))
     end
   end
 
   context "when reading floating-point literals" do
-    it "reads '123.0' as an xsd:double" do
-      read('123.0').should == RDF::Literal(123.0)
+    it "reads '123.0' as an xsd:decimal" do
+      read('123.0').should == RDF::Literal::Decimal.new(123.0)
+      read('123.0').should be_eql(RDF::Literal::Decimal.new(123.0))
     end
 
-    it "reads '456.' as an xsd:double" do
-      read('456.').should == RDF::Literal(456.0)
-    end
-
-    it "reads '456.0' as an xsd:double" do
-      read('456.0').should == RDF::Literal(456.0)
+    it "reads '456.' as an xsd:decimal" do
+      read('456.').should == RDF::Literal::Decimal.new(456.0)
+      read('456.').should_not be_eql(RDF::Literal::Decimal.new(456.0))
+      read('456.').should be_eql(RDF::Literal::Decimal.new('456.'))
     end
 
     it "reads '1.0e0' as an xsd:double" do
-      read('1.0e0').should == RDF::Literal(1.0)
+      read('1.0e0').should == RDF::Literal::Double.new(1.0e0)
+      read('1.0e0').should == RDF::Literal::Double.new('1.0e0')
+      read('1.0e0').should be_eql(RDF::Literal::Double.new('1.0e0'))
     end
 
     it "reads '1.0E+6' as an xsd:double" do
-      read('1.0E+6').should == RDF::Literal(1_000_000.0)
+      read('1.0E+6').should == RDF::Literal::Double.new(1_000_000.0)
+      read('1.0E+6').should == RDF::Literal::Double.new(1.0e6)
+      read('1.0E+6').should == RDF::Literal::Double.new('1.0e6')
+      read('1.0E+6').should be_eql(RDF::Literal::Double.new('1.0E+6'))
     end
 
     it "reads '1.0E-6' as an xsd:double" do
-      read('1.0E-6').should == RDF::Literal(1/1_000_000.0)
+      read('1.0E-6').should == RDF::Literal::Double.new(1/1_000_000.0)
     end
   end
 
   context "when reading datatyped literals" do
     it "reads '\"lex\"^^<http://example/thing>' as a datatyped literal" do
       read(%q("lex"^^<http://example.org/thing>)).should == RDF::Literal("lex", :datatype => 'http://example.org/thing')
+    end
+
+    it "reads '(prefix ((: <http://example.org/>)) \"lex\"^^:thing)' as a datatyped literal" do
+      read(%q((prefix ((: <http://example.org/>)) "lex"^^:thing))).should == [:prefix, [[:":", RDF::URI("http://example.org/")]], RDF::Literal("lex", :datatype => 'http://example.org/thing')]
     end
   end
 
@@ -95,12 +109,30 @@ describe SXP::Reader::SPARQL do
       read('?x').should == RDF::Query::Variable.new(:x)
     end
 
+    it "reads '?' as a variable" do
+      v = read('?')
+      v.should be_a(RDF::Query::Variable)
+      v.should be_distinguished
+    end
+    
+    it "reads ?x .. ?x as the identical variable" do
+      sxp = read('(?x ?x)')
+      sxp[0].should == RDF::Query::Variable.new(:x)
+      sxp[1].should == RDF::Query::Variable.new(:x)
+      sxp[0].should be_equal(sxp[1])
+      sxp[0].should be_distinguished
+    end
+
     it "reads '??0' as a non-distinguished variable" do
-      read('??0').should == RDF::Query::Variable.new(:'?0') # FIXME?
+      v = read('??0')
+      v.should == RDF::Query::Variable.new(:"0")
+      v.should_not be_distinguished
     end
 
     it "reads '??' as a fresh non-distinguished variable with a random identifier" do
-      read('??').should be_a(RDF::Query::Variable)
+      v = read('??')
+      v.should be_a(RDF::Query::Variable)
+      v.should_not be_distinguished
     end
   end
 
@@ -118,13 +150,23 @@ describe SXP::Reader::SPARQL do
     it "reads 'ex:thing' as a symbol" do
       read('ex:thing').should == :"ex:thing"
     end
-
-    it "reads '(prefix ex: <foo#> ex:bar)' as <foo#bar>" do
-      read('(prefix ex: <foo#> ex:bar)').should == [:prefix, :"ex:", RDF::URI("foo#"), RDF::URI("foo#bar")]
+    
+    it "reads '(prefix ((ex: <foo#>)) ex:bar)' as <foo#bar>" do
+      read('(prefix ((ex: <foo#>)) ex:bar)').should == [:prefix, [[:"ex:", RDF::URI("foo#")]], RDF::URI("foo#bar")]
     end
 
-    it "reads adds qname to URI" do
-      read('(prefix ex: <foo#> ex:bar)').last.qname.should == "ex:bar"
+    it "reads '(prefix ((ex: <foo#>) (: <bar#>)) ex:bar bar:baz)' as <foo#bar> <bar#baz>" do
+      read('
+        (prefix
+          ((ex: <foo#>) (: <bar#>))
+          ex:bar :baz)').should ==
+        [:prefix,
+          [[:"ex:", RDF::URI("foo#")], [:":", RDF::URI("bar#")]],
+          RDF::URI("foo#bar"), RDF::URI("bar#baz")]
+    end
+
+    it "reads adds lexical to URI" do
+      read('(prefix ex: <foo#> ex:bar)').last.lexical.should == "ex:bar"
     end
   end
 
@@ -156,6 +198,11 @@ describe SXP::Reader::SPARQL do
       read('<=').should == :'<='
       read('(<=)').should == [:'<=']
     end
+
+    it "reads 'a' as rdf:type" do
+      read('a').should == RDF.type
+      read('a').lexical.should == 'a'
+    end
   end
 
   context "when reading URIs" do
@@ -164,7 +211,10 @@ describe SXP::Reader::SPARQL do
     end
 
     it "reads (base <prefix/> <suffix>) as <prefix/suffix>" do
-      read(%q((base <prefix/> <suffix>))).should == [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
+      sse = read(%q((base <prefix/> <suffix>)))
+      sse.should == [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
+      sse.last.should == RDF::URI('prefix/suffix')
+      sse.last.lexical.should == '<suffix>'
     end
   end
 

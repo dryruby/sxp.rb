@@ -8,24 +8,43 @@ module SXP; class Reader
   #
   # @see http://openjena.org/wiki/SSE
   class SPARQL < Extended
+    # Alias for rdf:type
+    A         = /^a$/
+    # Base token, causes next URI to be treated as the `base_uri` for further URI expansion
     BASE      = /^base$/i
+    # Prefix token, causes following prefix and URI pairs to be used for transforming
+    # {PNAME} tokens into URIs.
     PREFIX    = /^prefix$/i
     NIL       = /^nil$/i
     FALSE     = /^false$/i
     TRUE      = /^true$/i
     EXPONENT  = /[eE][+-]?[0-9]+/
-    DECIMAL   = /^[+-]?(\d*)?\.\d*#{EXPONENT}?$/
+    DECIMAL   = /^[+-]?(\d*)?\.\d*$/
+    DOUBLE    = /^[+-]?(\d*)?\.\d*#{EXPONENT}$/
+    # BNode with identifier
     BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/ # FIXME
+    # Anonymous BNode
     BNODE_NEW = /^_:$/
-    VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)/ # FIXME
-    VAR_GEN   = /^\?\?([0-9]+)/
-    VAR_NEW   = '??'
+    # Distinguished variable with an optional name
+    VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)?/ # FIXME
+    # Non-distinguished variable with an optional identifier
+    ND_VAR   = /^\?\?([0-9]*)/
+    # A URI reference, subject to expansion using `base_uri`
     URIREF    = /^<([^>]+)>/
+    # A QName, subject to expansion to URIs using {PREFIX}
+    PNAME     = /([^:]*):([^:]*)/
+    
+    RDF_TYPE  = (a = RDF.type.dup; a.lexical = 'a'; a).freeze
 
     ##
     # Base URI as specified or when parsing parsing a BASE token using the immediately following
     # token, which must be a URI.
     attr_accessor :base_uri
+
+    ##
+    # Prefixes defined while parsing
+    # @return [Hash{Object => RDF::URI}]
+    attr_accessor :prefixes
 
     ##
     # Defines the given named URI prefix for this parser.
@@ -55,7 +74,7 @@ module SXP; class Reader
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
     def initialize(input, options = {}, &block)
-      super { @prefixes = {} }
+      super { @prefixes = {}; @bnodes = {}; @list_depth = 0 }
 
       if block_given?
         case block.arity
@@ -66,6 +85,13 @@ module SXP; class Reader
     end
 
     ##
+    # Reads SSE Tokens, including {RDF::Literal}, {RDF::URI} and RDF::Node.
+    #
+    # Performs forward reference for prefix and base URI representations and saves in
+    # {#base_uri} and {#prefixes} accessors.
+    #
+    # Transforms tokens matching a {PNAME} pattern into {RDF::URI} instances if a match is
+    # found with a previously identified {PREFIX}.
     # @return [Object]
     def read_token
       case peek_char
@@ -74,26 +100,39 @@ module SXP; class Reader
       else
         tok = super
         
-        # If we just parsed "PREFIX", use this token for associating a URI
-        # This is used again when we actually parse the URI
+        # If we just parsed "PREFIX", and this is an opening list, then
+        # record list depth and process following as token, URI pairs
+        #
+        # Once we've closed the list, go out of prefix mode
+        if tok.is_a?(Array) && tok[0] == :list
+          if '(['.include?(tok[1])
+            @list_depth += 1
+          else
+            @list_depth -= 1
+            @prefix_depth = nil if @prefix_depth && @list_depth < @prefix_depth
+          end
+        end
+
         if tok.is_a?(Array) && tok[0] == :atom && tok[1].is_a?(Symbol)
           value = tok[1].to_s
 
           # We previously parsed a PREFIX, this will be the map value
-          @parsed_prefix = value.chop if @parsed_prefix == true
-          @parsed_prefix = true if value =~ PREFIX
+          @parsed_prefix = value.chop if @prefix_depth && @prefix_depth > 0
+          
+          # If we just saw PREFIX, then this starts the parsing mode
+          @prefix_depth = @list_depth + 1 if value =~ PREFIX
           
           # If the token is of the form 'prefix:suffix', create a URI and give it the
           # token as a QName
-          if value.to_s =~ /([^:]*):([^:]*)/ && base = prefix($1)
+          if value.to_s =~ PNAME && base = prefix($1)
             suffix = $2
-            #STDERR.puts "read_tok qname: pfx: #{$1.inspect} => #{prefix($1).inspect}, sfx: #{suffix.inspect}"
+            #STDERR.puts "read_tok lexical: pfx: #{$1.inspect} => #{prefix($1).inspect}, sfx: #{suffix.inspect}"
             suffix = suffix.sub(/^\#/, "") if base.to_s.index("#")
             uri = RDF::URI(base.to_s + suffix)
-            #STDERR.puts "read_tok qname uri: #{uri.inspect}"
+            #STDERR.puts "read_tok lexical uri: #{uri.inspect}"
 
-            # Cause URI to be serialized as a qname
-            uri.qname = value
+            # Cause URI to be serialized as a lexical
+            uri.lexical = value
             [:atom, uri]
           else
             tok
@@ -105,22 +144,35 @@ module SXP; class Reader
     end
 
     ##
+    # Reads literals corresponding to SPARQL/Turtle/Notation-3 syntax
+    #
+    # @example
+    #   "a plain literal"
+    #   "a literal with a language"@en
+    #   "a typed literal"^^<http://example/>
+    #   "a typed literal with a PNAME"^^xsd:string
+    #
     # @return [RDF::Literal]
     def read_rdf_literal
       value   = read_string
       options = case peek_char
         when ?@
           skip_char # '@'
-          {:language => read_atom}
+          {:language => read_atom.downcase}
         when ?^
           2.times { skip_char } # '^^'
-          {:datatype => read_rdf_uri} # TODO: support prefixed names
+          {:datatype => read_token.last}
         else {}
       end
       RDF::Literal(value, options)
     end
 
     ##
+    # Reads a URI in SPARQL/Turtle/Notation-3 syntax
+    #
+    # @example
+    #   <http://example/>
+    #
     # @return [RDF::URI]
     def read_rdf_uri
       buffer = String.new
@@ -133,7 +185,13 @@ module SXP; class Reader
       skip_char # '>'
 
       # If we have a base URI, use that when constructing a new URI
-      uri = self.base_uri ? self.base_uri.join(buffer) : RDF::URI(buffer)
+      uri = if self.base_uri
+        u = self.base_uri.join(buffer)
+        u.lexical = "<#{buffer}>" unless u.to_s == buffer  # So that it can be re-serialized properly
+        u
+      else
+        RDF::URI(buffer)
+      end
       
       # If we previously parsed a "BASE" element, then this URI is used to set that value
       if @parsed_base
@@ -151,21 +209,28 @@ module SXP; class Reader
     end
 
     ##
+    # Reads an SSE Atom
+    #
+    # Atoms parsed including `base`, `prefix`, `true`, `false`, numeric, BNodes and variables.
+    #
+    # Creates {RDF::Literal}, RDF::Node, or {RDF::Query::Variable} instances where appropriate.
+    #
     # @return [Object]
     def read_atom
       case buffer = read_literal
         when '.'       then buffer.to_sym
+        when A         then RDF_TYPE
         when BASE      then @parsed_base = true; buffer.to_sym
         when NIL       then nil
         when FALSE     then RDF::Literal(false)
         when TRUE      then RDF::Literal(true)
-        when DECIMAL   then RDF::Literal(Float(buffer[-1].eql?(?.) ? buffer + '0' : buffer))
-        when INTEGER   then RDF::Literal(Integer(buffer))
-        when BNODE_ID  then RDF::Node($1)
+        when DOUBLE    then RDF::Literal::Double.new(buffer)
+        when DECIMAL   then RDF::Literal::Decimal.new(buffer)
+        when INTEGER   then RDF::Literal::Integer.new(buffer)
+        when BNODE_ID  then @bnodes[$1] ||= RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
-        when VAR_ID    then RDF::Query::Variable.new($1)
-        when VAR_GEN   then RDF::Query::Variable.new("?#{$1}") # FIXME?
-        when VAR_NEW   then RDF::Query::Variable.new
+        when ND_VAR   then variable($1, false)
+        when VAR_ID    then variable($1, true)
         else buffer.to_sym
       end
     end
@@ -180,6 +245,32 @@ module SXP; class Reader
           when /#/   then skip_line
           else break
         end
+      end
+    end
+    
+    ##
+    # Return variable allocated to an ID.
+    # If no ID is provided, a new variable
+    # is allocated. Otherwise, any previous assignment will be used.
+    #
+    # The variable has a #distinguished? method applied depending on if this
+    # is a disinguished or non-distinguished variable. Non-distinguished
+    # variables are effectively the same as BNodes.
+    # @return [RDF::Query::Variable]
+    def variable(id, distinguished = true)
+      id = nil if id.to_s.empty?
+      
+      if id
+        @vars ||= {}
+        @vars[id] ||= begin
+          v = RDF::Query::Variable.new(id)
+          v.distinguished = distinguished
+          v
+        end
+      else
+        v = RDF::Query::Variable.new
+        v.distinguished = distinguished
+        v
       end
     end
   end # SPARQL
