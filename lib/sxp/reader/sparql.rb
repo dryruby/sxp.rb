@@ -55,13 +55,8 @@ module SXP; class Reader
     # @example Returning a URI prefix
     #   parser.prefix(:dc)    #=> RDF::URI('http://purl.org/dc/terms/')
     #
-    # @overload prefix(name, uri)
-    #   @param  [Symbol, #to_s]   name
-    #   @param  [RDF::URI, #to_s] uri
-    #
-    # @overload prefix(name)
-    #   @param  [Symbol, #to_s]   name
-    #
+    # @param  [Symbol, #to_s]   name
+    # @param  [RDF::URI, #to_s] uri
     # @return [RDF::URI]
     def prefix(name, uri = nil)
       name = name.to_s.empty? ? nil : (name.respond_to?(:to_sym) ? name.to_sym : name.to_s.to_sym)

@@ -39,8 +39,13 @@ module SXP
   ##
   # Reads all S-expressions from the given input files.
   #
-  # @param  [Enumerable<String>]     filenames
-  # @param  [Hash{Symbol => Object}] options
+  # @overload read_files(*filenames)
+  #   @param  [Enumerable<String>]     filenames
+  #
+  # @overload read_files(*filenames, options)
+  #   @param  [Enumerable<String>]     filenames
+  #   @param  [Hash{Symbol => Object}] options
+  #
   # @return [Enumerable<Object>]
   def self.read_files(*filenames)
     Reader::Scheme.read_files(*filenames)

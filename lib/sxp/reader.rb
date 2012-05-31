@@ -28,10 +28,15 @@ module SXP
     ##
     # Reads all S-expressions from the given input files.
     #
-    # @param  [Enumerable<String>]     filenames
-    # @param  [Hash{Symbol => Object}] options
+    # @overload read_files(*filenames)
+    #   @param  [Enumerable<String>]     filenames
+    #
+    # @overload read_files(*filenames, options)
+    #   @param  [Enumerable<String>]     filenames
+    #   @param  [Hash{Symbol => Object}] options
+    #
     # @return [Enumerable<Object>]
-    def self.read_files(*filenames)
+    def read_files(*filenames)
       options = filenames.last.is_a?(Hash) ? filenames.pop : {}
       filenames.map { |filename| read_file(filename, options) }.inject { |sxps, sxp| sxps + sxp }
     end
