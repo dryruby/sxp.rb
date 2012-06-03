@@ -80,6 +80,15 @@ module SXP
   def self.read(input, options = {})
     Reader::Scheme.read(input, options)
   end
+  
+  ##
+  # Write an internal S-Expression as a formatted SXP
+  #
+  # @param[Array<Object>] sxp
+  # @param[#write] output
+  def self.write(sxp, output = STDOUT)
+    Generator.write(output, sxp)
+  end
 
   class << self
     alias_method :parse,       :read
