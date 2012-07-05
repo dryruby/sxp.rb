@@ -1,21 +1,18 @@
-SXP.rb: S-Expressions for Ruby
-==============================
+#SXP.rb: S-Expressions for Ruby
 
 This is a Ruby implementation of a universal [S-expression][] parser.
 
 * <http://sxp.rubyforge.org/>
 * <http://github.com/bendiken/sxp-ruby>
 
-Features
---------
+##Features
 
 * Parses S-expressions in universal, [Scheme][], [Common Lisp][], or
   [SPARQL][] syntax.
 * Adds a `#to_sxp` method to Ruby objects.
 * Compatible with Ruby 1.8.7+, Ruby 1.9.x, and JRuby 1.4/1.5.
 
-Examples
---------
+##Examples
 
     require 'sxp'
 
@@ -49,8 +46,11 @@ Examples
 
     SXP::Reader::SPARQL.read %q((base <http://ar.to/>))  #=> [:base, RDF::URI('http://ar.to/')]
 
-Documentation
--------------
+### Writing an SXP with formatting
+
+    SXP::Generator.print([:and, true, false])   #=> (and #t #f)
+  
+##Documentation
 
 * <http://sxp.rubyforge.org/>
 
