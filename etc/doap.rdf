@@ -17,8 +17,8 @@
   <maintainer>
     <foaf:Person>
       <foaf:name>Arto Bendiken</foaf:name>
-      <foaf:mbox rdf:resource="mailto:arto.bendiken@gmail.com" />
-      <foaf:homepage rdf:resource="http://bendiken.net/" />
+      <foaf:mbox rdf:resource="mailto:arto@bendiken.net" />
+      <foaf:homepage rdf:resource="http://ar.to/" />
       <rdfs:seeAlso rdf:resource="http://rubyforge.org/users/arto/" />
     </foaf:Person>
   </maintainer>
