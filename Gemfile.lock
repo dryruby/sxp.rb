@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    sxp (0.1.0)
+    sxp (0.1.1)
       json (>= 1.4.6)
 
 GEM
