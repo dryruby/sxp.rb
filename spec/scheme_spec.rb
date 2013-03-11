@@ -23,15 +23,14 @@ describe SXP::Reader::Scheme do
   end
 
   context "when reading characters" do
-    inputs = {
+    {
       %q(#\a)       => "a",
       %q(#\A)       => "A",
       %q(#\C)       => "C",
       %q(#\ )       => " ",
       %q(#\space)   => " ",
       %q(#\newline) => "\n",
-    }
-    inputs.each do |input, output|
+    }.each do |input, output|
       it "reads '#{input}' as a character" do
         read(input).should == output
       end
@@ -122,7 +121,7 @@ describe SXP::Reader::Scheme do
     end
   end
 
-  context "when reading vectors" do
+  context "when reading vectors", :pending => "Support for vectors" do
     it "reads '#()' as an empty vector" do
       read(%(#())).should == []
     end

@@ -11,6 +11,14 @@ module SXP; class Reader
     INTEGER_BASE_16 = /^[+-]?[\da-z]+$/i
     RATIONAL        = /^([+-]?\d+)\/(\d+)$/
 
+    # Escape characters, used in the form `#\newline`. Case is treated
+    # insensitively
+    # @see http://people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
+    CHARACTERS = {
+      'newline'   => "\n",
+      'space'     => " ",
+    }
+
     ##
     # Initializes the reader.
     #
@@ -58,6 +66,24 @@ module SXP; class Reader
         when ?;      then skip; read
         when ?!      then skip_line; read # shebang
         else raise Error, "invalid sharp-sign read syntax: ##{char.chr}"
+      end
+    end
+
+    ##
+    # Read characters sequences like `#\space`. Otherwise,
+    # reads a single character. Requires the ability to put
+    # eroneously read characters back in the input stream
+    #
+    # @return [String]
+    # @see    http://people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
+    def read_character
+      lit = read_literal
+
+      return " " if lit.empty? && peek_char == " "
+      CHARACTERS.fetch(lit.downcase) do
+        # Return just the first character
+        unread(lit[1..-1])
+        lit[0,1]
       end
     end
   end # Scheme
