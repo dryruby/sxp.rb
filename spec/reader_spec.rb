@@ -38,8 +38,16 @@ describe SXP::Reader do
       read('[]').should == []
     end
 
+    it "reads '[] 1' as an empty list" do
+      read('[] 1').should == []
+    end
+
     it "reads '(1 2 3)' as a list" do
       read('(1 2 3)').should == [1, 2, 3]
+    end
+
+    it "reads '(1 2 3) 4' as a list" do
+      read('(1 2 3) 4').should == [1, 2, 3]
     end
 
     it "reads '[1 2 3]' as a list" do

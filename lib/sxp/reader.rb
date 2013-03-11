@@ -19,6 +19,7 @@ module SXP
     #
     # @param  [String, #to_s]          url
     # @param  [Hash{Symbol => Object}] options
+    #   See {#read}
     # @return [Enumerable<Object>]
     def self.read_url(url, options = {})
       require 'open-uri'
@@ -34,6 +35,7 @@ module SXP
     # @overload read_files(*filenames, options)
     #   @param  [Enumerable<String>]     filenames
     #   @param  [Hash{Symbol => Object}] options
+    #     See {#read}
     #
     # @return [Enumerable<Object>]
     def read_files(*filenames)
@@ -46,6 +48,7 @@ module SXP
     #
     # @param  [String, #to_s]          filename
     # @param  [Hash{Symbol => Object}] options
+    #   See {#read}
     # @return [Enumerable<Object>]
     def self.read_file(filename, options = {})
       File.open(filename.to_s, 'rb') { |io| read_all(io, options).first }
@@ -56,6 +59,7 @@ module SXP
     #
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
+    #   See {#read}
     # @return [Enumerable<Object>]
     def self.read_all(input, options = {})
       self.new(input, options).read_all
@@ -66,6 +70,7 @@ module SXP
     #
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
+    #   See {#read}
     # @return [Object]
     def self.read(input, options = {})
       self.new(input, options).read
@@ -118,6 +123,7 @@ module SXP
 
     ##
     # @param  [Hash{Symbol => Object}] options
+    #   See {#read}
     # @return [Array]
     def read_all(options = {})
       list = []
@@ -129,6 +135,13 @@ module SXP
 
     ##
     # @param  [Hash{Symbol => Object}] options
+    # @option options [:throw] :eof
+    #   If `:throw`, throw `:eof` on end of file.
+    # @option options [:throw] :eol
+    #   If `:throw`, throw `:eol` on end of line.
+    # @option options [String] :list_term
+    #   Expected list terminator; it's an error
+    #   if another terminator is found
     # @return [Object]
     def read(options = {})
       skip_comments
@@ -138,10 +151,11 @@ module SXP
           throw :eof if options[:eof] == :throw
           raise EOF, "unexpected end of input"
         when :list
-          if self.class.const_get(:LPARENS).include?(value)
-            read_list
+          if ndx = self.class.const_get(:LPARENS).index(value)
+            list_term = self.class.const_get(:RPARENS)[ndx]
+            read_list(list_term)
           else
-            throw :eol if options[:eol] == :throw # end of list
+            throw :eol if options[:eol] == :throw && value == options[:list_term]
             raise Error, "unexpected list terminator: ?#{value.chr}"
           end
         else value
@@ -151,11 +165,13 @@ module SXP
     alias_method :skip, :read
 
     ##
-    # @param [Array]
-    def read_list
+    # @param [String] list_term (nil)
+    #   String expected to terminate the list
+    # @return [Array]
+    def read_list(list_term = nil)
       list = []
       catch (:eol) do
-        list << read(:eol => :throw) while true
+        list << read(:eol => :throw, :list_term => list_term) while true
       end
       list
     end
@@ -256,6 +272,13 @@ module SXP
       char = @input.getc
       @input.ungetc(char) unless char.nil?
       char
+    end
+
+    ##
+    # Unread the string, putting back into the input stream
+    # @param [String] string
+    def unread(string)
+      string.reverse.each_char {|c| @input.ungetc(c)}
     end
 
     ##
