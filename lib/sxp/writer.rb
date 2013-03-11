@@ -1,4 +1,6 @@
 require 'json'
+require 'bigdecimal'
+require 'time'
 
 ##
 # Extensions for Ruby's `Object` class.
@@ -148,62 +150,67 @@ class Regexp
   end
 end
 
-require 'rdf' # For SPARQL
+begin
+  require 'rdf' # For SPARQL
 
-class RDF::URI
-  ##
-  # Returns the SXP representation of this object.
-  #
-  # @return [String]
-  def to_sxp; lexical || "<#{self}>"; end
-end
+  class RDF::URI
+    ##
+    # Returns the SXP representation of this object.
+    #
+    # @return [String]
+    def to_sxp; lexical || "<#{self}>"; end
+  end
 
-class RDF::Node
-  ##
-  # Returns the SXP representation of this object.
-  #
-  # @return [String]
-  def to_sxp; to_s; end
-end
+  class RDF::Node
+    ##
+    # Returns the SXP representation of this object.
+    #
+    # @return [String]
+    def to_sxp; to_s; end
+  end
 
-class RDF::Literal
-  ##
-  # Returns the SXP representation of a Literal.
-  #
-  # @return [String]
-  def to_sxp
-    case datatype
-    when RDF::XSD.boolean, RDF::XSD.integer, RDF::XSD.double, RDF::XSD.decimal, RDF::XSD.time
-      object.to_sxp
-    else
-      text = value.dump
-      text << "@#{language}" if self.has_language?
-      text << "^^#{datatype.to_sxp}" if self.has_datatype?
-      text
+  class RDF::Literal
+    ##
+    # Returns the SXP representation of a Literal.
+    #
+    # @return [String]
+    def to_sxp
+      case datatype
+      when RDF::XSD.boolean, RDF::XSD.integer, RDF::XSD.double, RDF::XSD.decimal, RDF::XSD.time
+        # Retain stated lexical form if possible
+        valid? ? to_s : object.to_sxp
+      else
+        text = value.dump
+        text << "@#{language}" if self.has_language?
+        text << "^^#{datatype.to_sxp}" if self.has_datatype?
+        text
+      end
     end
   end
-end
 
-class RDF::Query
-  # Transform Query into an Array form of an SXP
-  #
-  # If Query is named, it's treated as a GroupGraphPattern, otherwise, a BGP
-  #
-  # @return [Array]
-  def to_sxp
-    res = [:bgp] + patterns
-    (respond_to?(:named?) && named? ? [:graph, context, res] : res).to_sxp
+  class RDF::Query
+    # Transform Query into an Array form of an SXP
+    #
+    # If Query is named, it's treated as a GroupGraphPattern, otherwise, a BGP
+    #
+    # @return [Array]
+    def to_sxp
+      res = [:bgp] + patterns
+      (named? ? [:graph, context, res] : res).to_sxp
+    end
   end
-end
 
-class RDF::Query::Pattern
-  # Transform Query Pattern into an SXP
-  # @return [String]
-  def to_sxp
-    [:triple, subject, predicate, object].to_sxp
+  class RDF::Query::Pattern
+    # Transform Query Pattern into an SXP
+    # @return [String]
+    def to_sxp
+      [:triple, subject, predicate, object].to_sxp
+    end
   end
-end
 
-class RDF::Query::Variable
-  def to_sxp; to_s; end
+  class RDF::Query::Variable
+    def to_sxp; to_s; end
+  end
+rescue LoadError => e
+  # Ignore if RDF not loaded
 end
