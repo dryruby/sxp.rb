@@ -1,5 +1,3 @@
-require 'rdf'
-
 ##
 # Extensions for Ruby's `Symbol` class.
 class Symbol
@@ -12,11 +10,17 @@ class Symbol
   end
 end
 
-##
-# Extensions for RDF::URI
-class RDF::URI
-  # Original lexical value of this URI to allow for round-trip serialization.
-  def lexical=(value); @lexical = value; end
-  def lexical; @lexical; end
-end
+# Update RDF::URI if RDF is loaded
+begin
+  require 'rdf'
 
+  ##
+  # Extensions for RDF::URI
+  class RDF::URI
+    # Original lexical value of this URI to allow for round-trip serialization.
+    def lexical=(value); @lexical = value; end
+    def lexical; @lexical; end
+  end
+rescue LoadError
+  # Ignore
+end
