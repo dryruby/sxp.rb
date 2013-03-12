@@ -10,7 +10,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 * Parses S-expressions in universal, [Scheme][], [Common Lisp][], or
   [SPARQL][] syntax.
 * Adds a `#to_sxp` method to Ruby objects.
-* Compatible with Ruby 1.8.7+, Ruby 1.9.x, and JRuby 1.4/1.5.
+* Compatible with Ruby 1.8.7+, Ruby 1.9.x, Ruby 2.0.x, and JRuby 1.4/1.5.
 
 ##Examples
 
@@ -75,7 +75,7 @@ Dependencies
 ------------
 
 * [Ruby](http://ruby-lang.org/) (>= 1.8.7) or (>= 1.8.1 with [Backports][])
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 0.2.0), only needed for SPARQL
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 1.0.0), only needed for SPARQL
   S-expressions
 
 Installation
@@ -112,12 +112,12 @@ Author
 ------
 
 * [Arto Bendiken](https://github.com/bendiken) - <http://ar.to/>
+* [Gregg Kellogg](http://github.com/gkellogg) - <http://kellogg-assoc.com/>
 
 Contributors
 ------------
 
 * [Ben Lavender](https://github.com/bhuga) - <http://bhuga.net/>
-* [Gregg Kellogg](http://github.com/gkellogg) - <http://kellogg-assoc.com/>
 
 License
 -------

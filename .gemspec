@@ -12,8 +12,8 @@ Gem::Specification.new do |gem|
   gem.description        = gem.summary
   gem.rubyforge_project  = 'sxp'
 
-  gem.author             = 'Arto Bendiken'
-  gem.email              = 'arto@bendiken.net'
+  gem.author             = 'Arto Bendiken', 'Gregg Kellogg'
+  gem.email              = 'arto@bendiken.net', 'gregg@greggkellogg.net'
 
   gem.platform           = Gem::Platform::RUBY
   gem.files              = %w(AUTHORS CREDITS README UNLICENSE VERSION) + Dir.glob('bin/*.rb') + Dir.glob('lib/**/*.rb')
@@ -27,8 +27,9 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version      = '>= 1.8.1'
   gem.requirements               = []
-  gem.add_dependency             'json',  '>= 1.4.6'
-  gem.add_development_dependency 'rspec', '>= 2.12.0'
-  gem.add_development_dependency 'yard',  '>= 0.8.3'
+  gem.add_dependency             'json',  '>= 1.1.1'
+  gem.add_development_dependency 'rspec', '>= 2.13.0'
+  gem.add_development_dependency 'yard',  '>= 0.8.5'
+  gem.add_development_dependency 'rdf',   '>= 1.0.0'
   gem.post_install_message       = nil
 end

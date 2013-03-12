@@ -24,17 +24,27 @@ describe SXP::Reader::CommonLisp do
     end
   end
 
-  context "when reading characters" do
-    it "reads `#\\a` as a character" do
-      read(%q(#\a)).should == "a"
+  context "when reading escape sequences" do
+    it "reads `#\a` as a character" do
+      read('#\a').should == 'a'
     end
 
-    it "reads `#\\newline` as a character" do
-      read(%q(#\newline)).should == "\n"
+    it "reads `#ab` as a single character" do
+      read('#\ab').should == 'a'
     end
 
-    it "reads `#\\space` as a character" do
-      read(%q(#\space)).should == ' '
+    it "reads `# ` as a character" do
+      read('#\ ').should == ' '
+    end
+
+    SXP::Reader::CommonLisp::CHARACTERS.each do |escape, char|
+      it "reads `#\\#{escape}` as a character" do
+        read('#\\' + escape).should == char
+      end
+
+      it "reads `#\\#{escape.upcase}` as a character" do
+        read('#\\' + escape.upcase).should == char
+      end
     end
   end
 
@@ -72,7 +82,7 @@ describe SXP::Reader::CommonLisp do
     end
   end
 
-  context "when reading vectors" do
+  context "when reading vectors", :pending => "Support for vectors" do
     it "reads `#()` as an empty vector" do
       read(%(#())).should == []
     end

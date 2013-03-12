@@ -8,7 +8,7 @@ module SXP
     # A basic block containing constituent
     # objects, either blocks or strings.
     class Block
-      BLOCK_MIN_LENGTH = 40
+      BLOCK_MIN_LENGTH = 80
 
       # @attr [Integer] amount of indent applied to this block
       attr_reader :indent
@@ -55,27 +55,30 @@ module SXP
       end
 
       ##
-      # Output block applying indent recursively
-      # @param [#write] io
-      def write(io)
+      # Format block
+      # @return [String]
+      def formatted
         # Output individual block elements on separate lines
+        buffer = ""
+
         if sxp? && length > BLOCK_MIN_LENGTH
-          io.write(do_indent + '(')
+          buffer += do_indent + '('
           first, *elems = @elements
           unless first.sxp?
             # It's atomic, write out after paren
-            io.puts(first.to_sxp)
+            buffer += first.to_sxp + "\n"
           else
-            io.write("\n")
+            buffer += "\n"
             elems.unshift(first)
           end
           elems.each do |e|
-            e.write(io)
+            buffer += e.formatted
           end
-          io.puts(do_indent + ")\n")
+          buffer += do_indent + ")\n"
         else
-          io.puts(do_indent + @elements.to_sxp)
+          buffer += do_indent + @elements.to_sxp + "\n"
         end
+        buffer
       end
       
       private
@@ -140,7 +143,26 @@ module SXP
     def render(sexp)
       block = Block.new(sexp, 0)
       if block.length > 40
-        block.write(@output)
+        buffer = block.formatted
+
+        # Attempt to fold symbols and strings onto proceeding line
+        output = ""
+        prev_length = 0
+        buffer.lines.each do |line|
+          if (stripped = line.strip)[0,1] != '(' &&
+            prev_length + stripped.length + 1 < Block::BLOCK_MIN_LENGTH
+
+            # Append to previous line
+            start, match, rem = output.rpartition(/\S/)
+            output = start + match + " " + stripped + rem
+            prev_length += stripped.length + 1
+          else
+            # Terminate line and append this line
+            output += line
+            prev_length = line.length - 1
+          end
+        end
+        @output.write output.gsub(/\)\s+\)/, '))')
       else
         @output.puts(block.to_sxp)
       end

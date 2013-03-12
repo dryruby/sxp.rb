@@ -13,6 +13,8 @@ module SXP; class Reader
     INTEGER_BASE_16 = /^[+-]?[\da-z]+$/i
     RATIONAL        = /^([+-]?\d+)\/(\d+)$/
 
+    # Escape characters, used in the form `#\Backspace`. Case is treated
+    # insensitively
     # @see http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node22.html
     CHARACTERS = {
       'newline'   => "\n",
@@ -106,10 +108,21 @@ module SXP; class Reader
     end
 
     ##
+    # Read characters sequences like `#\backspace`. Otherwise,
+    # reads a single character. Requires the ability to put
+    # eroneously read characters back in the input stream
+    #
     # @return [String]
     # @see    http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node22.html
     def read_character
-      super
+      lit = read_literal
+
+      return " " if lit.empty? && peek_char == " "
+      CHARACTERS.fetch(lit.downcase) do |string|
+        # Return just the first character
+        unread(string[1..-1])
+        string[0,1]
+      end
     end
 
     ##
