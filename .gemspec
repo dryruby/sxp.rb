@@ -12,8 +12,8 @@ Gem::Specification.new do |gem|
   gem.description        = gem.summary
   gem.rubyforge_project  = 'sxp'
 
-  gem.author             = 'Arto Bendiken'
-  gem.email              = 'arto@bendiken.net'
+  gem.author             = 'Arto Bendiken', 'Gregg Kellogg'
+  gem.email              = 'arto@bendiken.net', 'gregg@greggkellogg.net'
 
   gem.platform           = Gem::Platform::RUBY
   gem.files              = %w(AUTHORS CREDITS README UNLICENSE VERSION) + Dir.glob('bin/*.rb') + Dir.glob('lib/**/*.rb')
