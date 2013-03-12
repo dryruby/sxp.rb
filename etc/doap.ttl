@@ -1,0 +1,46 @@
+@base <http://rubygems.org/gems/sparql> .
+@prefix dc: <http://purl.org/dc/terms/> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
+
+<> a doap:Project;
+   doap:name "SXP for Ruby";
+   doap:shortdesc """
+    A standardized S-expression format for data interchange, based on a
+    subset of the IEEE Scheme and DSSSL standards.
+   """@en;
+   doap:description """
+    A standardized S-expression format for data interchange, based on a
+    subset of the IEEE Scheme and DSSSL standards.
+  """@en;
+   doap:developer <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;
+   doap:maintainer <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;
+   doap:documenter <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;
+   dc:creator <http://ar.to/#self>;
+   foaf:maker <http://ar.to/#self>;
+   doap:bug-database <http://github.com/bendiken/sxp-ruby/issues>;
+   doap:category <http://rubyforge.org/softwaremap/trove_list.php?form_cat=20>,
+     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=87>,
+     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=45>,
+     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=306>,
+     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=242>,
+     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=170>;
+   doap:created "2007-02-26"^^xsd:date;
+   doap:homepage <http://github.com/bendiken/sxp-ruby>;
+   doap:license <http://creativecommons.org/licenses/publicdomain/>;
+   doap:platform "Ruby" .
+
+<http://greggkellogg.net/foaf#me> a foaf:Person;
+   foaf:homepage <http://greggkellogg.net/>;
+   foaf:mbox <mailto:gregg@greggkellogg.net>;
+   foaf:name "Gregg Kellogg" .
+
+<http://ar.to/#self> a foaf:Person;
+   rdfs:isDefinedBy <http://datagraph.org/bendiken/foaf>;
+   foaf:homepage <http://ar.to/>;
+   foaf:mbox <mailto:arto@bendiken.net>;
+   rdfs:seeAlso <http://rubyforge.org/users/arto/>;
+   foaf:name "Arto Bendiken" .
