@@ -108,8 +108,8 @@ Resources
 * <http://rubyforge.org/projects/sxp/>
 * <http://raa.ruby-lang.org/project/sxp>
 
-Author
-------
+Authors
+-------
 
 * [Arto Bendiken](https://github.com/bendiken) - <http://ar.to/>
 * [Gregg Kellogg](http://github.com/gkellogg) - <http://kellogg-assoc.com/>
