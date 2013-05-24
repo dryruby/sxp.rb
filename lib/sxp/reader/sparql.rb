@@ -22,17 +22,15 @@ module SXP; class Reader
     DECIMAL   = /^[+-]?(\d*)?\.\d*$/
     DOUBLE    = /^[+-]?(\d*)?\.\d*#{EXPONENT}$/
     # BNode with identifier
-    BNODE_ID  = /^_:([A-Za-z][A-Za-z0-9]*)/ # FIXME
+    BNODE_ID  = /^_:([^\s]*)/ # FIXME
     # Anonymous BNode
     BNODE_NEW = /^_:$/
-    # Distinguished variable with an optional name
-    VAR_ID    = /^\?([A-Za-z][A-Za-z0-9]*)?/ # FIXME
-    # Non-distinguished variable with an optional identifier
-    ND_VAR   = /^\?\?([0-9]*)/
-    # A URI reference, subject to expansion using `base_uri`
-    URIREF    = /^<([^>]+)>/
+    # Distinguished variable
+    VAR_ID    = /^\?(.*)/
+    # Non-distinguished variable
+    ND_VAR   = /^\?(:?\?([0-9]+)?|(\.[0-9]+))/
     # A QName, subject to expansion to URIs using {PREFIX}
-    PNAME     = /([^:]*):([^:]*)/
+    PNAME     = /([^:]*):(.*)/
     
     RDF_TYPE  = (a = RDF.type.dup; a.lexical = 'a'; a).freeze
 

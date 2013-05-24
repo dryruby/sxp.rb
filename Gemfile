@@ -1,8 +1,9 @@
-source 'http://rubygems.org'
+source 'https://rubygems.org'
 
 gemspec :name => ''
 
-group :debug do
+group :test do
   gem "wirble"
-  gem "debugger" if RUBY_VERSION == "1.9.3"
+  gem "debugger", :platforms => [:mri_19, :mri_20]
+  gem "ruby-debug", :platforms => [:jruby]
 end
