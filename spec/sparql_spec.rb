@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe SXP::Reader::SPARQL do
@@ -14,107 +15,83 @@ describe SXP::Reader::SPARQL do
     end
   end
 
-  context "when reading plain literals" do
-    it "reads '\"\"' as a plain string literal" do
-      read(%q("")).should == RDF::Literal("")
+  context "terms" do
+    {
+      %q("")         => RDF::Literal(""),
+      %q("hello")    => RDF::Literal("hello"),
+      %q(""@en)      => RDF::Literal("", :language => :en),
+      %q("hello"@en) => RDF::Literal("hello", :language => :en),
+      %q("hello"@en-US) => RDF::Literal("hello", :language => :'en-us'),
+      %q("hello"@EN) => RDF::Literal("hello", :language => :en),
+      'true' => RDF::Literal(true),
+      'false' => RDF::Literal(false),
+      '123' => RDF::Literal(123),
+      '-18' => RDF::Literal(-18),
+      '123.0' => RDF::Literal::Decimal.new(123.0),
+      '456.' => RDF::Literal::Decimal.new(456.0),
+      '1.0e0' => [
+        RDF::Literal::Double.new(1.0e0),
+        RDF::Literal::Double.new('1.0e0')
+      ],
+      '1.0E+6' => [
+        RDF::Literal::Double.new(1.0e6),
+        RDF::Literal::Double.new(1_000_000.0),
+        RDF::Literal::Double.new('1.0e6'),
+      ],
+      '1.0E-6' => RDF::Literal::Double.new(1/1_000_000.0),
+      %q("lex"^^<http://example.org/thing>) => RDF::Literal("lex", :datatype => 'http://example.org/thing'),
+      '?x' => RDF::Query::Variable.new(:x),
+    }.each do |input, result|
+      it "reads #{input.inspect} as #{[result].flatten.inspect}" do
+        [result].flatten.each do |r|
+          read(input).should == r
+        end
+      end
     end
 
-    it "reads '\"hello\"' as a plain string literal" do
-      read(%q("hello")).should == RDF::Literal("hello")
-    end
-  end
-
-  context "when reading language-tagged literals" do
-    it "reads '\"\"@en' as a language-tagged literal" do
-      read(%q(""@en)).should == RDF::Literal("", :language => :en)
-    end
-
-    it "reads '\"hello\"@en' as a language-tagged literal" do
-      read(%q("hello"@en)).should == RDF::Literal("hello", :language => :en)
-    end
-
-    it "reads '\"hello\"@en-US' as a language-tagged literal" do
-      read(%q("hello"@en-US)).should == RDF::Literal("hello", :language => :'en-us')
-    end
-
-    it "reads '\"hello\"@EN' as a language-tagged literal" do
-      read(%q("hello"@EN)).should == RDF::Literal("hello", :language => :'en')
-    end
-  end
-
-  context "when reading boolean literals" do
-    it "reads 'true' as an xsd:boolean" do
-      read('true').should == RDF::Literal(true)
-    end
-
-    it "reads 'false' as an xsd:boolean" do
-      read('false').should == RDF::Literal(false)
-    end
-  end
-
-  context "when reading integer literals" do
-    it "reads '123' as an xsd:integer" do
-      read('123').should == RDF::Literal(123)
-      read('123').should be_eql(RDF::Literal(123))
-    end
-
-    it "reads '-18' as an xsd:integer" do
-      read('-18').should == RDF::Literal(-18)
-      read('-18').should be_eql(RDF::Literal(-18))
-    end
-  end
-
-  context "when reading floating-point literals" do
-    it "reads '123.0' as an xsd:decimal" do
-      read('123.0').should == RDF::Literal::Decimal.new(123.0)
-      read('123.0').should be_eql(RDF::Literal::Decimal.new(123.0))
-    end
-
-    it "reads '456.' as an xsd:decimal" do
-      read('456.').should == RDF::Literal::Decimal.new(456.0)
-      read('456.').should_not be_eql(RDF::Literal::Decimal.new(456.0))
-      read('456.').should be_eql(RDF::Literal::Decimal.new('456.'))
-    end
-
-    it "reads '1.0e0' as an xsd:double" do
-      read('1.0e0').should == RDF::Literal::Double.new(1.0e0)
-      read('1.0e0').should == RDF::Literal::Double.new('1.0e0')
-      read('1.0e0').should be_eql(RDF::Literal::Double.new('1.0e0'))
-    end
-
-    it "reads '1.0E+6' as an xsd:double" do
-      read('1.0E+6').should == RDF::Literal::Double.new(1_000_000.0)
-      read('1.0E+6').should == RDF::Literal::Double.new(1.0e6)
-      read('1.0E+6').should == RDF::Literal::Double.new('1.0e6')
-      read('1.0E+6').should be_eql(RDF::Literal::Double.new('1.0E+6'))
-    end
-
-    it "reads '1.0E-6' as an xsd:double" do
-      read('1.0E-6').should == RDF::Literal::Double.new(1/1_000_000.0)
+    {
+      '123.0' => RDF::Literal::Decimal.new(123.0),
+      '456.' => RDF::Literal::Decimal.new('456.'),
+      '1.0e0' => RDF::Literal::Double.new('1.0e0'),
+      '1.0E+6' => RDF::Literal::Double.new('1.0E+6'),
+    }.each do |input, result|
+      it "reads #{input.inspect} as eql #{[result].flatten.inspect}" do
+        [result].flatten.each do |r|
+          read(input).should be_eql(r)
+        end
+      end
     end
   end
 
   context "when reading datatyped literals" do
-    it "reads '\"lex\"^^<http://example/thing>' as a datatyped literal" do
-      read(%q("lex"^^<http://example.org/thing>)).should == RDF::Literal("lex", :datatype => 'http://example.org/thing')
-    end
-
     it "reads '(prefix ((: <http://example.org/>)) \"lex\"^^:thing)' as a datatyped literal" do
       read(%q((prefix ((: <http://example.org/>)) "lex"^^:thing))).should == [:prefix, [[:":", RDF::URI("http://example.org/")]], RDF::Literal("lex", :datatype => 'http://example.org/thing')]
     end
   end
 
   context "when reading variables" do
-    it "reads '?x' as a variable" do
-      read('?x').should == RDF::Query::Variable.new(:x)
+    {
+      '?' => [RDF::Query::Variable, true],
+      '?x' => [RDF::Query::Variable.new(:"x"), true],
+      '??0' => [RDF::Query::Variable.new(:"0"), false],
+      '?.1' => [RDF::Query::Variable.new(:".1"), false],
+      '??' => [RDF::Query::Variable, false],
+    }.each do |input, (result, distinguished)|
+      describe "given #{input}" do
+        subject {read(input)}
+        if result.is_a?(Class)
+          it {should be_a(result)}
+        else
+          it {should == result}
+        end
+        if distinguished
+          it {should be_distinguished}
+        else
+          it {should_not be_distinguished}
+        end
+      end
     end
 
-    it "reads '?' as a variable" do
-      v = read('?')
-      v.should be_a(RDF::Query::Variable)
-      v.should be_distinguished
-    end
-    
     it "reads ?x .. ?x as the identical variable" do
       sxp = read('(?x ?x)')
       sxp[0].should == RDF::Query::Variable.new(:x)
@@ -122,27 +99,26 @@ describe SXP::Reader::SPARQL do
       sxp[0].should be_equal(sxp[1])
       sxp[0].should be_distinguished
     end
-
-    it "reads '??0' as a non-distinguished variable" do
-      v = read('??0')
-      v.should == RDF::Query::Variable.new(:"0")
-      v.should_not be_distinguished
-    end
-
-    it "reads '??' as a fresh non-distinguished variable with a random identifier" do
-      v = read('??')
-      v.should be_a(RDF::Query::Variable)
-      v.should_not be_distinguished
-    end
   end
 
   context "when reading blank nodes" do
-    it "reads '_:abc' as a blank node with identifier :abc" do
-      read('_:abc').should == RDF::Node(:abc)
-    end
-
-    it "reads '_:' as a fresh blank node with a random identifier" do
-      read('_:').should be_a(RDF::Node)
+    {
+      '_:abc' => RDF::Node(:abc),
+      '_:' => RDF::Node,
+      '_:o' => RDF::Node(:o),
+      '_:0' => RDF::Node(:"0"),
+      '_:_' => RDF::Node(:_),
+      '_:a·̀ͯ‿.⁀' => RDF::Node(:"a·̀ͯ‿.⁀"),
+      '_:AZazÀÖØöø˿ͰͽͿ῿‌‍⁰↏Ⰰ⿯、퟿豈﷏ﷰ�𐀀󯿿' => RDF::Node(:'AZazÀÖØöø˿ͰͽͿ῿‌‍⁰↏Ⰰ⿯、퟿豈﷏ﷰ�𐀀󯿿')
+    }.each do |input, result|
+      describe "given #{input}" do
+        subject {read(input)}
+        if result.is_a?(Class)
+          it {should be_a(result)}
+        else
+          it {should == result}
+        end
+      end
     end
   end
 
@@ -171,43 +147,45 @@ describe SXP::Reader::SPARQL do
   end
 
   context "when reading symbols" do
-    it "reads ':' as a symbol" do
-      read(':').should == :':'
+    {
+      ':' => :':',
+      '.' => :'.',
+      '\\' => :'\\',
+      '@xyz' => :@xyz,
+      '< ' => :'<',
+      '<' => :'<',
+      '(<)' => [:'<'],
+      '<= ' => :'<=',
+      '<=' => :'<=',
+      '(<=)' => [:'<='],
+      'a' => RDF.type,
+    }.each do |input, result|
+      it "reads #{input.inspect} as #{result.inspect}" do
+        read(input).should == result
+      end
     end
 
-    it "reads '.' as a symbol" do
-      read('.').should == :'.'
-    end
-
-    it "reads '\\' as a symbol" do
-      read('\\').should == :'\\'
-    end
-
-    it "reads '@xyz' as a symbol" do
-      read('@xyz').should == :@xyz
-    end
-
-    it "reads '<' as a symbol" do
-      read('< ').should == :'<'
-      read('<').should == :'<'
-      read('(<)').should == [:'<']
-    end
-
-    it "reads '<=' as a symbol" do
-      read('<= ').should == :'<='
-      read('<=').should == :'<='
-      read('(<=)').should == [:'<=']
-    end
-
-    it "reads 'a' as rdf:type" do
-      read('a').should == RDF.type
+    it "remembers lexical form of 'a'" do
       read('a').lexical.should == 'a'
     end
   end
 
-  context "when reading URIs" do
-    it "reads '<...>' as a URI" do
-      read('<>').should be_a(RDF::URI)
+  context "when reading IRIs" do
+    {
+      '<>' => RDF::URI,
+      %q(<scheme:!$%25&amp;'()*+,-./0123456789:/@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~?#>) =>
+        RDF::URI(%q(scheme:!$%25&amp;'()*+,-./0123456789:/@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~?#)),
+      %q(<http://a.example/\\U00000073>) => RDF::URI('http://a.example/\\U00000073'),
+      %q(<http://a.example/\\u0073>) => RDF::URI('http://a.example/\\u0073')
+    }.each do |input, result|
+      describe "given #{input}" do
+        subject {read(input)}
+        if result.is_a?(Class)
+          it {should be_a(result)}
+        else
+          it {should == result}
+        end
+      end
     end
 
     it "reads (base <prefix/> <suffix>) as <prefix/suffix>" do
