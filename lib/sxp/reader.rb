@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module SXP
   ##
   # The base class for S-expression parsers.
@@ -91,6 +92,7 @@ module SXP
           require 'stringio' unless defined?(StringIO)
           # NOTE: StringIO#ungetc mutates the string, so we use #dup to take a copy.
           @input = StringIO.new(input.to_str.dup)
+          @input.set_encoding('UTF-8') if @input.respond_to?(:set_encoding)
         else
           raise ArgumentError, "expected an IO or String input stream, but got #{input.inspect}"
       end

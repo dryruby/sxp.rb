@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module SXP; class Reader
   ##
   # A Scheme R4RS S-expressions parser.
