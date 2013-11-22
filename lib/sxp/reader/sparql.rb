@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 require 'rdf' # @see http://rubygems.org/gems/rdf
 
 module SXP; class Reader

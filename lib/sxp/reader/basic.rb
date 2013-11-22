@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module SXP; class Reader
   ##
   # A basic S-expression parser.
