@@ -2,9 +2,20 @@ require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe SXP::Reader::Scheme do
   context "when reading empty input" do
-    it "raises an error" do
-      lambda { read('') }.should raise_error(SXP::Reader::Error)
-      lambda { read(' ') }.should raise_error(SXP::Reader::Error)
+    [
+      '',
+      ' ',
+      '#!/usr/bin/env sxp2json'
+    ].each do |input|
+      it "raises an error on #{input.inspect}" do
+        expect {read(input)}.to raise_error(SXP::Reader::Error)
+      end
+    end
+  end
+
+  context "when reading shebang scripts" do
+    it "ignores shebang lines" do
+      read_all("#!/usr/bin/env sxp2json\n(1 2 3)\n").should == [[1, 2, 3]]
     end
   end
 
@@ -116,8 +127,24 @@ describe SXP::Reader::Scheme do
       read(%q(())).should == [] # FIXME
     end
 
+    it "reads '[]' as an empty list" do
+      read('[]').should == []
+    end
+
+    it "reads '[] 1' as an empty list" do
+      read('[] 1').should == []
+    end
+
     it "reads '(1 2 3)' as a list" do
       read(%((1 2 3))).should == [1, 2, 3]
+    end
+
+    it "reads '(1 2 3) 4' as a list" do
+      read('(1 2 3) 4').should == [1, 2, 3]
+    end
+
+    it "reads '[1 2 3]' as a list" do
+      read('[1 2 3]').should == [1, 2, 3]
     end
   end
 
@@ -134,6 +161,20 @@ describe SXP::Reader::Scheme do
   context "when reading comments" do
     it "reads '() ; a comment' as a list" do
       read_all('() ; a comment').should == [[]]
+    end
+  end
+
+  context "when reading invalid input" do
+    it "raises an error on '[1'" do
+      lambda { read_all('[1') }.should raise_error(SXP::Reader::Error)
+    end
+
+    it "raises an error on '1]'" do
+      lambda { read_all('1]') }.should raise_error(SXP::Reader::Error)
+    end
+
+    it "raises an error on '[1)'" do
+      lambda { read_all('[1)') }.should raise_error(SXP::Reader::Error) # FIXME
     end
   end
 

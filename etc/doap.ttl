@@ -1,4 +1,4 @@
-@base <http://rubygems.org/gems/sparql> .
+@base <http://rubygems.org/gems/sxp> .
 @prefix dc: <http://purl.org/dc/terms/> .
 @prefix doap: <http://usefulinc.com/ns/doap#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
@@ -15,7 +15,8 @@
    doap:description """
     A standardized S-expression format for data interchange, based on a
     subset of the IEEE Scheme and DSSSL standards.
-  """@en;
+   """@en;
+   doap:implements <http://dbpedia.org/resource/S-expression>;
    doap:developer <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;
    doap:maintainer <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;
    doap:documenter <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;

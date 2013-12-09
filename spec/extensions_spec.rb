@@ -32,7 +32,12 @@ end
 describe "RDF::Literal#to_sxp" do
   specify { RDF::Literal.new("a").to_sxp.should == %q("a")}
   specify { RDF::Literal.new("a", :language => "en-us").to_sxp.should == %q("a"@en-us)}
-  specify { RDF::Literal.new("a", :datatype => RDF::XSD.string).to_sxp.should == %q("a"^^<http://www.w3.org/2001/XMLSchema#string>)}
+  if RDF::VERSION.to_s >= "1.1"
+    specify { RDF::Literal.new("a", :datatype => RDF::XSD.string).to_sxp.should == %q("a")}
+  else
+    specify { RDF::Literal.new("a", :datatype => RDF::XSD.string).to_sxp.should == %q("a"^^<http://www.w3.org/2001/XMLSchema#string>)}
+  end
+  specify { RDF::Literal.new("2013-11-21", :datatype => RDF::XSD.date).to_sxp.should == %q("2013-11-21"^^<http://www.w3.org/2001/XMLSchema#date>)}
 end
 
 describe "RDF::URI#to_sxp" do

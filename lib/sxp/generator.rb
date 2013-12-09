@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 module SXP
   ##
   # An S-expression generator.
