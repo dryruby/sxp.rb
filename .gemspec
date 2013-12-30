@@ -27,7 +27,6 @@ Gem::Specification.new do |gem|
 
   gem.required_ruby_version      = '>= 1.8.1'
   gem.requirements               = []
-  gem.add_dependency             'json',  '>= 1.1.1'
   gem.add_development_dependency 'rspec', '>= 2.13.0'
   gem.add_development_dependency 'yard',  '>= 0.8.5'
   gem.add_development_dependency 'rdf',   '>= 1.0.0'
