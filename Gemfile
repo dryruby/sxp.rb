@@ -9,3 +9,8 @@ group :debug do
   gem "debugger", :platforms => :mri_19
   gem "ruby-debug", :platforms => [:jruby]
 end
+
+platforms :rbx do
+  gem 'rubysl', '~> 2.0'
+  gem 'rubinius', '~> 2.0'
+end
