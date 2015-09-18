@@ -177,7 +177,8 @@ describe SXP::Reader::SPARQL do
       %q(<scheme:!$%25&amp;'()*+,-./0123456789:/@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~?#>) =>
         RDF::URI(%q(scheme:!$%25&amp;'()*+,-./0123456789:/@ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz~?#)),
       %q(<http://a.example/\\U00000073>) => RDF::URI('http://a.example/\\U00000073'),
-      %q(<http://a.example/\\u0073>) => RDF::URI('http://a.example/\\u0073')
+      %q(<http://a.example/\\u0073>) => RDF::URI('http://a.example/\\u0073'),
+      %q(<eXAMPLE://a/./b/../b/%63/%7bfoo%7d#>) => RDF::URI('eXAMPLE://a/./b/../b/%63/%7bfoo%7d#'),
     }.each do |input, result|
       describe "given #{input}" do
         subject {read(input)}
@@ -189,11 +190,63 @@ describe SXP::Reader::SPARQL do
       end
     end
 
-    it "reads (base <prefix/> <suffix>) as <prefix/suffix>" do
-      sse = read(%q((base <prefix/> <suffix>)))
-      expect(sse).to eq [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
-      expect(sse.last).to eq RDF::URI('prefix/suffix')
-      expect(sse.last.lexical).to eq '<suffix>'
+    context "with base" do
+      {
+        ['', 'a'] => "<a>",
+        ['', 'http://foo/bar#'] => "<http://foo/bar#>",
+        ['', 'http://resource1'] => "<http://resource1>",
+      
+        %w(http://example.org foo) => "<http://example.org/foo>",
+        %w(http://example.org foo#bar) => "<http://example.org/foo#bar>",
+        %w(http://foo ) =>  "<http://foo>",
+        %w(http://foo a) => "<http://foo/a>",
+        %w(http://foo /a) => "<http://foo/a>",
+        %w(http://foo #a) => "<http://foo#a>",
+      
+        %w(http://foo/ ) =>  "<http://foo/>",
+        %w(http://foo/ a) => "<http://foo/a>",
+        %w(http://foo/ /a) => "<http://foo/a>",
+        %w(http://foo/ #a) => "<http://foo/#a>",
+
+        %w(http://foo# ) =>  "<http://foo#>",
+        %w(http://foo# a) => "<http://foo/a>",
+        %w(http://foo# /a) => "<http://foo/a>",
+        %w(http://foo# #a) => "<http://foo#a>",
+
+        %w(http://foo/bar ) =>  "<http://foo/bar>",
+        %w(http://foo/bar a) => "<http://foo/a>",
+        %w(http://foo/bar /a) => "<http://foo/a>",
+        %w(http://foo/bar #a) => "<http://foo/bar#a>",
+
+        %w(http://foo/bar/ ) =>  "<http://foo/bar/>",
+        %w(http://foo/bar/ a) => "<http://foo/bar/a>",
+        %w(http://foo/bar/ /a) => "<http://foo/a>",
+        %w(http://foo/bar/ #a) => "<http://foo/bar/#a>",
+
+        %w(http://foo/bar# ) =>  "<http://foo/bar#>",
+        %w(http://foo/bar# a) => "<http://foo/a>",
+        %w(http://foo/bar# /a) => "<http://foo/a>",
+        %w(http://foo/bar# #a) => "<http://foo/bar#a>",
+
+        %w(http://a/bb/ccc/.. g:h) => "<g:h>",
+        %w(http://a/bb/ccc/.. g) => "<http://a/bb/ccc/g>",
+        %w(http://a/bb/ccc/.. ./g) => "<http://a/bb/ccc/g>",
+        %w(http://a/bb/ccc/.. g/) => "<http://a/bb/ccc/g/>",
+        %w(http://a/bb/ccc/.. ?y) => "<http://a/bb/ccc/..?y>",
+        %w(http://a/bb/ccc/.. g?y) => "<http://a/bb/ccc/g?y>",
+        %w(http://a/bb/ccc/.. #s) => "<http://a/bb/ccc/..#s>",
+        %w(http://a/bb/ccc/.. g#s) => "<http://a/bb/ccc/g#s>",
+
+        %w(file:///a/bb/ccc/d;p?q g) => "<file:///a/bb/ccc/g>",
+        %w(http://a/b eXAMPLE://a/./b/../b/%63/%7bfoo%7d#) => "<eXAMPLE://a/./b/../b/%63/%7bfoo%7d#>"
+      }.each do |(lhs, rhs), result|
+        it "reads (base <#{lhs}> <#{rhs}>) as #{result}" do
+          sse = read(%((base <#{lhs}> <#{rhs}>)))
+          expect(sse).to eq [:base, RDF::URI(lhs), RDF::URI(result[1..-2])]
+          expect(sse.last).to eq RDF::URI(result[1..-2])
+          expect(sse.last.lexical).to eq "<#{rhs}>" if sse.last.lexical
+        end
+      end
     end
   end
 

@@ -179,7 +179,7 @@ module SXP; class Reader
       skip_char # '>'
 
       # If we have a base URI, use that when constructing a new URI
-      uri = if self.base_uri
+      uri = if self.base_uri && RDF::URI(buffer).relative?
         u = self.base_uri.join(buffer)
         u.lexical = "<#{buffer}>" unless u.to_s == buffer  # So that it can be re-serialized properly
         u
