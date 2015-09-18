@@ -20,42 +20,38 @@ describe "Core objects #to_sxp" do
     [/foo/, '#/foo/'],
   ].each do |(value, result)|
     it "returns #{result.inspect} for #{value.inspect}" do
-      value.to_sxp.should == result
+      expect(value.to_sxp).to eq result
     end
   end
 end
 
 describe "RDF::Node#to_sxp" do
-  specify { RDF::Node.new("a").to_sxp.should == %q(_:a)}
+  specify { expect(RDF::Node.new("a").to_sxp).to eq %q(_:a)}
 end
 
 describe "RDF::Literal#to_sxp" do
-  specify { RDF::Literal.new("a").to_sxp.should == %q("a")}
-  specify { RDF::Literal.new("a", :language => "en-us").to_sxp.should == %q("a"@en-us)}
-  if RDF::VERSION.to_s >= "1.1"
-    specify { RDF::Literal.new("a", :datatype => RDF::XSD.string).to_sxp.should == %q("a")}
-  else
-    specify { RDF::Literal.new("a", :datatype => RDF::XSD.string).to_sxp.should == %q("a"^^<http://www.w3.org/2001/XMLSchema#string>)}
-  end
-  specify { RDF::Literal.new("2013-11-21", :datatype => RDF::XSD.date).to_sxp.should == %q("2013-11-21"^^<http://www.w3.org/2001/XMLSchema#date>)}
+  specify { expect(RDF::Literal.new("a").to_sxp).to eq %q("a")}
+  specify { expect(RDF::Literal.new("a", :language => "en-us").to_sxp).to eq %q("a"@en-us)}
+  specify { expect(RDF::Literal.new("a", :datatype => RDF::XSD.string).to_sxp).to eq %q("a")}
+  specify { expect(RDF::Literal.new("2013-11-21", :datatype => RDF::XSD.date).to_sxp).to eq %q("2013-11-21"^^<http://www.w3.org/2001/XMLSchema#date>)}
 end
 
 describe "RDF::URI#to_sxp" do
-  specify { RDF::URI("http://example.com").to_sxp.should == %q(<http://example.com>)}
+  specify { expect(RDF::URI("http://example.com").to_sxp).to eq %q(<http://example.com>)}
 
   it "uses lexical if defined" do
     u = RDF::URI("http://example.com/a")
     u.lexical = "foo:a"
-    u.to_sxp.should == %q(foo:a)
+    expect(u.to_sxp).to eq %q(foo:a)
   end
 end
 
 describe "RDF::Query::Variable#to_sxp" do
-  specify { RDF::Query::Variable.new("a").to_sxp.should == %q(?a)}
+  specify { expect(RDF::Query::Variable.new("a").to_sxp).to eq %q(?a)}
   it "generates ??0 for non-distinguished variable" do
     v = RDF::Query::Variable.new("0")
     v.distinguished = false
-    v.to_sxp.should == %q(??0)
+    expect(v.to_sxp).to eq %q(??0)
   end
 end
 
@@ -66,7 +62,7 @@ describe "RDF::Query::Pattern#to_sxp" do
       %q((triple <a> ?b "c"))
   }.each_pair do |st, sxp|
     it "generates #{sxp} given #{st}" do
-      st.to_sxp.should == sxp
+      expect(st.to_sxp).to eq sxp
     end
   end
 end
@@ -87,7 +83,7 @@ describe "RDF::Query#to_sxp" do
     } => %q((graph <http://example.com/> (bgp (triple <a> <b> <c>)))),
   }.each_pair do |st, sxp|
     it "generates #{sxp} given #{st.inspect}" do
-      st.to_sxp.should == sxp
+      expect(st.to_sxp).to eq sxp
     end
   end
 end

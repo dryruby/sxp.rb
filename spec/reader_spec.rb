@@ -22,15 +22,15 @@ describe SXP::Reader::Basic do
 
   context "when reading lists" do
     it "reads '()' as an empty list" do
-      read('()').should == []
+      expect(read('()')).to eq []
     end
 
     it "reads '(1 2 3)' as a list" do
-      read('(1 2 3)').should == [1, 2, 3]
+      expect(read('(1 2 3)')).to eq [1, 2, 3]
     end
 
     it "reads '(1 2 3) 4' as a list" do
-      read('(1 2 3) 4').should == [1, 2, 3]
+      expect(read('(1 2 3) 4')).to eq [1, 2, 3]
     end
   end
 
@@ -50,11 +50,11 @@ describe SXP::Reader::Basic do
 
   context "when reading invalid input" do
     it "raises an error on '(1'" do
-      lambda { read_all('(1') }.should raise_error(SXP::Reader::Error)
+      expect { read_all('(1') }.to raise_error(SXP::Reader::Error)
     end
 
     it "raises an error on '1)'" do
-      lambda { read_all('1)') }.should raise_error(SXP::Reader::Error)
+      expect { read_all('1)') }.to raise_error(SXP::Reader::Error)
     end
   end
 

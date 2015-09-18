@@ -52,7 +52,7 @@ describe SXP::Generator do
       ]
     }.each do |title, (input, expected)|
       it title do
-        SXP::Generator.string(input).should == expected
+        expect(SXP::Generator.string(input)).to eq expected
       end
     end
   end

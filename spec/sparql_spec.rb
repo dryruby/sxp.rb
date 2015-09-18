@@ -4,14 +4,14 @@ require File.join(File.dirname(__FILE__), 'spec_helper')
 describe SXP::Reader::SPARQL do
   context "when reading empty input" do
     it "raises an error" do
-      lambda { read('') }.should raise_error(Reader::Error)
-      lambda { read(' ') }.should raise_error(Reader::Error)
+      expect { read('') }.to raise_error(Reader::Error)
+      expect { read(' ') }.to raise_error(Reader::Error)
     end
   end
 
   context "when reading nil" do
     it "reads 'nil' as nil" do
-      read(%q(nil)).should be_nil
+      expect(read(%q(nil))).to be_nil
     end
   end
 
@@ -44,7 +44,7 @@ describe SXP::Reader::SPARQL do
     }.each do |input, result|
       it "reads #{input.inspect} as #{[result].flatten.inspect}" do
         [result].flatten.each do |r|
-          read(input).should == r
+          expect(read(input)).to eq r
         end
       end
     end
@@ -57,7 +57,7 @@ describe SXP::Reader::SPARQL do
     }.each do |input, result|
       it "reads #{input.inspect} as eql #{[result].flatten.inspect}" do
         [result].flatten.each do |r|
-          read(input).should be_eql(r)
+          expect(read(input)).to eql r
         end
       end
     end
@@ -65,7 +65,7 @@ describe SXP::Reader::SPARQL do
 
   context "when reading datatyped literals" do
     it "reads '(prefix ((: <http://example.org/>)) \"lex\"^^:thing)' as a datatyped literal" do
-      read(%q((prefix ((: <http://example.org/>)) "lex"^^:thing))).should == [:prefix, [[:":", RDF::URI("http://example.org/")]], RDF::Literal("lex", :datatype => 'http://example.org/thing')]
+      expect(read(%q((prefix ((: <http://example.org/>)) "lex"^^:thing)))).to eq [:prefix, [[:":", RDF::URI("http://example.org/")]], RDF::Literal("lex", :datatype => 'http://example.org/thing')]
     end
   end
 
@@ -80,24 +80,24 @@ describe SXP::Reader::SPARQL do
       describe "given #{input}" do
         subject {read(input)}
         if result.is_a?(Class)
-          it {should be_a(result)}
+          it {is_expected.to be_a(result)}
         else
-          it {should == result}
+          it {is_expected.to eq result}
         end
         if distinguished
-          it {should be_distinguished}
+          it {is_expected.to be_distinguished}
         else
-          it {should_not be_distinguished}
+          it {is_expected.not_to be_distinguished}
         end
       end
     end
 
     it "reads ?x .. ?x as the identical variable" do
       sxp = read('(?x ?x)')
-      sxp[0].should == RDF::Query::Variable.new(:x)
-      sxp[1].should == RDF::Query::Variable.new(:x)
-      sxp[0].should be_equal(sxp[1])
-      sxp[0].should be_distinguished
+      expect(sxp[0]).to eq RDF::Query::Variable.new(:x)
+      expect(sxp[1]).to eq RDF::Query::Variable.new(:x)
+      expect(sxp[0]).to be_equal(sxp[1])
+      expect(sxp[0]).to be_distinguished
     end
   end
 
@@ -115,9 +115,9 @@ describe SXP::Reader::SPARQL do
       describe "given #{input}" do
         subject {read(input)}
         if result.is_a?(Class)
-          it {should be_a(result)}
+          it {is_expected.to be_a(result)}
         else
-          it {should == result}
+          it {is_expected.to eq result}
         end
       end
     end
@@ -125,25 +125,25 @@ describe SXP::Reader::SPARQL do
 
   context "when reading prefixed names" do
     it "reads 'ex:thing' as a symbol" do
-      read('ex:thing').should == :"ex:thing"
+      expect(read('ex:thing')).to eq :"ex:thing"
     end
     
     it "reads '(prefix ((ex: <foo#>)) ex:bar)' as <foo#bar>" do
-      read('(prefix ((ex: <foo#>)) ex:bar)').should == [:prefix, [[:"ex:", RDF::URI("foo#")]], RDF::URI("foo#bar")]
+      expect(read('(prefix ((ex: <foo#>)) ex:bar)')).to eq [:prefix, [[:"ex:", RDF::URI("foo#")]], RDF::URI("foo#bar")]
     end
 
     it "reads '(prefix ((ex: <foo#>) (: <bar#>)) ex:bar bar:baz)' as <foo#bar> <bar#baz>" do
-      read('
+      expect(read('
         (prefix
           ((ex: <foo#>) (: <bar#>))
-          ex:bar :baz)').should ==
-        [:prefix,
+          ex:bar :baz)')).to eq [
+        :prefix,
           [[:"ex:", RDF::URI("foo#")], [:":", RDF::URI("bar#")]],
           RDF::URI("foo#bar"), RDF::URI("bar#baz")]
     end
 
     it "reads adds lexical to URI" do
-      read('(prefix ex: <foo#> ex:bar)').last.lexical.should == "ex:bar"
+      expect(read('(prefix ex: <foo#> ex:bar)').last.lexical).to eq "ex:bar"
     end
   end
 
@@ -162,12 +162,12 @@ describe SXP::Reader::SPARQL do
       'a' => RDF.type,
     }.each do |input, result|
       it "reads #{input.inspect} as #{result.inspect}" do
-        read(input).should == result
+        expect(read(input)).to eq result
       end
     end
 
     it "remembers lexical form of 'a'" do
-      read('a').lexical.should == 'a'
+      expect(read('a').lexical).to eq 'a'
     end
   end
 
@@ -182,46 +182,46 @@ describe SXP::Reader::SPARQL do
       describe "given #{input}" do
         subject {read(input)}
         if result.is_a?(Class)
-          it {should be_a(result)}
+          it {is_expected.to be_a(result)}
         else
-          it {should == result}
+          it {is_expected.to eq result}
         end
       end
     end
 
     it "reads (base <prefix/> <suffix>) as <prefix/suffix>" do
       sse = read(%q((base <prefix/> <suffix>)))
-      sse.should == [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
-      sse.last.should == RDF::URI('prefix/suffix')
-      sse.last.lexical.should == '<suffix>'
+      expect(sse).to eq [:base, RDF::URI('prefix/'), RDF::URI('prefix/suffix')]
+      expect(sse.last).to eq RDF::URI('prefix/suffix')
+      expect(sse.last.lexical).to eq '<suffix>'
     end
   end
 
   context "when reading lists" do
     it "reads '()' as an empty array" do
-      read('()').should == []
+      expect(read('()')).to eq []
     end
 
     it "reads '[]' as an empty array" do
-      read('[]').should == []
+      expect(read('[]')).to eq []
     end
 
     it "reads '(1 2 3)' as an array" do
-      read('(1 2 3)').should == [1, 2, 3].map { |n| RDF::Literal(n) }
+      expect(read('(1 2 3)')).to eq [1, 2, 3].map { |n| RDF::Literal(n) }
     end
 
     it "reads '[1 2 3]' as an array" do
-      read('[1 2 3]').should == [1, 2, 3].map { |n| RDF::Literal(n) }
+      expect(read('[1 2 3]')).to eq [1, 2, 3].map { |n| RDF::Literal(n) }
     end
   end
 
   context "when reading comments" do
     it "reads '() ; a comment' as a list" do
-      read_all('() ; a comment').should == [[]]
+      expect(read_all('() ; a comment')).to eq [[]]
     end
 
     it "reads '[] ; a comment' as a list" do
-      read_all('[] ; a comment').should == [[]]
+      expect(read_all('[] ; a comment')).to eq [[]]
     end
   end
 
