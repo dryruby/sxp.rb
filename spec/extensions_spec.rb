@@ -77,8 +77,8 @@ describe "RDF::Query#to_sxp" do
       pattern [RDF::URI("d"), RDF::URI("e"), RDF::URI("f")]
     } => %q((bgp (triple <a> <b> <c>) (triple <d> <e> <f>))),
     RDF::Query.new() {} => %q((bgp)),
-    RDF::Query.new(:context => false) {} => %q((bgp)),
-    RDF::Query.new(:context => RDF::URI("http://example.com/")) {
+    RDF::Query.new(graph_name: false) {} => %q((bgp)),
+    RDF::Query.new(graph_name: RDF::URI("http://example.com/")) {
       pattern [RDF::URI("a"), RDF::URI("b"), RDF::URI("c")]
     } => %q((graph <http://example.com/> (bgp (triple <a> <b> <c>)))),
   }.each_pair do |st, sxp|

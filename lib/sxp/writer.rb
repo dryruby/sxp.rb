@@ -196,7 +196,7 @@ begin
     # @return [Array]
     def to_sxp
       res = [:bgp] + patterns
-      (named? ? [:graph, context, res] : res).to_sxp
+      (named? ? [:graph, graph_name, res] : res).to_sxp
     end
   end
 
