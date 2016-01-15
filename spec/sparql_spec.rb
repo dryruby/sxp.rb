@@ -19,10 +19,10 @@ describe SXP::Reader::SPARQL do
     {
       %q("")         => RDF::Literal(""),
       %q("hello")    => RDF::Literal("hello"),
-      %q(""@en)      => RDF::Literal("", :language => :en),
-      %q("hello"@en) => RDF::Literal("hello", :language => :en),
-      %q("hello"@en-US) => RDF::Literal("hello", :language => :'en-us'),
-      %q("hello"@EN) => RDF::Literal("hello", :language => :en),
+      %q(""@en)      => RDF::Literal("", language: :en),
+      %q("hello"@en) => RDF::Literal("hello", language: :en),
+      %q("hello"@en-US) => RDF::Literal("hello", language: :'en-us'),
+      %q("hello"@EN) => RDF::Literal("hello", language: :en),
       'true' => RDF::Literal(true),
       'false' => RDF::Literal(false),
       '123' => RDF::Literal(123),
@@ -39,7 +39,7 @@ describe SXP::Reader::SPARQL do
         RDF::Literal::Double.new('1.0e6'),
       ],
       '1.0E-6' => RDF::Literal::Double.new(1/1_000_000.0),
-      %q("lex"^^<http://example.org/thing>) => RDF::Literal("lex", :datatype => 'http://example.org/thing'),
+      %q("lex"^^<http://example.org/thing>) => RDF::Literal("lex", datatype: 'http://example.org/thing'),
       '?x' => RDF::Query::Variable.new(:x),
     }.each do |input, result|
       it "reads #{input.inspect} as #{[result].flatten.inspect}" do
@@ -65,7 +65,7 @@ describe SXP::Reader::SPARQL do
 
   context "when reading datatyped literals" do
     it "reads '(prefix ((: <http://example.org/>)) \"lex\"^^:thing)' as a datatyped literal" do
-      expect(read(%q((prefix ((: <http://example.org/>)) "lex"^^:thing)))).to eq [:prefix, [[:":", RDF::URI("http://example.org/")]], RDF::Literal("lex", :datatype => 'http://example.org/thing')]
+      expect(read(%q((prefix ((: <http://example.org/>)) "lex"^^:thing)))).to eq [:prefix, [[:":", RDF::URI("http://example.org/")]], RDF::Literal("lex", datatype: 'http://example.org/thing')]
     end
   end
 

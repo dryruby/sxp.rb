@@ -148,7 +148,7 @@ describe SXP::Reader::Scheme do
     end
   end
 
-  context "when reading vectors", :pending => "Support for vectors" do
+  context "when reading vectors", pending: "Support for vectors" do
     it "reads '#()' as an empty vector" do
       expect(read(%(#()))).to eq []
     end

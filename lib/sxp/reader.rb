@@ -130,7 +130,7 @@ module SXP
     def read_all(options = {})
       list = []
       catch (:eof) do
-        list << read(options.merge(:eof => :throw)) until eof?
+        list << read(options.merge(eof: :throw)) until eof?
       end
       list
     end
@@ -173,7 +173,7 @@ module SXP
     def read_list(list_term = nil)
       list = []
       catch (:eol) do
-        list << read(:eol => :throw, :list_term => list_term) while true
+        list << read(eol: :throw, list_term: list_term) while true
       end
       list
     end
