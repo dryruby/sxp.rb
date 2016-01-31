@@ -29,7 +29,7 @@ Gem::Specification.new do |gem|
   gem.requirements               = []
   gem.add_development_dependency 'rspec', '~> 3.4'
   gem.add_development_dependency 'yard' , '~> 0.8'
-  gem.add_runtime_dependency     'rdf',   '~> 1.99'
+  gem.add_runtime_dependency     'rdf',   '>= 1.99', '< 3'
 
   gem.post_install_message       = nil
 end
