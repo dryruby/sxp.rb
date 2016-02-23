@@ -7,16 +7,16 @@ Gem::Specification.new do |gem|
 
   gem.name               = 'sxp'
   gem.homepage           = 'http://sxp.rubyforge.org/'
-  gem.license            = 'Public Domain' if gem.respond_to?(:license=)
+  gem.license            = 'Unlicense'
   gem.summary            = 'A pure-Ruby implementation of a universal S-expression parser.'
-  gem.description        = gem.summary
+  gem.description        = 'Universal S-expression parser with specific support for Common Lisp, Scheme, and RDF/SPARQL'
   gem.rubyforge_project  = 'sxp'
 
-  gem.author             = 'Arto Bendiken', 'Gregg Kellogg'
-  gem.email              = 'arto@bendiken.net', 'gregg@greggkellogg.net'
+  gem.author             = ['Arto Bendiken', 'Gregg Kellogg']
+  gem.email              = ['arto@bendiken.net', 'gregg@greggkellogg.net']
 
   gem.platform           = Gem::Platform::RUBY
-  gem.files              = %w(AUTHORS CREDITS README UNLICENSE VERSION) + Dir.glob('bin/*.rb') + Dir.glob('lib/**/*.rb')
+  gem.files              = %w(AUTHORS CREDITS README.md UNLICENSE VERSION) + Dir.glob('bin/*.rb') + Dir.glob('lib/**/*.rb')
   gem.bindir             = %q(bin)
   gem.executables        = %w(sxp2rdf sxp2json sxp2xml sxp2yaml)
   gem.default_executable = gem.executables.first
