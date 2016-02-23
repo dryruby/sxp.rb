@@ -5,7 +5,7 @@ module SXP; class Reader
   #
   # @see http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node14.html
   class CommonLisp < Basic
-    OPTIONS         = {:nil => nil, :t => true, :quote => :quote, :function => :function}
+    OPTIONS         = {nil: nil, t: true, quote: :quote, function: :function}
 
     DECIMAL         = /^[+-]?(\d*)?\.\d*$/
     INTEGER_BASE_2  = /^[+-]?[01]+$/

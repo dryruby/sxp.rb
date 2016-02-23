@@ -31,9 +31,9 @@ end
 
 describe "RDF::Literal#to_sxp" do
   specify { expect(RDF::Literal.new("a").to_sxp).to eq %q("a")}
-  specify { expect(RDF::Literal.new("a", :language => "en-us").to_sxp).to eq %q("a"@en-us)}
-  specify { expect(RDF::Literal.new("a", :datatype => RDF::XSD.string).to_sxp).to eq %q("a")}
-  specify { expect(RDF::Literal.new("2013-11-21", :datatype => RDF::XSD.date).to_sxp).to eq %q("2013-11-21"^^<http://www.w3.org/2001/XMLSchema#date>)}
+  specify { expect(RDF::Literal.new("a", language: "en-us").to_sxp).to eq %q("a"@en-us)}
+  specify { expect(RDF::Literal.new("a", datatype: RDF::XSD.string).to_sxp).to eq %q("a")}
+  specify { expect(RDF::Literal.new("2013-11-21", datatype: RDF::XSD.date).to_sxp).to eq %q("2013-11-21"^^<http://www.w3.org/2001/XMLSchema#date>)}
 end
 
 describe "RDF::URI#to_sxp" do
@@ -77,8 +77,8 @@ describe "RDF::Query#to_sxp" do
       pattern [RDF::URI("d"), RDF::URI("e"), RDF::URI("f")]
     } => %q((bgp (triple <a> <b> <c>) (triple <d> <e> <f>))),
     RDF::Query.new() {} => %q((bgp)),
-    RDF::Query.new(:context => false) {} => %q((bgp)),
-    RDF::Query.new(:context => RDF::URI("http://example.com/")) {
+    RDF::Query.new(graph_name: false) {} => %q((bgp)),
+    RDF::Query.new(graph_name: RDF::URI("http://example.com/")) {
       pattern [RDF::URI("a"), RDF::URI("b"), RDF::URI("c")]
     } => %q((graph <http://example.com/> (bgp (triple <a> <b> <c>)))),
   }.each_pair do |st, sxp|

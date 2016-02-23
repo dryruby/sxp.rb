@@ -152,10 +152,10 @@ module SXP; class Reader
       options = case peek_char
         when ?@
           skip_char # '@'
-          {:language => read_atom.downcase}
+          {language: read_atom.downcase}
         when ?^
           2.times { skip_char } # '^^'
-          {:datatype => read_token.last}
+          {datatype: read_token.last}
         else {}
       end
       RDF::Literal(value, options)

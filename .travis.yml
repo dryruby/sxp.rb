@@ -6,8 +6,12 @@ env:
 rvm:
   - 2.0
   - 2.1
-  - 1.9.3
-  - jruby-19mode
+  - 2.2.4
+  - 2.3.0
+  - jruby-9.0.4.0
   - rbx-2
 cache: bundler
 sudo: false
+matrix:
+  allow_failures:
+    - rvm: rbx-2

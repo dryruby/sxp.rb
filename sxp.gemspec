@@ -7,16 +7,16 @@ Gem::Specification.new do |gem|
 
   gem.name               = 'sxp'
   gem.homepage           = 'http://sxp.rubyforge.org/'
-  gem.license            = 'Public Domain' if gem.respond_to?(:license=)
+  gem.license            = 'Unlicense'
   gem.summary            = 'A pure-Ruby implementation of a universal S-expression parser.'
-  gem.description        = gem.summary
+  gem.description        = 'Universal S-expression parser with specific support for Common Lisp, Scheme, and RDF/SPARQL'
   gem.rubyforge_project  = 'sxp'
 
-  gem.author             = 'Arto Bendiken', 'Gregg Kellogg'
-  gem.email              = 'arto@bendiken.net', 'gregg@greggkellogg.net'
+  gem.author             = ['Arto Bendiken', 'Gregg Kellogg']
+  gem.email              = ['arto@bendiken.net', 'gregg@greggkellogg.net']
 
   gem.platform           = Gem::Platform::RUBY
-  gem.files              = %w(AUTHORS CREDITS README UNLICENSE VERSION) + Dir.glob('bin/*.rb') + Dir.glob('lib/**/*.rb')
+  gem.files              = %w(AUTHORS CREDITS README.md UNLICENSE VERSION) + Dir.glob('bin/*.rb') + Dir.glob('lib/**/*.rb')
   gem.bindir             = %q(bin)
   gem.executables        = %w(sxp2rdf sxp2json sxp2xml sxp2yaml)
   gem.default_executable = gem.executables.first
@@ -25,11 +25,11 @@ Gem::Specification.new do |gem|
   gem.test_files         = %w()
   gem.has_rdoc           = false
 
-  gem.required_ruby_version      = '>= 1.9.3'
+  gem.required_ruby_version      = '>= 2.0'
   gem.requirements               = []
-  gem.add_development_dependency 'rspec', '~> 3.2'
+  gem.add_development_dependency 'rspec', '~> 3.4'
   gem.add_development_dependency 'yard' , '~> 0.8'
-  gem.add_runtime_dependency     'rdf',   '~> 1.1', '>= 1.1.13'
+  gem.add_runtime_dependency     'rdf',   '>= 2.0.0.beta', '< 3'
 
   gem.post_install_message       = nil
 end
