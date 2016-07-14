@@ -10,7 +10,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 * Parses S-expressions in universal, [Scheme][], [Common Lisp][], or
   [SPARQL][] syntax.
 * Adds a `#to_sxp` method to Ruby objects.
-* Compatible with Ruby Ruby 2.x, Ruby 2.x, and JRuby 9+.
+* Compatible with Ruby >= 2.2.2, Rubinius >= 2.0, and JRuby 9+.
 
 ##Examples
 
