@@ -2,8 +2,8 @@
 
 This is a Ruby implementation of a universal [S-expression][] parser.
 
-* <http://sxp.rubyforge.org/>
-* <http://github.com/bendiken/sxp-ruby>
+[![Gem Version](https://badge.fury.io/rb/sxp.png)](http://badge.fury.io/rb/sxp)
+[![Build Status](https://travis-ci.org/dryruby/sxp.png?branch=master)](http://travis-ci.org/ruby-rdf/rdf)
 
 ##Features
 
@@ -52,7 +52,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
   
 ##Documentation
 
-* <http://sxp.rubyforge.org/>
+* Full documentation available on [RubyDoc](http://rubydoc.info/gems/sxp/file/README.md)
 
 * {SXP}
 
@@ -74,8 +74,8 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 Dependencies
 ------------
 
-* [Ruby](http://ruby-lang.org/) (>= 1.9.3)
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 1.1), only needed for SPARQL
+* [Ruby](http://ruby-lang.org/) (>= 2.2.2)
+* [RDF.rb](http://rubygems.org/gems/rdf) (>= 2.0), only needed for SPARQL
   S-expressions
 
 Installation
@@ -101,9 +101,8 @@ as follows:
 Resources
 ---------
 
-* <http://sxp.rubyforge.org/>
-* <http://github.com/bendiken/sxp>
-* <http://github.com/bendiken/sxp-ruby>
+* <http://rubydoc.info/gems/sxp>
+* <http://github.com/dryruby/sxp>
 * <http://rubygems.org/gems/sxp>
 * <http://rubyforge.org/projects/sxp/>
 * <http://raa.ruby-lang.org/project/sxp>
