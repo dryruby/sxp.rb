@@ -104,8 +104,6 @@ Resources
 * <http://rubydoc.info/gems/sxp>
 * <http://github.com/dryruby/sxp>
 * <http://rubygems.org/gems/sxp>
-* <http://rubyforge.org/projects/sxp/>
-* <http://raa.ruby-lang.org/project/sxp>
 
 Authors
 -------
@@ -128,4 +126,3 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 [Scheme]:       http://scheme.info/
 [Common Lisp]:  http://en.wikipedia.org/wiki/Common_Lisp
 [SPARQL]:       http://openjena.org/wiki/SSE
-[Backports]:    http://rubygems.org/gems/backports

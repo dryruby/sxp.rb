@@ -58,6 +58,16 @@ describe SXP::Reader::Basic do
     end
   end
 
+  it ".read_file" do
+    expect(File).to receive(:open).with("foo.sxp", "rb").and_yield(StringIO.new("(1 2 3)\n(4 5 6)"))
+    expect(SXP.read_file("foo.sxp")).to eq [[1, 2, 3], [4, 5, 6]]
+  end
+
+  it ".read_url" do
+    expect(File).to receive(:open).with("http://example/foo.sxp", "rb").and_yield(StringIO.new("(1 2 3)\n(4 5 6)"))
+    expect(SXP.read_file("http://example/foo.sxp")).to eq [[1, 2, 3], [4, 5, 6]]
+  end
+
   def read(input, options = {})
     SXP::Reader::Basic.read(input.freeze, options)
   end
