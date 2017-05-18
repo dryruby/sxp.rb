@@ -1,18 +1,18 @@
-#SXP.rb: S-Expressions for Ruby
+# SXP.rb: S-Expressions for Ruby
 
 This is a Ruby implementation of a universal [S-expression][] parser.
 
 [![Gem Version](https://badge.fury.io/rb/sxp.png)](http://badge.fury.io/rb/sxp)
 [![Build Status](https://travis-ci.org/dryruby/sxp.rb.png?branch=master)](http://travis-ci.org/dryruby/sxp.rb)
 
-##Features
+## Features
 
 * Parses S-expressions in universal, [Scheme][], [Common Lisp][], or
   [SPARQL][] syntax.
 * Adds a `#to_sxp` method to Ruby objects.
 * Compatible with Ruby >= 2.2.2, Rubinius >= 2.0, and JRuby 9+.
 
-##Examples
+## Examples
 
     require 'sxp'
 
@@ -50,7 +50,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 
     SXP::Generator.print([:and, true, false])   #=> (and #t #f)
   
-##Documentation
+## Documentation
 
 * Full documentation available on [RubyDoc](http://rubydoc.info/gems/sxp/file/README.md)
 
