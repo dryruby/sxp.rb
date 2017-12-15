@@ -24,7 +24,7 @@ module SXP
     # @return [Enumerable<Object>]
     def self.read_url(url, options = {})
       require 'open-uri'
-      open(url.to_s, 'rb', nil, options) { |io| read_all(io, options).first }
+      open(url.to_s, 'rb', nil, options) { |io| read_all(io, options) }
     end
 
     ##
@@ -52,7 +52,7 @@ module SXP
     #   See {#read}
     # @return [Enumerable<Object>]
     def self.read_file(filename, options = {})
-      File.open(filename.to_s, 'rb') { |io| read_all(io, options).first }
+      File.open(filename.to_s, 'rb') { |io| read_all(io, options) }
     end
 
     ##
