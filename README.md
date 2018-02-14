@@ -10,7 +10,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 * Parses S-expressions in universal, [Scheme][], [Common Lisp][], or
   [SPARQL][] syntax.
 * Adds a `#to_sxp` method to Ruby objects.
-* Compatible with Ruby >= 2.2.2, Rubinius >= 2.0, and JRuby 9+.
+* Compatible with Ruby >= 2.2.2, Rubinius >= 3.0, and JRuby 9+.
 
 ## Examples
 
@@ -75,7 +75,7 @@ Dependencies
 ------------
 
 * [Ruby](http://ruby-lang.org/) (>= 2.2.2)
-* [RDF.rb](http://rubygems.org/gems/rdf) (>= 2.0), only needed for SPARQL
+* [RDF.rb](http://rubygems.org/gems/rdf) (~> 3.0), only needed for SPARQL
   S-expressions
 
 Installation
@@ -91,25 +91,25 @@ Download
 
 To get a local working copy of the development repository, do:
 
-    % git clone git://github.com/bendiken/sxp-ruby.git
+    % git clone git://github.com/dryruby/sxp.rb.git
 
 Alternatively, you can download the latest development version as a tarball
 as follows:
 
-    % wget http://github.com/bendiken/sxp-ruby/tarball/master
+    % wget http://github.com/dryruby/sxp.rb/tarball/master
 
 Resources
 ---------
 
-* <http://rubydoc.info/gems/sxp>
-* <http://github.com/dryruby/sxp>
-* <http://rubygems.org/gems/sxp>
+* <http://rubydoc.info/gems/sxp.rb>
+* <http://github.com/dryruby/sxp.rb>
+* <http://rubygems.org/gems/sxp.rb>
 
 Authors
 -------
 
 * [Arto Bendiken](https://github.com/bendiken) - <http://ar.to/>
-* [Gregg Kellogg](http://github.com/gkellogg) - <http://kellogg-assoc.com/>
+* [Gregg Kellogg](http://github.com/gkellogg) - <http://greggkellogg.net/>
 
 Contributors
 ------------
