@@ -125,4 +125,4 @@ information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
 [S-expression]: http://en.wikipedia.org/wiki/S-expression
 [Scheme]:       http://scheme.info/
 [Common Lisp]:  http://en.wikipedia.org/wiki/Common_Lisp
-[SPARQL]:       http://openjena.org/wiki/SSE
+[SPARQL]:       https://jena.apache.org/documentation/notes/sse.html
