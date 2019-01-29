@@ -71,12 +71,21 @@ describe SXP::Reader::SPARQL do
 
   context "when reading variables" do
     {
-      '?' => [RDF::Query::Variable, true],
-      '?x' => [RDF::Query::Variable.new(:"x"), true],
-      '??0' => [RDF::Query::Variable.new(:"0"), false],
-      '?.1' => [RDF::Query::Variable.new(:".1"), false],
-      '??' => [RDF::Query::Variable, false],
-    }.each do |input, (result, distinguished)|
+      '?' => [RDF::Query::Variable, true, false],
+      '?x' => [RDF::Query::Variable.new("x"), true, false],
+      '??0' => [RDF::Query::Variable.new("0"), false, false],
+      '?.1' => [RDF::Query::Variable.new("1"), false, false],
+      '?.' => [RDF::Query::Variable, false, false],
+      '??.1' => [RDF::Query::Variable.new("1"), false, false],
+      '??' => [RDF::Query::Variable, false, false],
+      '$' => [RDF::Query::Variable, true, true],
+      '$x' => [RDF::Query::Variable.new("x"), true, true],
+      '$$0' => [RDF::Query::Variable.new("0"), false, true],
+      '$.1' => [RDF::Query::Variable.new("1"), false, true],
+      '$.' => [RDF::Query::Variable.new, false, true],
+      '$$.1' => [RDF::Query::Variable.new("1"), false, true],
+      '$$' => [RDF::Query::Variable, false, true],
+    }.each do |input, (result, distinguished, existential)|
       describe "given #{input}" do
         subject {read(input)}
         if result.is_a?(Class)
@@ -88,6 +97,11 @@ describe SXP::Reader::SPARQL do
           it {is_expected.to be_distinguished}
         else
           it {is_expected.not_to be_distinguished}
+        end
+        if existential
+          it {is_expected.to be_existential}
+        else
+          it {is_expected.not_to be_existential}
         end
       end
     end
