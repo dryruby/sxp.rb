@@ -32,8 +32,8 @@ module SXP
   # @param  [String, #to_s]          url
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
-  def self.read_url(url, options = {})
-    Reader::Basic.read_url(url, options)
+  def self.read_url(url, **options)
+    Reader::Basic.read_url(url, **options)
   end
 
   ##
@@ -42,7 +42,7 @@ module SXP
   # @overload read_files(*filenames)
   #   @param  [Enumerable<String>]     filenames
   #
-  # @overload read_files(*filenames, options)
+  # @overload read_files(*filenames, **options)
   #   @param  [Enumerable<String>]     filenames
   #   @param  [Hash{Symbol => Object}] options
   #
@@ -57,8 +57,8 @@ module SXP
   # @param  [String, #to_s]          filename
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
-  def self.read_file(filename, options = {})
-    Reader::Basic.read_file(filename, options)
+  def self.read_file(filename, **options)
+    Reader::Basic.read_file(filename, **options)
   end
 
   ##
@@ -67,8 +67,8 @@ module SXP
   # @param  [IO, StringIO, String]   input
   # @param  [Hash{Symbol => Object}] options
   # @return [Enumerable<Object>]
-  def self.read_all(input, options = {})
-    Reader::Basic.read_all(input, options)
+  def self.read_all(input, **options)
+    Reader::Basic.read_all(input, **options)
   end
 
   ##
@@ -77,8 +77,8 @@ module SXP
   # @param  [IO, StringIO, String]   input
   # @param  [Hash{Symbol => Object}] options
   # @return [Object]
-  def self.read(input, options = {})
-    Reader::Basic.read(input, options)
+  def self.read(input, **options)
+    Reader::Basic.read(input, **options)
   end
   
   ##

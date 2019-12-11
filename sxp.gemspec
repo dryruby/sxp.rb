@@ -10,7 +10,6 @@ Gem::Specification.new do |gem|
   gem.license            = 'Unlicense'
   gem.summary            = 'A pure-Ruby implementation of a universal S-expression parser.'
   gem.description        = 'Universal S-expression parser with specific support for Common Lisp, Scheme, and RDF/SPARQL'
-  gem.rubyforge_project  = 'sxp'
 
   gem.author             = ['Arto Bendiken', 'Gregg Kellogg']
   gem.email              = ['arto@bendiken.net', 'gregg@greggkellogg.net']
@@ -21,11 +20,11 @@ Gem::Specification.new do |gem|
   gem.executables        = %w(sxp2rdf sxp2json sxp2xml sxp2yaml)
   gem.require_paths      = %w(lib)
 
-  gem.required_ruby_version      = '>= 2.2.2'
+  gem.required_ruby_version      = '>= 2.4'
   gem.requirements               = []
-  gem.add_development_dependency 'rspec', '~> 3.8'
-  gem.add_development_dependency 'yard' , '~> 0.9.18'
-  gem.add_runtime_dependency     'rdf',   '~> 3.0'
+  gem.add_development_dependency 'rspec', '~> 3.9'
+  gem.add_development_dependency 'yard' , '~> 0.9.20'
+  gem.add_runtime_dependency     'rdf',   '~> 3.1'
 
   gem.post_install_message       = nil
 end

@@ -68,11 +68,11 @@ describe SXP::Reader::Basic do
     expect(SXP.read_file("http://example/foo.sxp")).to eq [[1, 2, 3], [4, 5, 6]]
   end
 
-  def read(input, options = {})
-    SXP::Reader::Basic.read(input.freeze, options)
+  def read(input, **options)
+    SXP::Reader::Basic.read(input.freeze, **options)
   end
 
-  def read_all(input, options = {})
-    SXP::Reader::Basic.read_all(input.freeze, options)
+  def read_all(input, **options)
+    SXP::Reader::Basic.read_all(input.freeze, **options)
   end
 end

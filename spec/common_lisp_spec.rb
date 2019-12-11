@@ -120,11 +120,11 @@ describe SXP::Reader::CommonLisp do
     end
   end
 
-  def read(input, options = {})
-    SXP::Reader::CommonLisp.new(input.freeze, options.freeze).read
+  def read(input, **options)
+    SXP::Reader::CommonLisp.new(input.freeze, **options.freeze).read
   end
 
-  def read_all(input, options = {})
-    SXP::Reader::CommonLisp.new(input.freeze, options.freeze).read_all
+  def read_all(input, **options)
+    SXP::Reader::CommonLisp.new(input.freeze, **options.freeze).read_all
   end
 end
