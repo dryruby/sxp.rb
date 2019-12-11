@@ -19,18 +19,13 @@ Gem::Specification.new do |gem|
   gem.files              = %w(AUTHORS CREDITS README.md UNLICENSE VERSION) + Dir.glob('bin/*.rb') + Dir.glob('lib/**/*.rb')
   gem.bindir             = %q(bin)
   gem.executables        = %w(sxp2rdf sxp2json sxp2xml sxp2yaml)
-  gem.default_executable = gem.executables.first
   gem.require_paths      = %w(lib)
-  gem.extensions         = %w()
-  gem.test_files         = %w()
-  gem.has_rdoc           = false
 
   gem.required_ruby_version      = '>= 2.2.2'
   gem.requirements               = []
-  gem.add_development_dependency 'rspec', '~> 3.7'
-  gem.add_development_dependency 'yard' , '~> 0.9'
-  #gem.add_runtime_dependency     'rdf',   '~> 3.0'
-  gem.add_runtime_dependency     'rdf',   '>= 2.2', '< 4.0'
+  gem.add_development_dependency 'rspec', '~> 3.8'
+  gem.add_development_dependency 'yard' , '~> 0.9.18'
+  gem.add_runtime_dependency     'rdf',   '~> 3.0'
 
   gem.post_install_message       = nil
 end

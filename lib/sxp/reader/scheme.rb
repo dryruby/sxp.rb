@@ -26,8 +26,8 @@ module SXP; class Reader
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
     # @option options [Symbol]         :version (:r4rs)
-    def initialize(input, options = {}, &block)
-      super(input, {version: :r4rs}.merge(options), &block)
+    def initialize(input, version: :r4rs, **options, &block)
+      super(input, version: version, **options, &block)
     end
 
     ##

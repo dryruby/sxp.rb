@@ -29,7 +29,11 @@ module SXP; class Reader
     # Distinguished variable
     VAR_ID    = /^\?(.*)/
     # Non-distinguished variable
-    ND_VAR   = /^\?(:?\?([0-9]+)?|(\.[0-9]+))/
+    ND_VAR   = /^\?(?:[\?\.])(.*)/
+    # Distinguished existential variable
+    EVAR_ID    = /^\$(.*)/
+    # Non-distinguished existential variable
+    ND_EVAR   = /^\$(?:[\$\.])(.*)/
     # A QName, subject to expansion to URIs using {PREFIX}
     PNAME     = /([^:]*):(.*)/
     
@@ -67,7 +71,7 @@ module SXP; class Reader
     #
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
-    def initialize(input, options = {}, &block)
+    def initialize(input, **options, &block)
       super { @prefixes = {}; @bnodes = {}; @list_depth = 0 }
 
       if block_given?
@@ -223,8 +227,10 @@ module SXP; class Reader
         when INTEGER   then RDF::Literal::Integer.new(buffer)
         when BNODE_ID  then @bnodes[$1] ||= RDF::Node($1)
         when BNODE_NEW then RDF::Node.new
-        when ND_VAR   then variable($1, false)
-        when VAR_ID    then variable($1, true)
+        when ND_VAR    then variable($1, distinguished: false)
+        when VAR_ID    then variable($1, distinguished: true)
+        when ND_EVAR   then variable($1, existential: true, distinguished: false)
+        when EVAR_ID   then variable($1, existential: true, distinguished: true)
         else buffer.to_sym
       end
     end
@@ -251,20 +257,16 @@ module SXP; class Reader
     # is a disinguished or non-distinguished variable. Non-distinguished
     # variables are effectively the same as BNodes.
     # @return [RDF::Query::Variable]
-    def variable(id, distinguished = true)
+    def variable(id, distinguished: true, existential: false)
       id = nil if id.to_s.empty?
       
       if id
         @vars ||= {}
         @vars[id] ||= begin
-          v = RDF::Query::Variable.new(id)
-          v.distinguished = distinguished
-          v
+          RDF::Query::Variable.new(id, distinguished: distinguished, existential: existential)
         end
       else
-        v = RDF::Query::Variable.new
-        v.distinguished = distinguished
-        v
+        RDF::Query::Variable.new(distinguished: distinguished, existential: existential)
       end
     end
   end # SPARQL

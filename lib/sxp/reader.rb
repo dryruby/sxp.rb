@@ -22,9 +22,9 @@ module SXP
     # @param  [Hash{Symbol => Object}] options
     #   See {#read}
     # @return [Enumerable<Object>]
-    def self.read_url(url, options = {})
+    def self.read_url(url, **options)
       require 'open-uri'
-      open(url.to_s, 'rb', nil, options) { |io| read_all(io, options) }
+      open(url.to_s, 'rb', nil, **options) { |io| read_all(io, options) }
     end
 
     ##
@@ -51,8 +51,8 @@ module SXP
     # @param  [Hash{Symbol => Object}] options
     #   See {#read}
     # @return [Enumerable<Object>]
-    def self.read_file(filename, options = {})
-      File.open(filename.to_s, 'rb') { |io| read_all(io, options) }
+    def self.read_file(filename, **options)
+      File.open(filename.to_s, 'rb') { |io| read_all(io, **options) }
     end
 
     ##
@@ -62,8 +62,8 @@ module SXP
     # @param  [Hash{Symbol => Object}] options
     #   See {#read}
     # @return [Enumerable<Object>]
-    def self.read_all(input, options = {})
-      self.new(input, options).read_all
+    def self.read_all(input, **options)
+      self.new(input, **options).read_all
     end
 
     ##
@@ -73,8 +73,8 @@ module SXP
     # @param  [Hash{Symbol => Object}] options
     #   See {#read}
     # @return [Object]
-    def self.read(input, options = {})
-      self.new(input, options).read
+    def self.read(input, **options)
+      self.new(input, **options).read
     end
 
     ##
@@ -82,7 +82,7 @@ module SXP
     #
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
-    def initialize(input, options = {}, &block)
+    def initialize(input, **options, &block)
       @options = options.dup
 
       case
@@ -127,10 +127,10 @@ module SXP
     # @param  [Hash{Symbol => Object}] options
     #   See {#read}
     # @return [Array]
-    def read_all(options = {})
+    def read_all(**options)
       list = []
       catch (:eof) do
-        list << read(options.merge(eof: :throw)) until eof?
+        list << read(eof: :throw, **options) until eof?
       end
       list
     end
@@ -145,19 +145,19 @@ module SXP
     #   Expected list terminator; it's an error
     #   if another terminator is found
     # @return [Object]
-    def read(options = {})
+    def read(eof: nil, eol: nil, list_term: false, **options)
       skip_comments
       token, value = read_token
       case token
         when :eof
-          throw :eof if options[:eof] == :throw
+          throw :eof if eof == :throw
           raise EOF, "unexpected end of input"
         when :list
           if ndx = self.class.const_get(:LPARENS).index(value)
-            list_term = self.class.const_get(:RPARENS)[ndx]
-            read_list(list_term)
+            term = self.class.const_get(:RPARENS)[ndx]
+            read_list(term)
           else
-            throw :eol if options[:eol] == :throw && value == options[:list_term]
+            throw :eol if eol == :throw && value == list_term
             raise Error, "unexpected list terminator: ?#{value.chr}"
           end
         else value

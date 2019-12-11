@@ -84,7 +84,7 @@ describe SXP::Reader::CommonLisp do
 
   context "when reading vectors", pending: "Support for vectors" do
     it "reads `#()` as an empty vector" do
-      expect(read(%(#()))).to eq []
+      expect(read(%q(#()))).to eq []
     end
 
     it "reads `#(1 2 3)` as a vector" do

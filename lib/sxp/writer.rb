@@ -107,8 +107,8 @@ class Float
   # @return [String]
   def to_sxp
     case
-      when nan? then 'nan.'
-      when infinite? then (infinite? > 0 ? '+inf.' : '-inf.')
+      when nan? then 'nan.0'
+      when infinite? then (infinite? > 0 ? '+inf.0' : '-inf.0')
       else to_s
     end
   end
