@@ -37,8 +37,8 @@ module SXP; class Reader
     # @option options [Object]         :t        (true)
     # @option options [Object]         :quote    (:quote)
     # @option options [Object]         :function (:function)
-    def initialize(input, options = {}, &block)
-      super(input, OPTIONS.merge(options), &block)
+    def initialize(input, **options, &block)
+      super(input, **OPTIONS.merge(options), &block)
     end
 
     ##

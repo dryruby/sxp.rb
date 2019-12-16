@@ -292,11 +292,11 @@ describe SXP::Reader::SPARQL do
     end
   end
 
-  def read(input, options = {})
-    SXP::Reader::SPARQL.new(input, options).read
+  def read(input, **options)
+    SXP::Reader::SPARQL.new(input, **options).read
   end
 
-  def read_all(input, options = {})
-    SXP::Reader::SPARQL.new(input.freeze, options).read_all
+  def read_all(input, **options)
+    SXP::Reader::SPARQL.new(input.freeze, **options).read_all
   end
 end

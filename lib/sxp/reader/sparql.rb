@@ -162,7 +162,7 @@ module SXP; class Reader
           {datatype: read_token.last}
         else {}
       end
-      RDF::Literal(value, options)
+      RDF::Literal(value, **options)
     end
 
     ##
