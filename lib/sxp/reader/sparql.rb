@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
-require 'rdf' # @see http://rubygems.org/gems/rdf
+require 'rdf' # @see https:/rubygems.org/gems/rdf
 
 module SXP; class Reader
   ##
   # A SPARQL Syntax Expressions (SSE) parser.
   #
-  # Requires [RDF.rb](http://rdf.rubyforge.org/).
+  # Requires [RDF.rb](https:/rubygems.org/gems/rdf/).
   #
-  # @see http://openjena.org/wiki/SSE
+  # @see https:/openjena.org/wiki/SSE
   class SPARQL < Extended
     # Alias for rdf:type
     A         = /^a$/
@@ -83,12 +83,12 @@ module SXP; class Reader
     end
 
     ##
-    # Reads SSE Tokens, including {RDF::Literal}, {RDF::URI} and RDF::Node.
+    # Reads SSE Tokens, including `RDF::Literal`, `RDF::URI` and `RDF::Node`.
     #
     # Performs forward reference for prefix and base URI representations and saves in
     # {#base_uri} and {#prefixes} accessors.
     #
-    # Transforms tokens matching a {PNAME} pattern into {RDF::URI} instances if a match is
+    # Transforms tokens matching a {PNAME} pattern into `RDF::URI` instances if a match is
     # found with a previously identified {PREFIX}.
     # @return [Object]
     def read_token
@@ -211,7 +211,7 @@ module SXP; class Reader
     #
     # Atoms parsed including `base`, `prefix`, `true`, `false`, numeric, BNodes and variables.
     #
-    # Creates {RDF::Literal}, RDF::Node, or {RDF::Query::Variable} instances where appropriate.
+    # Creates `RDF::Literal`, `RDF::Node`, or `RDF::Query::Variable` instances where appropriate.
     #
     # @return [Object]
     def read_atom

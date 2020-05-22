@@ -1,8 +1,8 @@
-@base <http://rubygems.org/gems/sxp> .
-@prefix dc: <http://purl.org/dc/terms/> .
+@base         <https://rubygems.org/gems/sxp> .
+@prefix dc:   <http://purl.org/dc/terms/> .
 @prefix doap: <http://usefulinc.com/ns/doap#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdf:  <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:  <http://www.w3.org/2001/XMLSchema#> .
 
@@ -17,31 +17,23 @@
     subset of the IEEE Scheme and DSSSL standards.
    """@en;
    doap:implements <http://dbpedia.org/resource/S-expression>;
-   doap:developer <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;
-   doap:maintainer <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;
-   doap:documenter <http://ar.to/#self>, <http://greggkellogg.net/foaf#me>;
-   dc:creator <http://ar.to/#self>;
-   foaf:maker <http://ar.to/#self>;
-   doap:bug-database <http://github.com/bendiken/sxp-ruby/issues>;
-   doap:category <http://rubyforge.org/softwaremap/trove_list.php?form_cat=20>,
-     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=87>,
-     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=45>,
-     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=306>,
-     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=242>,
-     <http://rubyforge.org/softwaremap/trove_list.php?form_cat=170>;
+   doap:developer <https://ar.to/#self>, <https://greggkellogg.net/foaf#me>;
+   doap:maintainer <https://greggkellogg.net/foaf#me>;
+   doap:documenter <https://ar.to/#self>, <https://greggkellogg.net/foaf#me>;
+   dc:creator <https://ar.to/#self>;
+   foaf:maker <https://ar.to/#self>;
+   doap:bug-database <https://github.com/dryruby/sxp.rb/issues>;
    doap:created "2007-02-26"^^xsd:date;
-   doap:homepage <http://github.com/bendiken/sxp-ruby>;
-   doap:license <http://creativecommons.org/licenses/publicdomain/>;
-   doap:platform "Ruby" .
+   doap:homepage <https://github.com/dryruby/sxp.rb>;
+   doap:license <http://creativecommons.org/publicdomain/zero/1.0/>;
+   doap:programming-language "Ruby" .
 
-<http://greggkellogg.net/foaf#me> a foaf:Person;
-   foaf:homepage <http://greggkellogg.net/>;
+<https://greggkellogg.net/foaf#me> a foaf:Person;
+   foaf:homepage <https://greggkellogg.net/>;
    foaf:mbox <mailto:gregg@greggkellogg.net>;
    foaf:name "Gregg Kellogg" .
 
-<http://ar.to/#self> a foaf:Person;
-   rdfs:isDefinedBy <http://datagraph.org/bendiken/foaf>;
-   foaf:homepage <http://ar.to/>;
+<https://ar.to/#self> a foaf:Person;
+   foaf:homepage <https://ar.to/>;
    foaf:mbox <mailto:arto@bendiken.net>;
-   rdfs:seeAlso <http://rubyforge.org/users/arto/>;
    foaf:name "Arto Bendiken" .
