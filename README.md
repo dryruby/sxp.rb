@@ -2,8 +2,8 @@
 
 This is a Ruby implementation of a universal [S-expression][] parser.
 
-[![Gem Version](https://badge.fury.io/rb/sxp.png)](http://badge.fury.io/rb/sxp)
-[![Build Status](https://travis-ci.org/dryruby/sxp.rb.png?branch=master)](http://travis-ci.org/dryruby/sxp.rb)
+[![Gem Version](https://badge.fury.io/rb/sxp.png)](https:/badge.fury.io/rb/sxp)
+[![Build Status](https://travis-ci.org/dryruby/sxp.rb.png?branch=master)](https:/travis-ci.org/dryruby/sxp.rb)
 
 ## Features
 
@@ -44,7 +44,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 
     require 'rdf'
 
-    SXP::Reader::SPARQL.read %q((base <http://ar.to/>))  #=> [:base, RDF::URI('http://ar.to/')]
+    SXP::Reader::SPARQL.read %q((base <https://ar.to/>))  #=> [:base, RDF::URI('https://ar.to/')]
 
 ### Writing an SXP with formatting
 
@@ -52,7 +52,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
   
 ## Documentation
 
-* Full documentation available on [RubyDoc](http://rubydoc.info/gems/sxp/file/README.md)
+* Full documentation available on [RubyDoc](https:/rubydoc.info/gems/sxp/file/README.md)
 
 * {SXP}
 
@@ -74,14 +74,14 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 Dependencies
 ------------
 
-* [Ruby](http://ruby-lang.org/) (>= 2.4)
-* [RDF.rb](http://rubygems.org/gems/rdf) (~> 3.1), only needed for SPARQL
+* [Ruby](https:/ruby-lang.org/) (>= 2.4)
+* [RDF.rb](https:/rubygems.org/gems/rdf) (~> 3.1), only needed for SPARQL
   S-expressions
 
 Installation
 ------------
 
-The recommended installation method is via [RubyGems](http://rubygems.org/).
+The recommended installation method is via [RubyGems](https:/rubygems.org/).
 To install the latest official release of the SXP.rb gem, do:
 
     % [sudo] gem install sxp
@@ -96,33 +96,33 @@ To get a local working copy of the development repository, do:
 Alternatively, you can download the latest development version as a tarball
 as follows:
 
-    % wget http://github.com/dryruby/sxp.rb/tarball/master
+    % wget https:/github.com/dryruby/sxp.rb/tarball/master
 
 Resources
 ---------
 
-* <http://rubydoc.info/gems/sxp.rb>
-* <http://github.com/dryruby/sxp.rb>
-* <http://rubygems.org/gems/sxp.rb>
+* <https://rubydoc.info/gems/sxp.rb>
+* <https://github.com/dryruby/sxp.rb>
+* <https://rubygems.org/gems/sxp.rb>
 
 Authors
 -------
 
-* [Arto Bendiken](https://github.com/bendiken) - <http://ar.to/>
-* [Gregg Kellogg](http://github.com/gkellogg) - <http://greggkellogg.net/>
+* [Arto Bendiken](https://github.com/artob) - <https://ar.to/>
+* [Gregg Kellogg](https://github.com/gkellogg) - <https://greggkellogg.net/>
 
 Contributors
 ------------
 
-* [Ben Lavender](https://github.com/bhuga) - <http://bhuga.net/>
+* [Ben Lavender](https://github.com/bhuga) - <https://bhuga.net/>
 
 License
 -------
 
 SXP.rb is free and unencumbered public domain software. For more
-information, see <http://unlicense.org/> or the accompanying UNLICENSE file.
+information, see <https://unlicense.org/> or the accompanying UNLICENSE file.
 
-[S-expression]: http://en.wikipedia.org/wiki/S-expression
-[Scheme]:       http://scheme.info/
-[Common Lisp]:  http://en.wikipedia.org/wiki/Common_Lisp
+[S-expression]: https://en.wikipedia.org/wiki/S-expression
+[Scheme]:       https://scheme.info/
+[Common Lisp]:  https://en.wikipedia.org/wiki/Common_Lisp
 [SPARQL]:       https://jena.apache.org/documentation/notes/sse.html

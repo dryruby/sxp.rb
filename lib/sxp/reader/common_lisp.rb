@@ -3,7 +3,7 @@ module SXP; class Reader
   ##
   # A Common Lisp S-expressions parser.
   #
-  # @see http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node14.html
+  # @see https:/www.cs.cmu.edu/Groups/AI/html/cltl/clm/node14.html
   class CommonLisp < Basic
     OPTIONS         = {nil: nil, t: true, quote: :quote, function: :function}
 
@@ -16,7 +16,7 @@ module SXP; class Reader
 
     # Escape characters, used in the form `#\Backspace`. Case is treated
     # insensitively
-    # @see http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node22.html
+    # @see https:/www.cs.cmu.edu/Groups/AI/html/cltl/clm/node22.html
     CHARACTERS = {
       'newline'   => "\n",
       'space'     => " ",
@@ -114,7 +114,7 @@ module SXP; class Reader
     # eroneously read characters back in the input stream
     #
     # @return [String]
-    # @see    http://www.cs.cmu.edu/Groups/AI/html/cltl/clm/node22.html
+    # @see    https:/www.cs.cmu.edu/Groups/AI/html/cltl/clm/node22.html
     def read_character
       lit = read_literal
 

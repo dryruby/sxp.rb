@@ -6,7 +6,7 @@ Gem::Specification.new do |gem|
   gem.date               = File.mtime('VERSION').strftime('%Y-%m-%d')
 
   gem.name               = 'sxp'
-  gem.homepage           = 'http://sxp.rubyforge.org/'
+  gem.homepage           = 'https://github.com/dryruby/sxp/'
   gem.license            = 'Unlicense'
   gem.summary            = 'A pure-Ruby implementation of a universal S-expression parser.'
   gem.description        = 'Universal S-expression parser with specific support for Common Lisp, Scheme, and RDF/SPARQL'
