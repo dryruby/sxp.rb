@@ -25,7 +25,7 @@
    doap:bug-database <https://github.com/dryruby/sxp.rb/issues>;
    doap:created "2007-02-26"^^xsd:date;
    doap:homepage <https://github.com/dryruby/sxp.rb>;
-   doap:license <http://unlicense.org/>;
+   doap:license <http://unlicense.org/1.0/>;
    doap:programming-language "Ruby" .
 
 <https://greggkellogg.net/foaf#me> a foaf:Person;
