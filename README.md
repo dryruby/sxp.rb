@@ -3,7 +3,7 @@
 This is a Ruby implementation of a universal [S-expression][] parser.
 
 [![Gem Version](https://badge.fury.io/rb/sxp.png)](https:/badge.fury.io/rb/sxp)
-[![Build Status](https://travis-ci.org/dryruby/sxp.rb.png?branch=master)](https:/travis-ci.org/dryruby/sxp.rb)
+[![Build Status](https://github.com/dryruby/sxp.rb/workflows/CI/badge.svg?branch=develop)](https://github.com/dryruby/sxp.rb/actions?query=workflow%3ACI)
 
 ## Features
 
