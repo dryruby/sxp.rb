@@ -4,7 +4,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 
 [![Gem Version](https://badge.fury.io/rb/sxp.png)](https:/badge.fury.io/rb/sxp)
 [![Build Status](https://github.com/dryruby/sxp.rb/workflows/CI/badge.svg?branch=develop)](https://github.com/dryruby/sxp.rb/actions?query=workflow%3ACI)
-[![Coverage Status](https://coveralls.io/repos/dryruby/sxp.rb/badge.svg)](https://coveralls.io/r/dryruby/sxp.rb)
+[![Coverage Status](https://coveralls.io/repos/dryruby/sxp.rb/badge.svg?branch=develop)](https://coveralls.io/r/dryruby/sxp.rb?branch=develop)
 
 ## Features
 
