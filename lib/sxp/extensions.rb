@@ -8,8 +8,8 @@ class Object
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     to_s.to_json
@@ -22,8 +22,8 @@ class NilClass
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     '#n'
@@ -36,8 +36,8 @@ class FalseClass
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     '#f'
@@ -50,8 +50,8 @@ class TrueClass
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     '#t'
@@ -64,8 +64,8 @@ class String
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     inspect
@@ -78,8 +78,8 @@ class Symbol
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     to_s
@@ -100,8 +100,8 @@ class Integer
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     to_s
@@ -114,8 +114,8 @@ class BigDecimal
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     to_f.to_s
@@ -128,8 +128,8 @@ class Float
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     case
@@ -152,11 +152,25 @@ class Array
   #
   # Prefixes always are terminated by a ':'
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     '(' << map { |x| x.to_sxp(prefixes: prefixes, base_uri: base_uri) }.join(' ') << ')'
+  end
+end
+
+##
+# Extensions for Ruby's `Hash` class.
+class Hash
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
+  # @return [String]
+  def to_sxp(prefixes: nil, base_uri: nil)
+    to_a.to_sxp(prefixes: prefixes, base_uri: base_uri)
   end
 end
 
@@ -166,8 +180,8 @@ class Time
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     '#@' << (respond_to?(:xmlschema) ? xmlschema : to_i).to_s
@@ -180,8 +194,8 @@ class Regexp
   ##
   # Returns the SXP representation of this object.
   #
-  # @param [Hash] prefixes(nil)
-  # @param [String] base_uri(nil)
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     '#' << inspect
@@ -204,8 +218,8 @@ begin
     #
     # Prefixes always are terminated by a ':'
     #
-    # @param [Hash] prefixes(nil)
-    # @param [String] base_uri(nil)
+    # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+    # @param [RDF::URI] base_uri(nil)
     # @return [String]
     def to_sxp(prefixes: nil, base_uri: nil)
       if self.first == :base && self.length == 3 && self[1].is_a?(RDF::URI)
@@ -228,8 +242,8 @@ begin
     ##
     # Returns the SXP representation of this a URI. Uses Lexical representation, if set, otherwise, any PName match, otherwise, the relativized version of the URI if a base_uri is given, otherwise just the URI.
     #
-    # @param [Hash] prefixes(nil)
-    # @param [String] base_uri(nil)
+    # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+    # @param [RDF::URI] base_uri(nil)
     # @return [String]
     def to_sxp(prefixes: nil, base_uri: nil)
       return lexical if lexical
@@ -248,8 +262,8 @@ begin
     ##
     # Returns the SXP representation of this object.
     #
-    # @param [Hash] prefixes(nil)
-    # @param [String] base_uri(nil)
+    # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+    # @param [RDF::URI] base_uri(nil)
     # @return [String]
     def to_sxp(prefixes: nil, base_uri: nil)
       to_s
@@ -260,19 +274,35 @@ begin
     ##
     # Returns the SXP representation of a Literal.
     #
-    # @param [Hash] prefixes(nil)
-    # @param [String] base_uri(nil)
+    # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+    # @param [RDF::URI] base_uri(nil)
     # @return [String]
     def to_sxp(prefixes: nil, base_uri: nil)
       case datatype
       when RDF::XSD.boolean, RDF::XSD.integer, RDF::XSD.double, RDF::XSD.decimal, RDF::XSD.time
         # Retain stated lexical form if possible
-        valid? ? to_s : object.to_sxp
+        valid? ? to_s : object.to_sxp(prefixes: nil, base_uri: nil)
       else
         text = value.dump
         text << "@#{language}" if self.has_language?
         text << "^^#{datatype.to_sxp(prefixes: prefixes, base_uri: base_uri)}" if self.has_datatype?
         text
+      end
+    end
+
+    class Double
+      ##
+      # Returns the SXP representation of this object.
+      #
+      # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+      # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+      # @return [String]
+      def to_sxp(prefixes: nil, base_uri: nil)
+        case
+          when nan? then 'nan.0'
+          when infinite? then (infinite? > 0 ? '+inf.0' : '-inf.0')
+          else canonicalize.to_s.downcase
+        end
       end
     end
   end
@@ -282,8 +312,8 @@ begin
     #
     # If Query is named, it's treated as a GroupGraphPattern, otherwise, a BGP
     #
-    # @param [Hash] prefixes(nil)
-    # @param [String] base_uri(nil)
+    # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+    # @param [RDF::URI] base_uri(nil)
     # @return [Array]
     def to_sxp(prefixes: nil, base_uri: nil)
       res = [:bgp] + patterns
@@ -294,8 +324,8 @@ begin
   class RDF::Query::Pattern
     # Transform Query Pattern into an SXP
     #
-    # @param [Hash] prefixes(nil)
-    # @param [String] base_uri(nil)
+    # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+    # @param [RDF::URI] base_uri(nil)
     # @return [String]
     def to_sxp(prefixes: nil, base_uri: nil)
       [:triple, subject, predicate, object].to_sxp(prefixes: prefixes, base_uri: base_uri)
@@ -306,11 +336,12 @@ begin
     ##
     # Transform Query variable into an SXP.
     #
-    # @param [Hash] prefixes(nil)
-    # @param [String] base_uri(nil)
+    # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+    # @param [RDF::URI] base_uri(nil)
     # @return [String]
     def to_sxp(prefixes: nil, base_uri: nil)
-      to_s
+      prefix = distinguished? ? (existential? ? '$' : '?') : (existential? ? '$$' : '??')
+      unbound? ? "#{prefix}#{name}".to_sym.to_sxp : ["#{prefix}#{name}".to_sym, value].to_sxp
     end
   end
 rescue LoadError

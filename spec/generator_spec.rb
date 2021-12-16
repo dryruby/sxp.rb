@@ -73,10 +73,15 @@ describe SXP::Generator do
             (triple <a> <b> 123)
             (triple <a> <b> -18)
             (triple <a> <b> 123.0)
-            (triple <a> <b> 1.0)
+            (triple <a> <b> 1.0e0)
             (triple <a> <b> "lex"^^<http://example.org/thing>)
             (triple <a> <b> ?x))
            }.gsub(/^           /, '')
+      ],
+      "SPARQL base": [
+        [:base, RDF::URI("http://example.com/"), RDF::URI("http://example.com/a")],
+        %q{(base <http://example.com/> <a>)
+        }.gsub(/^        /, '')
       ],
       "issue 20": [
         [:prefix,

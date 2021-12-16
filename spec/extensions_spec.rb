@@ -18,6 +18,7 @@ describe "Core objects #to_sxp" do
     [['a', 2], '("a" 2)'],
     [Time.parse("2011-03-13T11:22:33Z"), '#@2011-03-13T11:22:33Z'],
     [/foo/, '#/foo/'],
+    [{a: 'b'}, %q(((a "b")))],
   ].each do |(value, result)|
     it "returns #{result.inspect} for #{value.inspect}" do
       expect(value.to_sxp).to eq result
@@ -30,10 +31,19 @@ describe "RDF::Node#to_sxp" do
 end
 
 describe "RDF::Literal#to_sxp" do
-  specify { expect(RDF::Literal.new("a").to_sxp).to eq %q("a")}
-  specify { expect(RDF::Literal.new("a", language: "en-us").to_sxp).to eq %q("a"@en-us)}
-  specify { expect(RDF::Literal.new("a", datatype: RDF::XSD.string).to_sxp).to eq %q("a")}
-  specify { expect(RDF::Literal.new("2013-11-21", datatype: RDF::XSD.date).to_sxp).to eq %q("2013-11-21"^^<http://www.w3.org/2001/XMLSchema#date>)}
+  {
+    RDF::Literal.new("a") => %q("a"),
+    RDF::Literal.new("a", language: "en-us") => %q("a"@en-us),
+    RDF::Literal.new("2013-11-21", datatype: RDF::XSD.date) => %q("2013-11-21"^^<http://www.w3.org/2001/XMLSchema#date>),
+    RDF::Literal(1) => %q(1),
+    RDF::Literal::Decimal.new(1.0) => '1.0',
+    RDF::Literal(1.0e1) => '1.0e1',
+    RDF::Literal(Float::INFINITY) => "+inf.0",
+    RDF::Literal(-Float::INFINITY) => "-inf.0",
+    RDF::Literal(Float::NAN) => "nan.0",
+  }.each_pair do |l, sxp|
+    specify {expect(l.to_sxp).to eq sxp}
+  end
 end
 
 describe "RDF::Literal#to_sxp with prefix" do

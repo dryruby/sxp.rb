@@ -17,8 +17,8 @@ module SXP
       ##
       # @param [Object] obj
       # @param [Integer] indent
-      # @param [Hash] prefixes(nil)
-      # @param [String] base_uri(nil)
+      # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+      # @param [RDF::URI] base_uri(nil)l)
       def initialize(obj, indent, prefixes: nil, base_uri: nil)
         @indent = indent
         @elements = []
