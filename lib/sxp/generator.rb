@@ -16,18 +16,41 @@ module SXP
 
       ##
       # @param [Object] obj
-      def initialize(obj, indent)
+      # @param [Integer] indent
+      # @param [Hash] prefixes(nil)
+      # @param [String] base_uri(nil)
+      def initialize(obj, indent, prefixes: nil, base_uri: nil)
         @indent = indent
         @elements = []
+        @prefixes = prefixes
+        @base_uri = base_uri
         if obj.is_a?(Array)
-          obj.compact.each {|o| @elements << Block.new(o, indent + 1)}
+          # If this is a base or prefix element, update our representations
+          if obj.first == :base && obj.length == 3 && obj[1].is_a?(RDF::URI)
+            base_uri = obj[1]
+            @elements << Block.new(:base, indent + 1)
+            @elements << Block.new(obj[1], indent + 1)
+            @elements << Block.new(obj.last, indent + 1, prefixes: prefixes, base_uri: base_uri)
+          elsif obj.first == :prefix && obj.length == 3 && obj[1].is_a?(Array)
+            prefixes = prefixes ? prefixes.dup : {}
+            obj[1].each do |defn|
+              prefixes[defn.first.to_s.chomp(':').to_sym] = RDF::URI(defn.last) if defn.is_a?(Array) && defn.length == 2
+            end
+            @elements << Block.new(:prefix, indent + 1)
+            @elements << Block.new(obj[1], indent + 1)
+            @elements << Block.new(obj.last, indent + 1, prefixes: prefixes, base_uri: base_uri)
+          else          
+            obj.compact.each do |o|
+              @elements << Block.new(o, indent + 1, prefixes: prefixes, base_uri: base_uri)
+            end
+          end
         else
           @elements = obj
         end
       end
       
       ##
-      # Agregate length over each element accounting for spaces
+      # Aggregate length over each element accounting for spaces
       #
       # @return [Integer]
       #   If indent is not not nil, returns zero
@@ -35,7 +58,7 @@ module SXP
         if @elements.is_a?(Array)
           @elements.map(&:length).inject(:+).to_i + @elements.length - 1
         else
-          @elements.to_sxp.length
+          @elements.to_sxp(prefixes: @prefixes, base_uri: @base_uri).length
         end
       end
       
@@ -44,8 +67,8 @@ module SXP
       # This should only be called on a block when
       # no indentation is to be applied
       # @return [String]
-      def to_sxp
-        @elements.to_sxp
+      def to_sxp(prefixes: nil, base_uri: nil)
+        @elements.to_sxp(prefixes: prefixes || @prefixes, base_uri: base_uri || @base_uri)
       end
       
       ##
@@ -67,7 +90,7 @@ module SXP
           first, *elems = @elements
           unless first.sxp?
             # It's atomic, write out after paren
-            buffer += first.to_sxp + "\n"
+            buffer += first.to_sxp(prefixes: @prefixes, base_uri: @base_uri) + "\n"
           else
             buffer += "\n"
             elems.unshift(first)
@@ -77,7 +100,7 @@ module SXP
           end
           buffer += do_indent + ")\n"
         else
-          buffer += do_indent + @elements.to_sxp + "\n"
+          buffer += do_indent + @elements.to_sxp(prefixes: @prefixes, base_uri: @base_uri) + "\n"
         end
         buffer
       end

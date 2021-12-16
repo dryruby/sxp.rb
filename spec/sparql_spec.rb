@@ -155,10 +155,6 @@ describe SXP::Reader::SPARQL do
           [[:"ex:", RDF::URI("foo#")], [:":", RDF::URI("bar#")]],
           RDF::URI("foo#bar"), RDF::URI("bar#baz")]
     end
-
-    it "reads adds lexical to URI" do
-      expect(read('(prefix ex: <foo#> ex:bar)').last.lexical).to eq "ex:bar"
-    end
   end
 
   context "when reading symbols" do

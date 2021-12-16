@@ -129,8 +129,6 @@ module SXP; class Reader
             uri = RDF::URI(base.to_s + suffix)
             #STDERR.puts "read_tok lexical uri: #{uri.inspect}"
 
-            # Cause URI to be serialized as a lexical
-            uri.lexical = value
             [:atom, uri]
           else
             tok
@@ -184,9 +182,7 @@ module SXP; class Reader
 
       # If we have a base URI, use that when constructing a new URI
       uri = if self.base_uri && RDF::URI(buffer).relative?
-        u = self.base_uri.join(buffer)
-        u.lexical = "<#{buffer}>" unless u.to_s == buffer  # So that it can be re-serialized properly
-        u
+        self.base_uri.join(buffer)
       else
         RDF::URI(buffer)
       end

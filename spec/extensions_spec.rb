@@ -36,6 +36,10 @@ describe "RDF::Literal#to_sxp" do
   specify { expect(RDF::Literal.new("2013-11-21", datatype: RDF::XSD.date).to_sxp).to eq %q("2013-11-21"^^<http://www.w3.org/2001/XMLSchema#date>)}
 end
 
+describe "RDF::Literal#to_sxp with prefix" do
+  specify { expect(RDF::Literal.new("2013-11-21", datatype: RDF::XSD.date).to_sxp(prefixes: {xsd: RDF::XSD.to_uri})).to eq %q("2013-11-21"^^xsd:date)}
+end
+
 describe "RDF::URI#to_sxp" do
   specify { expect(RDF::URI("http://example.com").to_sxp).to eq %q(<http://example.com>)}
 
@@ -43,6 +47,16 @@ describe "RDF::URI#to_sxp" do
     u = RDF::URI("http://example.com/a")
     u.lexical = "foo:a"
     expect(u.to_sxp).to eq %q(foo:a)
+  end
+
+  it "uses prefix if defined" do
+    u = RDF::URI("http://example.com/a")
+    expect(u.to_sxp(prefixes: {foo: 'http://example.com/'})).to eq %q(foo:a)
+  end
+
+  it "uses base if defined" do
+    u = RDF::URI("http://example.com/a")
+    expect(u.to_sxp(base_uri: 'http://example.com/')).to eq %q(<a>)
   end
 end
 
@@ -84,6 +98,44 @@ describe "RDF::Query#to_sxp" do
   }.each_pair do |st, sxp|
     it "generates #{sxp} given #{st.inspect}" do
       expect(st.to_sxp).to eq sxp
+    end
+  end
+
+  context "prefix array with content" do
+    let(:prefix) {
+      [:prefix, [
+        [:"foo:", RDF::URI("http://example.com/foo/")],
+        [:"bar:", RDF::URI("http://example.com/bar#")],
+        [:":", RDF::URI("http://empty/")]
+      ]]
+    }
+    {
+      (
+        [RDF::URI("http://example.com/foo/a")]
+      ) => %q(foo:a),
+      (
+        [RDF::Literal.new("2013-11-21", datatype: RDF::URI("http://example.com/foo/date"))]
+      ) => %q("2013-11-21"^^foo:date),
+    }.each_pair do |st, sxp|
+      it "generates #{sxp} given #{st.inspect}" do
+        expect((prefix + st).to_sxp).to eq "(prefix ((foo: <http://example.com/foo/>) (bar: <http://example.com/bar#>) (: <http://empty/>)) #{sxp})"
+      end
+    end
+  end
+
+  context "base array with content" do
+    let(:base) {[:base, RDF::URI("http://example.com/foo/")]}
+    {
+      (
+        [RDF::URI("http://example.com/foo/a")]
+      ) => %q(<a>),
+      (
+        [RDF::Literal.new("2013-11-21", datatype: RDF::URI("http://example.com/foo/date"))]
+      ) => %q("2013-11-21"^^<date>),
+    }.each_pair do |st, sxp|
+      it "generates #{sxp} given #{st.inspect}" do
+        expect((base + st).to_sxp).to eq "(base <http://example.com/foo/> #{sxp})"
+      end
     end
   end
 end

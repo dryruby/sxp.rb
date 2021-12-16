@@ -3,7 +3,6 @@ require 'stringio'
 
 require 'sxp/version'
 require 'sxp/extensions'
-require 'sxp/writer'
 
 module SXP
   autoload :Pair,      'sxp/pair'
