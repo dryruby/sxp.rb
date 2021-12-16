@@ -64,8 +64,8 @@ module SXP; class Reader
         when ?d, ?D  then read_integer(10)
         when ?x, ?X  then read_integer(16)
         when ?\\     then read_character
-        when ?;      then skip; read
-        when ?!      then skip_line; read # shebang
+        when ?;      then skip # comment character
+        when ?!      then skip_line; skip # shebang
         else raise Error, "invalid sharp-sign read syntax: ##{char.chr}"
       end
     end
