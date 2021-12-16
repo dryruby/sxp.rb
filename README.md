@@ -13,6 +13,156 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 * Adds a `#to_sxp` method to Ruby objects.
 * Compatible with Ruby >= 2.6, Rubinius >= 3.0, and JRuby 9+.
 
+## Basic syntax
+
+S-Expressions derive from LISP, and include some basic datatypes common to all variants:
+
+<dl>
+  <dt>Pairs</dt>
+  <dd>Of the form <code>(2 . 3)</code></dd>
+  <dt>Lists</dt>
+  <dd>Of the form <code>(1 (2 3))</code></dd>
+  <dt>Symbols</dt>
+  <dd>Of the form <code>with-hyphen ?@!$ a\ symbol\ with\ spaces</code></dd>
+  <dt>Strings</dt>
+  <dd>Of the form <code>"Hello, world!"</code><br/>
+      Strings may include the following special characters:
+      <ul>
+        <li><code>\b</code> &mdash; Backspace</li>
+        <li><code>\f</code> &mdash; Form Feed</li>
+        <li><code>\n</code> &mdash; New Line</li>
+        <li><code>\r</code> &mdash; Carriage Return</li>
+        <li><code>\t</code> &mdash; Horizontal Tab</li>
+        <li><code>\u<i>xxxx</i></code> &mdash; 2-byte Unicode character escape</li>
+        <li><code>\U<i>xxxxxxxx</i></code> &mdash; 4-byte Unicode character escape</li>
+        <li><code>\"</code> &mdash; Double-quote character</li>
+        <li><code>\\</code> &mdash; Backspace</li>
+      </ul>
+      Additionally, any other character may follow <code>\</code>, representing the character itself.
+  </dd>
+  <dt>Characters</dt>
+  <dd>Of the form <code>...</code></dd>
+  <dt>Integers</dt>
+  <dd>Of the form <code>-9876543210</code></dd>
+  <dt>Floating-point numbers</dt>
+  <dd>Of the form <code>-0.0 6.28318 6.022e23</code></dd>
+  <dt>Rationals</dt>
+  <dd>Of the form <code>1/3</code></dd>
+</dl>
+
+Additionally, variation-specific formats support additional datatypes:
+
+### Scheme
+
+In addition to the standard datatypes, the Scheme dialect supports the following:
+
+<dl>
+  <dt>Lists</dt>
+  <dd>In addition to <code>( ... )</code>, a square bracket pair may be used for reading lists of the form <code>[ ... ]</code>.
+  </dd>
+  <dt>Comments</dt>
+  <dd>A comment starts with <code>;</code> and continues to the end of the line.
+  <dt>Sharp character sequences</dt>
+  <dd>Such as <code>#t</code>, <code>#n</code>, and <code>#xXXX</code>.<br>
+    <ul>
+        <li><code>#n</code> &mdash; Null</li>
+        <li><code>#f</code> &mdash; False</li>
+        <li><code>#t</code> &mdash; True</li>
+        <li><code>#b<i>BBB</i></code> &mdash; Binary number</li>
+        <li><code>#o<i>OOO</i></code> &mdash; Octal number</li>
+        <li><code>#d<i>DDD</i></code> &mdash; Decimal number</li>
+        <li><code>#x<i>XXX</i></code> &mdash; Hexadecimal number</li>
+        <li><code>#\<i>C</i></code> &mdash; A single Unicode character</li>
+        <li><code>#\space</code> &mdash; A space character</li>
+        <li><code>#\newline</code> &mdash; A newline character</li>
+        <li><code>#;</code> &mdash; Skipped character</li>
+        <li><code>#!</code> &mdash; Skipped to end of line</li>
+    </ul>
+  </dd>
+</dl>
+
+### Common Lisp
+
+In addition to the standard datatypes, the Common Lisp dialect supports the following:
+
+<dl>
+  <dt>Comments</dt>
+  <dd>A comment starts with <code>;</code> and continues to the end of the line.
+  <dt>Symbols</dt>
+  <dd>In addition to base symbols, any character sequence delimited by <code>|</code> is treated as a symbol.</dd>
+  <dt>Sharp character sequences</dt>
+  <dd>Such as <code>#t</code>, <code>#n</code>, and <code>#xXXX</code>.<br>
+    <ul>
+        <li><code>#b<i>BBB</i></code> &mdash; Binary number</li>
+        <li><code>#o<i>OOO</i></code> &mdash; Octal number</li>
+        <li><code>#x<i>XXX</i></code> &mdash; Hexadecimal number</li>
+        <li><code>#C</code> &mdash; A single Unicode character</li>
+        <li><code>#\newline</code> &mdash; A newline character</li>
+        <li><code>#\space</code> &mdash; A space character</li>
+        <li><code>#\backspace</code> &mdash; A backspace character</li>
+        <li><code>#\tab</code> &mdash; A tab character</li>
+        <li><code>#\linefeed</code> &mdash; A linefeed character</li>
+        <li><code>#\page</code> &mdash; A page feed character</li>
+        <li><code>#\return</code> &mdash; A carriage return character</li>
+        <li><code>#\rubout</code> &mdash; A rubout character</li>
+        <li><code>#'<i>function</i></code> &mdash; A function definition</li>
+    </ul>
+  </dd>
+</dl>
+
+### SPARQL/RDF
+
+In addition to the standard datatypes, the SPARQL dialect supports the following:
+
+<dl>
+  <dt>Lists</dt>
+  <dd>In addition to <code>( ... )</code>, a square bracket pair may be used for reading lists of the form <code>[ ... ]</code>.
+  </dd>
+  <dt>Comments</dt>
+  <dd>A comment starts with <code>#</code> or <code>;</code> and continues to the end of the line.
+  <dt>Literals</dt>
+  <dd>Strings are interpreted as an RDF Literal with datatype <code>xsd:string</code>. It can be followed by <code>@<i>lang</i></code> to create a language-tagged string, or <code>^^<i>IRI</i></code> to create a datatyped-literal. Examples:
+    <ul>
+      <li><code>"a plain literal"</code></li>
+      <li><code>"a literal with a language"@en</code></li>
+      <li><code>"a typed literal"^^&lt;http://example/></code></li>
+      <li><code>"a typed literal with a PNAME"^^xsd:string</code></li>
+    </ul>
+  </dd>
+  <dt>IRIs</dt>
+  <dd>An IRI is formed as in SPARQL, either enclosed by <code>&lt;...></code>, or having the form of a <code>PNAME</code>. If a <var>base iri</var> is defined in a containing <var>base</var> expression, IRIs using the <code>&lt;...></code> are resolved against that base iri. If the <code>PNAME</code> form is used, the prefix must be defined in a containing <var>prefix</var> expression. Examples:
+    <ul>
+      <li><code>&lt;http://example/foo></code></li>
+      <li><code>(base &lthttp://example.com> &lt;foo>)</code></li>
+      <li><code>(prefix ((foo: &lt;http://example.com/>)) foo:bar)</code></li>
+      <li><code>a</code> # synonym for rdf:type</li>
+    </ul>
+  </dd>
+  <dt>Blank Nodes</dt>
+  <dd>An blank node is formed as in SPARQL. Examples:
+    <ul>
+      <li><code>_:</code></li>
+      <li><code>_:id</code></li>
+    </ul>
+  </dd>
+  <dt>Variables</dt>
+  <dd>A SPARQL variable is defined using either <code>?</code> or <code>$</code> prefixes, as in SPARQL. Examples:
+    <ul>
+      <li><code>?var</code></li>
+      <li><code>$var</code></li>
+    </ul>
+  </dd>
+  <dt>Numbers and booleans</dt>
+  <dd>As with SPARQL. Examples:
+    <ul>
+      <li>true, false</li>
+      <li>123, -18</li>
+      <li>123.0, 456.</li>
+      <li>1.0e0, 1.0E+6</li>
+    </ul>
+  </dd>
+</dl>
+
 ## Examples
 
     require 'sxp'
