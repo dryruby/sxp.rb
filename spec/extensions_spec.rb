@@ -26,6 +26,18 @@ describe "Core objects #to_sxp" do
   end
 end
 
+describe "Vector" do
+  {
+    Vector[] => %q(#()),
+    Vector[1, 2, 3] => %q(#(1 2 3)),
+    Vector[:hello, "world"] => %q(#(hello "world"))
+  }.each do |value, result|
+    it "returns #{result.inspect} for #{value.inspect}" do
+      expect(value.to_sxp).to eq result
+    end
+  end
+end
+
 describe "RDF::Node#to_sxp" do
   specify { expect(RDF::Node.new("a").to_sxp).to eq %q(_:a)}
 end

@@ -1,5 +1,6 @@
 # -*- encoding: utf-8 -*-
 require 'bigdecimal'
+require 'matrix'
 require 'time'
 
 ##
@@ -146,17 +147,25 @@ class Array
   ##
   # Returns the SXP representation of this object.
   #
-  # If array is of the form `[:base, uri, ..]`, the base_uri is taken from the second value
-  #
-  # If array is of the form `[:prefix, [..], ..]`, prefixes are taken from the second value
-  #
-  # Prefixes always are terminated by a ':'
-  #
   # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
   # @param [RDF::URI] base_uri(nil)
   # @return [String]
   def to_sxp(prefixes: nil, base_uri: nil)
     '(' << map { |x| x.to_sxp(prefixes: prefixes, base_uri: base_uri) }.join(' ') << ')'
+  end
+end
+
+##
+# Extensions for Ruby's `Vector` class.
+class Vector
+  ##
+  # Returns the SXP representation of this object.
+  #
+  # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
+  # @param [RDF::URI] base_uri(nil)
+  # @return [String]
+  def to_sxp(prefixes: nil, base_uri: nil)
+    '#(' << to_a.map { |x| x.to_sxp(prefixes: prefixes, base_uri: base_uri) }.join(' ') << ')'
   end
 end
 

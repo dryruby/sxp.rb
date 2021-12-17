@@ -1,4 +1,6 @@
 # -*- encoding: utf-8 -*-
+require 'matrix'
+
 module SXP; class Reader
   ##
   # A Common Lisp S-expressions parser.
@@ -88,7 +90,8 @@ module SXP; class Reader
     #
     # @return [Array]
     def read_vector
-      raise NotImplementedError, "#{self.class}#read_vector" # TODO
+      list = read_list(')')
+      Vector.[](*list)
     end
 
     ##
