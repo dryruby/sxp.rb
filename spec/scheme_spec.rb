@@ -33,62 +33,58 @@ describe SXP::Reader::Scheme do
     end
   end
 
-  context "when reading characters" do
-    {
-      %q(#\a)       => "a",
-      %q(#\A)       => "A",
-      %q(#\C)       => "C",
-      %q(#\ )       => " ",
-      %q(#\space)   => " ",
-      %q(#\newline) => "\n",
-    }.each do |input, output|
-      it "reads '#{input}' as a character" do
-        expect(read(input)).to eq output
+  context "sharp sequences" do
+    context "when reading characters" do
+      {
+        %q(#\a)       => "a",
+        %q(#\A)       => "A",
+        %q(#\C)       => "C",
+        %q(#\ )       => " ",
+        %q(#\space)   => " ",
+        %q(#\newline) => "\n",
+      }.each do |input, output|
+        it "reads '#{input}' as a character" do
+          expect(read(input)).to eq output
+        end
       end
     end
-  end
 
-  context "when reading integers in decimal form" do
-    it "reads '123' as an integer" do
-      expect(read(%q(123))).to eq 123
+    context "when reading integers" do
+      {
+        '#b1010' => 0b1010,
+        '#B1010' => 0b1010,
+        '#o755' => 0755,
+        '#O755' => 0755,
+        '123' => 123,
+        '#d123' => 123,
+        '#D123' => 123,
+        '#xFF' => 0xFF,
+        '#XFF' => 0xFF,
+        '#xff' => 0xFF,
+        '#Xff' => 0xFF,
+      }.each do |input, output|
+        it "reads #{input} as an integer" do
+          expect(read(input)).to eq output
+        end
+      end
     end
 
-    it "reads '#d123' as an integer" do
-      expect(read(%q(#d123))).to eq 123
+    context "when reading #n" do
+      it "reads '#n' as NULL" do
+        expect(read(%q(#n))).to be_nil
+      end
     end
 
-    it "reads '#D123' as an integer" do
-      expect(read(%q(#D123))).to eq 123
-    end
-  end
-
-  context "when reading integers in binary form" do
-    it "reads '#b1010' as an integer" do
-      expect(read(%q(#b1010))).to eq 0b1010
+    context "when reading #;" do
+      it "reads '#;' as an empty string" do
+        expect(read(%q(#;[]))).to eq []
+      end
     end
 
-    it "reads '#B1010' as an integer" do
-      expect(read(%q(#B1010))).to eq 0b1010
-    end
-  end
-
-  context "when reading integers in octal form" do
-    it "reads '#o755' as an integer" do
-      expect(read(%q(#o755))).to eq 0755
-    end
-
-    it "reads '#O755' as an integer" do
-      expect(read(%q(#O755))).to eq 0755
-    end
-  end
-
-  context "when reading integers in hexadecimal form" do
-    it "reads '#xFF' as an integer" do
-      expect(read(%q(#xFF))).to eq 0xFF
-    end
-
-    it "reads '#XFF' as an integer" do
-      expect(read(%q(#XFF))).to eq 0xFF
+    context "when reading #!" do
+      it "reads '#!/usr/bin/env sxp2json\nfoo' as an empty string" do
+        expect(read(%(#!/usr/bin/env sxp2json\n[]))).to eq []
+      end
     end
   end
 

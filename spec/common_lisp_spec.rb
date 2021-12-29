@@ -58,16 +58,20 @@ describe SXP::Reader::CommonLisp do
     # TODO
   end
 
-  context "when reading integers in decimal form" do
-    it "reads `123` as an integer" do
-      expect(read(%q(123))).to eq 123
-    end
-  end
-
-  context "when reading integers in hexadecimal form" do
-    %w(#xFF #XFF #xff #XFF).each do |input|
-      it "reads `#{input}` as an integer" do
-        expect(read(input)).to eq 0xFF
+  context "when reading integers" do
+    {
+      '#b1010' => 0b1010,
+      '#B1010' => 0b1010,
+      '#o755' => 0755,
+      '#O755' => 0755,
+      '123' => 123,
+      '#xFF' => 0xFF,
+      '#XFF' => 0xFF,
+      '#xff' => 0xFF,
+      '#Xff' => 0xFF,
+    }.each_pair do |input, output|
+      it "reads #{input} as an integer" do
+        expect(read(input)).to eq output
       end
     end
   end
@@ -82,13 +86,17 @@ describe SXP::Reader::CommonLisp do
     end
   end
 
-  context "when reading vectors", pending: "Support for vectors" do
+  context "when reading vectors" do
     it "reads `#()` as an empty vector" do
-      expect(read(%q(#()))).to eq []
+      expect(read(%q(#()))).to eq Vector[]
     end
 
     it "reads `#(1 2 3)` as a vector" do
-      expect(read(%q(#(1 2 3)))).to eq [1, 2, 3]
+      expect(read(%q(#(1 2 3)))).to eq Vector[1, 2, 3]
+    end
+
+    it "reads `#(hello \"world\")` as a vector" do
+      expect(read(%q(#(hello "world")))).to eq Vector[:hello, "world"]
     end
   end
 

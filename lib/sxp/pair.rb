@@ -27,7 +27,7 @@ module SXP
     # Returns `true` if the tail of this pair is not `nil` or another pair.
     #
     # @return [Boolean]
-    # @see    http://srfi.schemers.org/srfi-1/srfi-1.html#ImproperLists
+    # @see    https:/srfi.schemers.org/srfi-1/srfi-1.html#ImproperLists
     def dotted?
       !proper?
     end
@@ -36,7 +36,7 @@ module SXP
     # Returns `true` if the tail of this pair is `nil` or another pair.
     #
     # @return [Boolean]
-    # @see    http://srfi.schemers.org/srfi-1/srfi-1.html#ImproperLists
+    # @see    https:/srfi.schemers.org/srfi-1/srfi-1.html#ImproperLists
     def proper?
       tail.nil? || tail.is_a?(Pair)
     end

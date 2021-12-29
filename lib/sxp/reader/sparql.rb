@@ -1,13 +1,13 @@
 # -*- encoding: utf-8 -*-
-require 'rdf' # @see http://rubygems.org/gems/rdf
+require 'rdf' # @see https:/rubygems.org/gems/rdf
 
 module SXP; class Reader
   ##
   # A SPARQL Syntax Expressions (SSE) parser.
   #
-  # Requires [RDF.rb](http://rdf.rubyforge.org/).
+  # Requires [RDF.rb](https:/rubygems.org/gems/rdf/).
   #
-  # @see http://openjena.org/wiki/SSE
+  # @see https:/openjena.org/wiki/SSE
   class SPARQL < Extended
     # Alias for rdf:type
     A         = /^a$/
@@ -83,12 +83,12 @@ module SXP; class Reader
     end
 
     ##
-    # Reads SSE Tokens, including {RDF::Literal}, {RDF::URI} and RDF::Node.
+    # Reads SSE Tokens, including `RDF::Literal`, `RDF::URI` and `RDF::Node`.
     #
     # Performs forward reference for prefix and base URI representations and saves in
     # {#base_uri} and {#prefixes} accessors.
     #
-    # Transforms tokens matching a {PNAME} pattern into {RDF::URI} instances if a match is
+    # Transforms tokens matching a {PNAME} pattern into `RDF::URI` instances if a match is
     # found with a previously identified {PREFIX}.
     # @return [Object]
     def read_token
@@ -129,8 +129,6 @@ module SXP; class Reader
             uri = RDF::URI(base.to_s + suffix)
             #STDERR.puts "read_tok lexical uri: #{uri.inspect}"
 
-            # Cause URI to be serialized as a lexical
-            uri.lexical = value
             [:atom, uri]
           else
             tok
@@ -184,9 +182,7 @@ module SXP; class Reader
 
       # If we have a base URI, use that when constructing a new URI
       uri = if self.base_uri && RDF::URI(buffer).relative?
-        u = self.base_uri.join(buffer)
-        u.lexical = "<#{buffer}>" unless u.to_s == buffer  # So that it can be re-serialized properly
-        u
+        self.base_uri.join(buffer)
       else
         RDF::URI(buffer)
       end
@@ -211,7 +207,7 @@ module SXP; class Reader
     #
     # Atoms parsed including `base`, `prefix`, `true`, `false`, numeric, BNodes and variables.
     #
-    # Creates {RDF::Literal}, RDF::Node, or {RDF::Query::Variable} instances where appropriate.
+    # Creates `RDF::Literal`, `RDF::Node`, or `RDF::Query::Variable` instances where appropriate.
     #
     # @return [Object]
     def read_atom

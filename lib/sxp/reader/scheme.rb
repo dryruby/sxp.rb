@@ -3,7 +3,7 @@ module SXP; class Reader
   ##
   # A Scheme R4RS S-expressions parser.
   #
-  # @see http://people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
+  # @see https:/people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
   class Scheme < Extended
     DECIMAL         = /^[+-]?(\d*)?\.\d*$/
     INTEGER_BASE_2  = /^[+-]?[01]+$/
@@ -14,7 +14,7 @@ module SXP; class Reader
 
     # Escape characters, used in the form `#\newline`. Case is treated
     # insensitively
-    # @see http://people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
+    # @see https:/people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
     CHARACTERS = {
       'newline'   => "\n",
       'space'     => " ",
@@ -64,8 +64,8 @@ module SXP; class Reader
         when ?d, ?D  then read_integer(10)
         when ?x, ?X  then read_integer(16)
         when ?\\     then read_character
-        when ?;      then skip; read
-        when ?!      then skip_line; read # shebang
+        when ?;      then skip # comment character
+        when ?!      then skip_line; skip # shebang
         else raise Error, "invalid sharp-sign read syntax: ##{char.chr}"
       end
     end
@@ -76,7 +76,7 @@ module SXP; class Reader
     # eroneously read characters back in the input stream
     #
     # @return [String]
-    # @see    http://people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
+    # @see    https:/people.csail.mit.edu/jaffer/r4rs_9.html#SEC65
     def read_character
       lit = read_literal
 

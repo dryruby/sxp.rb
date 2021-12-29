@@ -7,3 +7,5 @@ tmp
 Gemfile.lock
 /.rbx/
 /.bundle
+coverage
+/.byebug_history

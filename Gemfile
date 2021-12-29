@@ -7,3 +7,8 @@ gem "rdf", git: "git://github.com/ruby-rdf/rdf.git", branch: "develop"
 group :debug do
   gem "byebug", platform: :mri
 end
+
+group :development, :test do
+  gem 'simplecov', '~> 0.21',  platforms: :mri
+  gem 'simplecov-lcov', '~> 0.8',  platforms: :mri
+end
