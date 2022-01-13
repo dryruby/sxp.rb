@@ -55,11 +55,27 @@ end
 # Extensions for Ruby's `String` class.
 class String
   ##
-  # Returns the SXP representation of this object.
+  # Returns the SXP representation of this object. Uses SPARQL-like escaping.
   #
   # @return [String]
   def to_sxp(**options)
-    inspect
+    buffer = ""
+    each_char do |u|
+      buffer << case u.ord
+      when (0x00..0x07) then sprintf("\\u%04X", u.ord)
+      when (0x08)       then '\b'
+      when (0x09)       then '\t'
+      when (0x0A)       then '\n'
+      when (0x0C)       then '\f'
+      when (0x0D)       then '\r'
+      when (0x0E..0x1F) then sprintf("\\u%04X", u.ord)
+      when (0x22)       then '\"'
+      when (0x5C)       then '\\'
+      when (0x7F)       then sprintf("\\u%04X", u.ord)
+      else u.chr
+      end
+    end
+    '"' + buffer + '"'
   end
 end
 

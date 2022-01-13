@@ -35,7 +35,7 @@ module SXP; class Reader
     ##
     # @return [String]
     def read_string
-      buffer = String.new
+      buffer = ""
       skip_char # '"'
       until peek_char == ?" #"
         buffer <<
@@ -57,8 +57,8 @@ module SXP; class Reader
         when ?n  then ?\n
         when ?r  then ?\r
         when ?t  then ?\t
-        when ?u  then read_chars(4).to_i(16).chr
-        when ?U  then read_chars(8).to_i(16).chr
+        when ?u  then read_chars(4).to_i(16).chr(Encoding::UTF_8)
+        when ?U  then read_chars(8).to_i(16).chr(Encoding::UTF_8)
         when ?"  then char #"
         when ?\\ then char
         else char
@@ -69,7 +69,7 @@ module SXP; class Reader
     # @return [String]
     def read_literal
       grammar = self.class.const_get(:ATOM)
-      buffer = String.new
+      buffer = ""
       buffer << read_char while !eof? && peek_char.chr =~ grammar
       buffer
     end

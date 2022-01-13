@@ -72,7 +72,7 @@ module SXP; class Reader
     ##
     # @return [Symbol]
     def read_symbol(delimiter = nil)
-      buffer = String.new
+      buffer = ""
       skip_char # '|'
       until delimiter === peek_char
         buffer <<
