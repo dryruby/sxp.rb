@@ -85,6 +85,35 @@ describe "RDF::Literal#to_sxp" do
   }.each_pair do |l, sxp|
     specify {expect(l.to_sxp).to eq sxp}
   end
+
+  describe "string escapes" do
+    {
+       "\b"         => %{"\\b"},
+       "\f"         => %{"\\f"},
+       "\n"         => %{"\\n"},
+       "\r"         => %{"\\r"},
+       "\t"         => %{"\\t"},
+       "\u0080"     => %{"\u0080"},
+       "\u07FF"     => %("\u07FF"),
+       "\u0800"     => %("\u0800"),
+       "\u0FFF"     => %("\u0FFF"),
+       "\u1000"     => %("\u1000"),
+       "\uD000"     => %("\uD000"),
+       "\uD7FF"     => %("\uD7FF"),
+       "\uE000"     => %("\uE000"),
+       "\uFFFD"     => %("\uFFFD"),
+       "\u{10000}"  => %("\u{010000}"),
+       "\u{3FFFD}"  => %("\u{03FFFD}"),
+       "\u{40000}"  => %("\u{040000}"),
+       "\u{FFFFD}"  => %("\u{0FFFFD}"),
+       "\u{100000}" => %("\u{100000}"),
+       "\u{10FFFD}" => %("\u{10FFFD}"),
+    }.each do |value, result|
+      it "writes #{value} as #{result.inspect}" do
+        expect(RDF::Literal(value).to_sxp).to eq result
+      end
+    end
+  end
 end
 
 describe "RDF::Literal#to_sxp with prefix" do

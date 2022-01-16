@@ -245,7 +245,7 @@ begin
 
   class RDF::URI
     ##
-    # Returns the SXP representation of this a URI. Uses Lexical representation, if set, otherwise, any PName match, otherwise, the relativized version of the URI if a base_uri is given, otherwise just the URI.
+    # Returns the SXP representation of this URI. Uses Lexical representation, if set, otherwise, any PName match, otherwise, the relativized version of the URI if a base_uri is given, otherwise just the URI.
     #
     # @param [Hash{Symbol => RDF::URI}] prefixes(nil)
     # @param [RDF::URI] base_uri(nil)
@@ -284,7 +284,7 @@ begin
         # Retain stated lexical form if possible
         valid? ? to_s : object.to_sxp(**options)
       else
-        text = value.dump
+        text = value.to_sxp
         text << "@#{language}" if self.has_language?
         text << "^^#{datatype.to_sxp(**options)}" if self.has_datatype?
         text
