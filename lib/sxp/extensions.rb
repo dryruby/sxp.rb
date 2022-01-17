@@ -70,7 +70,7 @@ class String
       when (0x0D)       then '\r'
       when (0x0E..0x1F) then sprintf("\\u%04X", u.ord)
       when (0x22)       then '\"'
-      when (0x5C)       then '\\'
+      when (0x5C)       then '\\\\'
       when (0x7F)       then sprintf("\\u%04X", u.ord)
       else u.chr
       end
