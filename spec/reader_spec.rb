@@ -34,6 +34,35 @@ describe SXP::Reader::Basic do
     end
   end
 
+  context "escapes in strings" do
+    {
+      %q{"\b"} => "\b",
+      %q{"\f"} => "\f",
+      %q{"\n"} => "\n",
+      %q{"\r"} => "\r",
+      %q{"\t"} => "\t",
+      %q{"\u0080"} => "\u0080",
+      %q("\u07FF") => "\u07FF",
+      %q("\u0800") => "\u0800",
+      %q("\u0FFF") => "\u0FFF",
+      %q("\u1000") => "\u1000",
+      %q("\uD000") => "\uD000",
+      %q("\uD7FF") => "\uD7FF",
+      %q("\uE000") => "\uE000",
+      %q("\uFFFD") => "\uFFFD",
+      %q("\U00010000") => "\u{10000}",
+      %q("\U0003FFFD") => "\u{3FFFD}",
+      %q("\U00040000") => "\u{40000}",
+      %q("\U000FFFFD") => "\u{FFFFD}",
+      %q("\U00100000") => "\u{100000}",
+      %q("\U0010FFFD") => "\u{10FFFD}",
+    }.each do |input, output|
+      it "reads #{input} as #{output.inspect}" do
+        expect(read(input)).to eq output
+      end
+    end
+  end
+
   context "problematic examples" do
     {
       %q{"\t'[]()-"} => "\t'[]()-",

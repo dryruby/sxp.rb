@@ -171,7 +171,7 @@ module SXP; class Reader
     #
     # @return [RDF::URI]
     def read_rdf_uri
-      buffer = String.new
+      buffer = ""
       skip_char # '<'
       return :< if (char = peek_char).nil? || char.chr !~ ATOM # FIXME: nasty special case for the '< symbol
       return :<= if peek_char.chr.eql?(?=.chr) && read_char    # FIXME: nasty special case for the '<= symbol
