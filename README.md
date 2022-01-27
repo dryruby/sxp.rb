@@ -203,7 +203,7 @@ In addition to the standard datatypes, the SPARQL dialect supports the following
   
 ## Documentation
 
-* Full documentation available on [RubyDoc](https:/rubydoc.info/gems/sxp/file/README.md)
+* Full documentation available on [RubyDoc](https://dryruby.github.io/sxp)
 
 * {SXP}
 
