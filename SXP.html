@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  Module: SXP
+  
+    &mdash; SXP: S-Expressions for Ruby
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "SXP";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="class_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index (S)</a> &raquo;
+    
+    
+    <span class="title">SXP</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><h1>Module: SXP
+  
+  
+  
+</h1>
+<div class="box_info">
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  
+  <dl>
+    <dt>Defined in:</dt>
+    <dd>lib/sxp.rb<span class="defines">,<br />
+  lib/sxp/list.rb,<br /> lib/sxp/pair.rb,<br /> lib/sxp/reader.rb,<br /> lib/sxp/version.rb,<br /> lib/sxp/generator.rb,<br /> lib/sxp/reader/basic.rb,<br /> lib/sxp/reader/scheme.rb,<br /> lib/sxp/reader/sparql.rb,<br /> lib/sxp/reader/extended.rb,<br /> lib/sxp/reader/common_lisp.rb</span>
+</dd>
+  </dl>
+  
+</div>
+
+<h2>Defined Under Namespace</h2>
+<p class="children">
+  
+    
+      <strong class="modules">Modules:</strong> <span class='object_link'><a href="SXP/VERSION.html" title="SXP::VERSION (module)">VERSION</a></span>
+    
+  
+    
+      <strong class="classes">Classes:</strong> <span class='object_link'><a href="SXP/Generator.html" title="SXP::Generator (class)">Generator</a></span>, <span class='object_link'><a href="SXP/List.html" title="SXP::List (class)">List</a></span>, <span class='object_link'><a href="SXP/Pair.html" title="SXP::Pair (class)">Pair</a></span>, <span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span>
+    
+  
+</p>
+
+
+
+
+
+
+
+  
+    <h2>
+      Class Method Summary
+      <small><a href="#" class="summary_toggle">collapse</a></small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#read-class_method" title="read (class method)">.<strong>read</strong>(input, **options)  &#x21d2; Object </a>
+    
+
+    
+      (also: parse)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Reads one S-expression from the given input stream.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#read_all-class_method" title="read_all (class method)">.<strong>read_all</strong>(input, **options)  &#x21d2; Enumerable&lt;Object&gt; </a>
+    
+
+    
+      (also: parse_all)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Reads all S-expressions from the given input stream.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#read_file-class_method" title="read_file (class method)">.<strong>read_file</strong>(filename, **options)  &#x21d2; Enumerable&lt;Object&gt; </a>
+    
+
+    
+      (also: parse_file)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Reads all S-expressions from a given input file.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#read_files-class_method" title="read_files (class method)">.<strong>read_files</strong>(*filenames)  &#x21d2; Enumerable&lt;Object&gt; </a>
+    
+
+    
+      (also: parse_files)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Reads all S-expressions from the given input files.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#read_url-class_method" title="read_url (class method)">.<strong>read_url</strong>(url, **options)  &#x21d2; Enumerable&lt;Object&gt; </a>
+    
+
+    
+      (also: parse_url, parse_uri, read_uri)
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Reads all S-expressions from a given input URL using the HTTP or FTP protocols.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#write-class_method" title="write (class method)">.<strong>write</strong>(sxp, output = STDOUT)  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Write an internal S-Expression as a formatted SXP.</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+
+  <div id="class_method_details" class="method_details_list">
+    <h2>Class Method Details</h2>
+
+    
+      <div class="method_details first">
+  <h3 class="signature first" id="read-class_method">
+  
+    .<strong>read</strong>(input, **options)  &#x21d2; <tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='parse-class_method'>parse</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Reads one S-expression from the given input stream.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>input</span>
+      
+      
+        <span class='type'>(<tt>IO</tt>, <tt>StringIO</tt>, <tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Hash (class)">Hash</a></span>{<span class='object_link'><a href="Symbol.html" title="Symbol (class)">Symbol</a></span> =&gt; <span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>}</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+65
+66
+67</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sxp.rb', line 65</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_read'>read</span><span class='lparen'>(</span><span class='id identifier rubyid_input'>input</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader/Basic.html" title="SXP::Reader::Basic (class)">Basic</a></span></span><span class='period'>.</span><span class='id identifier rubyid_read'><span class='object_link'><a href="SXP/Reader.html#read-class_method" title="SXP::Reader.read (method)">read</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_input'>input</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="read_all-class_method">
+  
+    .<strong>read_all</strong>(input, **options)  &#x21d2; <tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='parse_all-class_method'>parse_all</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Reads all S-expressions from the given input stream.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>input</span>
+      
+      
+        <span class='type'>(<tt>IO</tt>, <tt>StringIO</tt>, <tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Hash (class)">Hash</a></span>{<span class='object_link'><a href="Symbol.html" title="Symbol (class)">Symbol</a></span> =&gt; <span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>}</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+55
+56
+57</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sxp.rb', line 55</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_read_all'>read_all</span><span class='lparen'>(</span><span class='id identifier rubyid_input'>input</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader/Basic.html" title="SXP::Reader::Basic (class)">Basic</a></span></span><span class='period'>.</span><span class='id identifier rubyid_read_all'><span class='object_link'><a href="SXP/Reader.html#read_all-class_method" title="SXP::Reader.read_all (method)">read_all</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_input'>input</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="read_file-class_method">
+  
+    .<strong>read_file</strong>(filename, **options)  &#x21d2; <tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='parse_file-class_method'>parse_file</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Reads all S-expressions from a given input file.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>filename</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>, <tt>#to_s</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Hash (class)">Hash</a></span>{<span class='object_link'><a href="Symbol.html" title="Symbol (class)">Symbol</a></span> =&gt; <span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>}</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+45
+46
+47</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sxp.rb', line 45</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_read_file'>read_file</span><span class='lparen'>(</span><span class='id identifier rubyid_filename'>filename</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader/Basic.html" title="SXP::Reader::Basic (class)">Basic</a></span></span><span class='period'>.</span><span class='id identifier rubyid_read_file'><span class='object_link'><a href="SXP/Reader.html#read_file-class_method" title="SXP::Reader.read_file (method)">read_file</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_filename'>filename</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="read_files-class_method">
+  
+    
+      <span class="overload">.<strong>read_files</strong>(*filenames)  &#x21d2; <tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt> </span>
+    
+      <span class="overload">.<strong>read_files</strong>(*filenames, **options)  &#x21d2; <tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt> </span>
+    
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='parse_files-class_method'>parse_files</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Reads all S-expressions from the given input files.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+  <p class="tag_title">Overloads:</p>
+  <ul class="overload">
+    
+      
+      <li class="overload_item">
+        <span class="signature">.<strong>read_files</strong>(*filenames)  &#x21d2; <tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt> </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>filenames</span>
+      
+      
+        <span class='type'>(<tt>Enumerable&lt;<span class='object_link'><a href="String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div>
+      </li>
+    
+      
+      <li class="overload_item">
+        <span class="signature">.<strong>read_files</strong>(*filenames, **options)  &#x21d2; <tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt> </span>
+        <div class="docstring">
+  <div class="discussion">
+    
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>filenames</span>
+      
+      
+        <span class='type'>(<tt>Enumerable&lt;<span class='object_link'><a href="String.html" title="String (class)">String</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Hash (class)">Hash</a></span>{<span class='object_link'><a href="Symbol.html" title="Symbol (class)">Symbol</a></span> =&gt; <span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>}</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+
+</div>
+      </li>
+    
+  </ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+35
+36
+37</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sxp.rb', line 35</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_read_files'>read_files</span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_filenames'>filenames</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader/Basic.html" title="SXP::Reader::Basic (class)">Basic</a></span></span><span class='period'>.</span><span class='id identifier rubyid_read_files'><span class='object_link'><a href="SXP/Reader.html#read_files-instance_method" title="SXP::Reader#read_files (method)">read_files</a></span></span><span class='lparen'>(</span><span class='op'>*</span><span class='id identifier rubyid_filenames'>filenames</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="read_url-class_method">
+  
+    .<strong>read_url</strong>(url, **options)  &#x21d2; <tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt> 
+  
+
+  
+    <span class="aliases">Also known as:
+    <span class="names"><span id='parse_url-class_method'>parse_url</span>, <span id='parse_uri-class_method'>parse_uri</span>, <span id='read_uri-class_method'>read_uri</span></span>
+    </span>
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Reads all S-expressions from a given input URL using the HTTP or FTP protocols.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  <p class="tag_title">Parameters:</p>
+<ul class="param">
+  
+    <li>
+      
+        <span class='name'>url</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="String.html" title="String (class)">String</a></span></tt>, <tt>#to_s</tt>)</span>
+      
+      
+      
+    </li>
+  
+    <li>
+      
+        <span class='name'>options</span>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="Hash.html" title="Hash (class)">Hash</a></span>{<span class='object_link'><a href="Symbol.html" title="Symbol (class)">Symbol</a></span> =&gt; <span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>}</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt>Enumerable&lt;<span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span>&gt;</tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+20
+21
+22</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sxp.rb', line 20</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_read_url'>read_url</span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader/Basic.html" title="SXP::Reader::Basic (class)">Basic</a></span></span><span class='period'>.</span><span class='id identifier rubyid_read_url'><span class='object_link'><a href="SXP/Reader.html#read_url-class_method" title="SXP::Reader.read_url (method)">read_url</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_url'>url</span><span class='comma'>,</span> <span class='op'>**</span><span class='id identifier rubyid_options'>options</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="write-class_method">
+  
+    .<strong>write</strong>(sxp, output = STDOUT)  &#x21d2; <tt><span class='object_link'><a href="Object.html" title="Object (class)">Object</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Write an internal S-Expression as a formatted SXP</p>
+
+<p>@<a href="Array<Object>“>param</a> sxp @<a href="#write">param</a> output</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+74
+75
+76</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sxp.rb', line 74</span>
+
+<span class='kw'>def</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_write'>write</span><span class='lparen'>(</span><span class='id identifier rubyid_sxp'>sxp</span><span class='comma'>,</span> <span class='id identifier rubyid_output'>output</span> <span class='op'>=</span> <span class='const'>STDOUT</span><span class='rparen'>)</span>
+  <span class='const'><span class='object_link'><a href="SXP/Generator.html" title="SXP::Generator (class)">Generator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_write'><span class='object_link'><a href="SXP/Generator.html#write-class_method" title="SXP::Generator.write (method)">write</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_output'>output</span><span class='comma'>,</span> <span class='id identifier rubyid_sxp'>sxp</span><span class='rparen'>)</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+
+      <div id="footer">
+  Generated on Fri Jan 28 00:00:14 2022 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.27 (ruby-3.1.0).
+</div>
+
+    </div>
+  </body>
+</html>

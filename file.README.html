@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; SXP: S-Expressions for Ruby
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" />
+
+<script type="text/javascript">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h1 id="label-SXP.rb-3A+S-Expressions+for+Ruby">SXP.rb: S-Expressions for Ruby</h1>
+
+<p>This is a Ruby implementation of a universal <a href="https://en.wikipedia.org/wiki/S-expression">S-expression</a> parser.</p>
+
+<p><a href="https:/badge.fury.io/rb/sxp"><img src="https://badge.fury.io/rb/sxp.png"></a> <a href="https://github.com/dryruby/sxp.rb/actions?query=workflow%3ACI"><img src="https://github.com/dryruby/sxp.rb/workflows/CI/badge.svg?branch=develop"></a> <a href="https://coveralls.io/r/dryruby/sxp.rb?branch=develop"><img src="https://coveralls.io/repos/dryruby/sxp.rb/badge.svg?branch=develop"></a></p>
+
+<h2 id="label-Features">Features</h2>
+<ul><li>
+<p>Parses S-expressions in universal, <a href="https://scheme.info/">Scheme</a>, <a href="https://en.wikipedia.org/wiki/Common_Lisp">Common Lisp</a>, or  <a href="https://jena.apache.org/documentation/notes/sse.html">SPARQL</a> syntax.</p>
+</li><li>
+<p>Adds a <code>#to_sxp</code> method to Ruby objects.</p>
+</li><li>
+<p>Compatible with Ruby &gt;= 2.6, Rubinius &gt;= 3.0, and JRuby 9+.</p>
+</li></ul>
+
+<h2 id="label-Basic+syntax">Basic syntax</h2>
+
+<p>S-Expressions derive from LISP, and include some basic datatypes common to all variants:</p>
+<dl>
+  <dt>Pairs</dt>
+  <dd>Of the form <code>(2 . 3)</code></dd>
+  <dt>Lists</dt>
+  <dd>Of the form <code>(1 (2 3))</code></dd>
+  <dt>Symbols</dt>
+  <dd>Of the form <code>with-hyphen ?@!$ a\ symbol\ with\ spaces</code></dd>
+  <dt>Strings</dt>
+  <dd>Of the form <code>"Hello, world!"</code><br/>
+      Strings may include the following special characters:
+      <ul>
+        <li><code>\b</code> &mdash; Backspace</li>
+        <li><code>\f</code> &mdash; Form Feed</li>
+        <li><code>\n</code> &mdash; New Line</li>
+        <li><code>\r</code> &mdash; Carriage Return</li>
+        <li><code>\t</code> &mdash; Horizontal Tab</li>
+        <li><code>\u<i>xxxx</i></code> &mdash; 2-byte Unicode character escape</li>
+        <li><code>\U<i>xxxxxxxx</i></code> &mdash; 4-byte Unicode character escape</li>
+        <li><code>\"</code> &mdash; Double-quote character</li>
+        <li><code>\\</code> &mdash; Backspace</li>
+      </ul>
+      Additionally, any other character may follow <code>\</code>, representing the character itself.
+  </dd>
+  <dt>Characters</dt>
+  <dd>Of the form <code>...</code></dd>
+  <dt>Integers</dt>
+  <dd>Of the form <code>-9876543210</code></dd>
+  <dt>Floating-point numbers</dt>
+  <dd>Of the form <code>-0.0 6.28318 6.022e23</code></dd>
+  <dt>Rationals</dt>
+  <dd>Of the form <code>1/3</code></dd>
+</dl>
+<p>Additionally, variation-specific formats support additional datatypes:</p>
+
+<h3 id="label-Scheme">Scheme</h3>
+
+<p>In addition to the standard datatypes, the Scheme dialect supports the following:</p>
+<dl>
+  <dt>Lists</dt>
+  <dd>In addition to <code>( ... )</code>, a square bracket pair may be used for reading lists of the form <code>[ ... ]</code>.
+  </dd>
+  <dt>Comments</dt>
+  <dd>A comment starts with <code>;</code> and continues to the end of the line.
+  <dt>Sharp character sequences</dt>
+  <dd>Such as <code>#t</code>, <code>#n</code>, and <code>#xXXX</code>.<br>
+    <ul>
+        <li><code>#n</code> &mdash; Null</li>
+        <li><code>#f</code> &mdash; False</li>
+        <li><code>#t</code> &mdash; True</li>
+        <li><code>#b<i>BBB</i></code> &mdash; Binary number</li>
+        <li><code>#o<i>OOO</i></code> &mdash; Octal number</li>
+        <li><code>#d<i>DDD</i></code> &mdash; Decimal number</li>
+        <li><code>#x<i>XXX</i></code> &mdash; Hexadecimal number</li>
+        <li><code>#\<i>C</i></code> &mdash; A single Unicode character</li>
+        <li><code>#\space</code> &mdash; A space character</li>
+        <li><code>#\newline</code> &mdash; A newline character</li>
+        <li><code>#;</code> &mdash; Skipped character</li>
+        <li><code>#!</code> &mdash; Skipped to end of line</li>
+    </ul>
+  </dd>
+</dl>
+<h3 id="label-Common+Lisp">Common Lisp</h3>
+
+<p>In addition to the standard datatypes, the Common Lisp dialect supports the following:</p>
+<dl>
+  <dt>Comments</dt>
+  <dd>A comment starts with <code>;</code> and continues to the end of the line.
+  <dt>Symbols</dt>
+  <dd>In addition to base symbols, any character sequence delimited by <code>|</code> is treated as a symbol.</dd>
+  <dt>Sharp character sequences</dt>
+  <dd>Such as <code>#t</code>, <code>#n</code>, and <code>#xXXX</code>.<br>
+    <ul>
+        <li><code>#b<i>BBB</i></code> &mdash; Binary number</li>
+        <li><code>#o<i>OOO</i></code> &mdash; Octal number</li>
+        <li><code>#x<i>XXX</i></code> &mdash; Hexadecimal number</li>
+        <li><code>#C</code> &mdash; A single Unicode character</li>
+        <li><code>#\newline</code> &mdash; A newline character</li>
+        <li><code>#\space</code> &mdash; A space character</li>
+        <li><code>#\backspace</code> &mdash; A backspace character</li>
+        <li><code>#\tab</code> &mdash; A tab character</li>
+        <li><code>#\linefeed</code> &mdash; A linefeed character</li>
+        <li><code>#\page</code> &mdash; A page feed character</li>
+        <li><code>#\return</code> &mdash; A carriage return character</li>
+        <li><code>#\rubout</code> &mdash; A rubout character</li>
+        <li><code>#'<i>function</i></code> &mdash; A function definition</li>
+    </ul>
+  </dd>
+</dl>
+<h3 id="label-SPARQL-2FRDF">SPARQL/RDF</h3>
+
+<p>In addition to the standard datatypes, the SPARQL dialect supports the following:</p>
+<dl>
+  <dt>Lists</dt>
+  <dd>In addition to <code>( ... )</code>, a square bracket pair may be used for reading lists of the form <code>[ ... ]</code>.
+  </dd>
+  <dt>Comments</dt>
+  <dd>A comment starts with <code>#</code> or <code>;</code> and continues to the end of the line.
+  <dt>Literals</dt>
+  <dd>Strings are interpreted as an RDF Literal with datatype <code>xsd:string</code>. It can be followed by <code>@<i>lang</i></code> to create a language-tagged string, or <code>^^<i>IRI</i></code> to create a datatyped-literal. Examples:
+    <ul>
+      <li><code>"a plain literal"</code></li>
+      <li><code>"a literal with a language"@en</code></li>
+      <li><code>"a typed literal"^^&lt;http://example/></code></li>
+      <li><code>"a typed literal with a PNAME"^^xsd:string</code></li>
+    </ul>
+  </dd>
+  <dt>IRIs</dt>
+  <dd>An IRI is formed as in SPARQL, either enclosed by <code>&lt;...></code>, or having the form of a <code>PNAME</code>. If a <var>base iri</var> is defined in a containing <var>base</var> expression, IRIs using the <code>&lt;...></code> are resolved against that base iri. If the <code>PNAME</code> form is used, the prefix must be defined in a containing <var>prefix</var> expression. Examples:
+    <ul>
+      <li><code>&lt;http://example/foo></code></li>
+      <li><code>(base &lthttp://example.com> &lt;foo>)</code></li>
+      <li><code>(prefix ((foo: &lt;http://example.com/>)) foo:bar)</code></li>
+      <li><code>a</code> # synonym for rdf:type</li>
+    </ul>
+  </dd>
+  <dt>Blank Nodes</dt>
+  <dd>An blank node is formed as in SPARQL. Examples:
+    <ul>
+      <li><code>_:</code></li>
+      <li><code>_:id</code></li>
+    </ul>
+  </dd>
+  <dt>Variables</dt>
+  <dd>A SPARQL variable is defined using either <code>?</code> or <code>$</code> prefixes, as in SPARQL. Examples:
+    <ul>
+      <li><code>?var</code></li>
+      <li><code>$var</code></li>
+    </ul>
+  </dd>
+  <dt>Numbers and booleans</dt>
+  <dd>As with SPARQL. Examples:
+    <ul>
+      <li>true, false</li>
+      <li>123, -18</li>
+      <li>123.0, 456.</li>
+      <li>1.0e0, 1.0E+6</li>
+    </ul>
+  </dd>
+</dl>
+<h2 id="label-Examples">Examples</h2>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>sxp</span><span class='tstring_end'>&#39;</span></span>
+</code></pre>
+
+<h3 id="label-Parsing+basic+S-expressions">Parsing basic S-expressions</h3>
+
+<pre class="code ruby"><code class="ruby">SXP.read &quot;(* 6 7)&quot;  #=&gt; [:*, 6, 7]
+
+SXP.read &lt;&lt;-EOF
+  (define (fact n)
+    (if (= n 0)
+        1
+        (* n (fact (- n 1)))))
+EOF
+
+#=&gt; [:define, [:fact, :n],
+      [:if, [:&quot;=&quot;, :n, 0],
+            1,
+            [:*, :n, [:fact, [:-, :n, 1]]]]]
+</code></pre>
+
+<h3 id="label-Parsing+Scheme+S-expressions">Parsing Scheme S-expressions</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='const'><span class='object_link'><a href="SXP.html" title="SXP (module)">SXP</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader/Scheme.html" title="SXP::Reader::Scheme (class)">Scheme</a></span></span><span class='period'>.</span><span class='id identifier rubyid_read'><span class='object_link'><a href="SXP/Reader.html#read-class_method" title="SXP::Reader.read (method)">read</a></span></span> <span class='tstring'><span class='tstring_beg'>%q(</span><span class='tstring_content'>(and #t #f)</span><span class='tstring_end'>)</span></span>             <span class='comment'>#=&gt; [:and, true, false]
+</span></code></pre>
+
+<h3 id="label-Parsing+Common+Lisp+S-expressions">Parsing Common Lisp S-expressions</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='const'><span class='object_link'><a href="SXP.html" title="SXP (module)">SXP</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader/CommonLisp.html" title="SXP::Reader::CommonLisp (class)">CommonLisp</a></span></span><span class='period'>.</span><span class='id identifier rubyid_read'><span class='object_link'><a href="SXP/Reader.html#read-class_method" title="SXP::Reader.read (method)">read</a></span></span> <span class='tstring'><span class='tstring_beg'>%q(</span><span class='tstring_content'>(or t nil)</span><span class='tstring_end'>)</span></span>          <span class='comment'>#=&gt; [:or, true, nil]
+</span></code></pre>
+
+<h3 id="label-Parsing+SPARQL+S-expressions">Parsing SPARQL S-expressions</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>rdf</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='const'><span class='object_link'><a href="SXP.html" title="SXP (module)">SXP</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">Reader</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Reader/SPARQL.html" title="SXP::Reader::SPARQL (class)">SPARQL</a></span></span><span class='period'>.</span><span class='id identifier rubyid_read'><span class='object_link'><a href="SXP/Reader.html#read-class_method" title="SXP::Reader.read (method)">read</a></span></span> <span class='tstring'><span class='tstring_beg'>%q(</span><span class='tstring_content'>(base &lt;https://ar.to/&gt;)</span><span class='tstring_end'>)</span></span>  <span class='comment'>#=&gt; [:base, RDF::URI(&#39;https://ar.to/&#39;)]
+</span></code></pre>
+
+<h3 id="label-Writing+an+SXP+with+formatting">Writing an SXP with formatting</h3>
+
+<pre class="code ruby"><code class="ruby"><span class='const'><span class='object_link'><a href="SXP.html" title="SXP (module)">SXP</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="SXP/Generator.html" title="SXP::Generator (class)">Generator</a></span></span><span class='period'>.</span><span class='id identifier rubyid_print'><span class='object_link'><a href="SXP/Generator.html#print-class_method" title="SXP::Generator.print (method)">print</a></span></span><span class='lparen'>(</span><span class='lbracket'>[</span><span class='symbol'>:and</span><span class='comma'>,</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='kw'>false</span><span class='rbracket'>]</span><span class='rparen'>)</span>   <span class='comment'>#=&gt; (and #t #f)
+</span></code></pre>
+
+<h2 id="label-Documentation">Documentation</h2>
+<ul><li>
+<p>Full documentation available on <a href="https://dryruby.github.io/sxp">RubyDoc</a></p>
+</li><li>
+<p><span class='object_link'><a href="SXP.html" title="SXP (module)">SXP</a></span></p>
+</li></ul>
+
+<h3 id="label-Parsing+SXP">Parsing SXP</h3>
+<ul><li>
+<p><span class='object_link'><a href="SXP/Reader.html" title="SXP::Reader (class)">SXP::Reader</a></span></p>
+<ul><li>
+<p><span class='object_link'><a href="SXP/Reader/Basic.html" title="SXP::Reader::Basic (class)">SXP::Reader::Basic</a></span></p>
+</li><li>
+<p><span class='object_link'><a href="SXP/Reader/CommonLisp.html" title="SXP::Reader::CommonLisp (class)">SXP::Reader::CommonLisp</a></span></p>
+</li><li>
+<p><span class='object_link'><a href="SXP/Reader/Extended.html" title="SXP::Reader::Extended (class)">SXP::Reader::Extended</a></span></p>
+<ul><li>
+<p><span class='object_link'><a href="SXP/Reader/Scheme.html" title="SXP::Reader::Scheme (class)">SXP::Reader::Scheme</a></span></p>
+</li><li>
+<p><span class='object_link'><a href="SXP/Reader/SPARQL.html" title="SXP::Reader::SPARQL (class)">SXP::Reader::SPARQL</a></span></p>
+</li></ul>
+</li></ul>
+</li></ul>
+
+<h3 id="label-Manipulating+SXP">Manipulating SXP</h3>
+<ul><li>
+<p><span class='object_link'><a href="SXP/Pair.html" title="SXP::Pair (class)">SXP::Pair</a></span></p>
+<ul><li>
+<p><span class='object_link'><a href="SXP/List.html" title="SXP::List (class)">SXP::List</a></span></p>
+</li></ul>
+</li></ul>
+
+<h3 id="label-Generating+SXP">Generating SXP</h3>
+<ul><li>
+<p><span class='object_link'><a href="SXP/Generator.html" title="SXP::Generator (class)">SXP::Generator</a></span></p>
+</li></ul>
+
+<h1 id="label-Dependencies">Dependencies</h1>
+<ul><li>
+<p><a href="https:/ruby-lang.org/">Ruby</a> (&gt;= 2.6)</p>
+</li><li>
+<p><a href="https:/rubygems.org/gems/rdf">RDF.rb</a> (~&gt; 3.2), only needed for SPARQL  S-expressions</p>
+</li></ul>
+
+<h1 id="label-Installation">Installation</h1>
+
+<p>The recommended installation method is via <a href="https:/rubygems.org/">RubyGems</a>. To install the latest official release of the SXP.rb gem, do:</p>
+
+<pre class="code ruby"><code class="ruby">% [sudo] gem install sxp
+</code></pre>
+
+<h2 id="label-Download">Download</h2>
+
+<p>To get a local working copy of the development repository, do:</p>
+
+<pre class="code ruby"><code class="ruby">% git clone git://github.com/dryruby/sxp.rb.git
+</code></pre>
+
+<p>Alternatively, you can download the latest development version as a tarball as follows:</p>
+
+<pre class="code ruby"><code class="ruby">% wget https:/github.com/dryruby/sxp.rb/tarball/master
+</code></pre>
+
+<h2 id="label-Resources">Resources</h2>
+<ul><li>
+<p><a href="https://rubydoc.info/gems/sxp.rb">rubydoc.info/gems/sxp.rb</a></p>
+</li><li>
+<p><a href="https://github.com/dryruby/sxp.rb">github.com/dryruby/sxp.rb</a></p>
+</li><li>
+<p><a href="https://rubygems.org/gems/sxp.rb">rubygems.org/gems/sxp.rb</a></p>
+</li></ul>
+
+<h2 id="label-Authors">Authors</h2>
+<ul><li>
+<p><a href="https://github.com/artob">Arto Bendiken</a> - <a href="https://ar.to">ar.to</a>/</p>
+</li><li>
+<p><a href="https://github.com/gkellogg">Gregg Kellogg</a> - <a href="https://greggkellogg.net">greggkellogg.net</a>/</p>
+</li></ul>
+
+<h2 id="label-Contributors">Contributors</h2>
+<ul><li>
+<p><a href="https://github.com/bhuga">Ben Lavender</a> - <a href="https://bhuga.net">bhuga.net</a>/</p>
+</li></ul>
+
+<h2 id="label-Contributing">Contributing</h2>
+
+<p>This repository uses <a href="https://github.com/nvie/gitflow">Git Flow</a> to mange development and release activity. All submissions <em>must</em> be on a feature branch based on the <em>develop</em> branch to ease staging and integration.</p>
+<ul><li>
+<p>Do your best to adhere to the existing coding conventions and idioms.</p>
+</li><li>
+<p>Don’t use hard tabs, and don’t leave trailing whitespace on any line.</p>
+</li><li>
+<p>Do document every method you add using <a href="https://yardoc.org/">YARD</a> annotations. Read the  <a href="https://rubydoc.info/docs/yard/file/docs/GettingStarted.md">tutorial</a> or just look at the existing code for examples.</p>
+</li><li>
+<p>Don’t touch the <code>.gemspec</code>, <code>VERSION</code> or <code>AUTHORS</code> files. If you need to  change them, do so on your private branch only.</p>
+</li><li>
+<p>Do feel free to add yourself to the <code>CREDITS</code> file and the corresponding  list in the the <code>README</code>. Alphabetical order applies.</p>
+</li><li>
+<p>Do note that in order for us to merge any non-trivial changes (as a rule  of thumb, additions larger than about 15 lines of code), we need an  explicit <a href="https://lists.w3.org/Archives/Public/public-rdf-ruby/2010May/0013.html">public domain dedication</a> on record from you,  which you will be asked to agree to on the first commit to a repo within the organization.</p>
+</li></ul>
+
+<h2 id="label-License">License</h2>
+
+<p>SXP.rb is free and unencumbered public domain software. For more information, see <a href="https://unlicense.org">unlicense.org</a>/ or the accompanying UNLICENSE file.</p>
+</div></div>
+
+      <div id="footer">
+  Generated on Fri Jan 28 00:00:14 2022 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.27 (ruby-3.1.0).
+</div>
+
+    </div>
+  </body>
+</html>
