@@ -280,7 +280,7 @@ begin
     # @return [String]
     def to_sxp(**options)
       case datatype
-      when RDF::XSD.boolean, RDF::XSD.integer, RDF::XSD.double, RDF::XSD.decimal, RDF::XSD.time
+      when RDF::XSD.boolean, RDF::XSD.integer, RDF::XSD.double, RDF::XSD.decimal
         # Retain stated lexical form if possible
         valid? ? to_s : object.to_sxp(**options)
       else

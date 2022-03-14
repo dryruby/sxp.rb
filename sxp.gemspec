@@ -10,6 +10,13 @@ Gem::Specification.new do |gem|
   gem.license            = 'Unlicense'
   gem.summary            = 'A pure-Ruby implementation of a universal S-expression parser.'
   gem.description        = 'Universal S-expression parser with specific support for Common Lisp, Scheme, and RDF/SPARQL'
+  gem.metadata           = {
+    "documentation_uri" => "https://dryruby.github.io/sxp",
+    "bug_tracker_uri"   => "https://github.com/dryruby/sxp/issues",
+    "homepage_uri"      => "https://github.com/dryruby/sxp",
+    "mailing_list_uri"  => "https://lists.w3.org/Archives/Public/public-rdf-ruby/",
+    "source_code_uri"   => "https://github.com/dryruby/sxp",
+  }
 
   gem.author             = ['Arto Bendiken', 'Gregg Kellogg']
   gem.email              = ['arto@bendiken.net', 'gregg@greggkellogg.net']
