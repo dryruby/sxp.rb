@@ -76,16 +76,17 @@ describe SXP::Reader::CommonLisp do
     end
   end
 
-  context "when reading booleans" do
+  context "when reading atoms" do
     {
       't' => true,
       'T' => true,
       'nil' => false,
       'NIL' => false,
-      '(or t nil)' => [:or, true, false],
-      '(or T NIL)' => [:or, true, false]
+      '1/2' => Rational(1, 2),
+      '1.0' => Float(1.0),
+      "10" => Integer(10),
     }.each_pair do |input, output|
-      it "reads #{input} as an integer" do
+      it "reads #{input} as an atom" do
         expect(read(input)).to eq output
       end
     end
