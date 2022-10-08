@@ -79,7 +79,7 @@ module SXP; class Reader
         when DECIMAL  then Float(buffer) # FIXME?
         when INTEGER  then Integer(buffer)
         when /^t$/i   then true
-        when /^nil$/i then false
+        when /^nil$/i then nil
         else buffer.to_sym
       end
     end
