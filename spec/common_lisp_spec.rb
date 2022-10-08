@@ -76,6 +76,21 @@ describe SXP::Reader::CommonLisp do
     end
   end
 
+  context "when reading booleans" do
+    {
+      't' => true,
+      'T' => true,
+      'nil' => false,
+      'NIL' => false,
+      '(or t nil)' => [:or, true, false],
+      '(or T NIL)' => [:or, true, false]
+    }.each_pair do |input, output|
+      it "reads #{input} as an integer" do
+        expect(read(input)).to eq output
+      end
+    end
+  end
+
   context "when reading lists" do
     it "reads `()` as an empty list" do
       expect(read(%q(()))).to eq [] # FIXME
