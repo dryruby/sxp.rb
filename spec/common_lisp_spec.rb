@@ -80,8 +80,8 @@ describe SXP::Reader::CommonLisp do
     {
       't' => true,
       'T' => true,
-      'nil' => false,
-      'NIL' => false,
+      'nil' => nil,
+      'NIL' => nil,
       '1/2' => Rational(1, 2),
       '1.0' => Float(1.0),
       "10" => Integer(10),
