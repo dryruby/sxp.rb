@@ -92,7 +92,7 @@ module SXP; class Reader
       until delimiter === peek_char
         buffer <<
           case char = read_char
-            when ?\\ then read_character
+            when ?\\ then read_char
             else char
           end
       end

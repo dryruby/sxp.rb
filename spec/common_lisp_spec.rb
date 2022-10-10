@@ -1,10 +1,17 @@
 require File.join(File.dirname(__FILE__), 'spec_helper')
 
 describe SXP::Reader::CommonLisp do
-  context "when reading empty input" do
-    it "raises an error" do
+  context "when reading invalid input" do
+    it "raises an error when empty" do
       expect { read('') }.to raise_error(SXP::Reader::Error)
+    end
+
+    it "raises an error on blank" do
       expect { read(' ') }.to raise_error(SXP::Reader::Error)
+    end
+
+    it "raises an error on an illegal sharp sequence" do
+      expect { read('#fx') }.to raise_error(SXP::Reader::Error, /invalid sharp-sign read/)
     end
   end
 
@@ -21,6 +28,10 @@ describe SXP::Reader::CommonLisp do
       it "reads `|#{symbol}|` as a symbol" do
         expect(read(%Q(|#{symbol}|))).to eq symbol.to_sym
       end
+    end
+
+    it "reads `|\\backspace|` as a symbol" do
+      expect(read(%Q(|\\backspace|))).to eq :backspace
     end
   end
 
@@ -78,6 +89,7 @@ describe SXP::Reader::CommonLisp do
 
   context "when reading atoms" do
     {
+      '.' => :".",
       't' => true,
       'T' => true,
       'nil' => nil,
