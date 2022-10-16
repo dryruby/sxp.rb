@@ -7,7 +7,7 @@ module SXP; class Reader
   #
   # @see https:/www.cs.cmu.edu/Groups/AI/html/cltl/clm/node14.html
   class CommonLisp < Basic
-    OPTIONS         = {nil: nil, t: true, quote: :quote, function: :function}
+    OPTIONS         = {nil: false, t: true, quote: :quote, function: :function}
 
     DECIMAL         = /^[+-]?(\d*)?\.\d*$/
     INTEGER_BASE_2  = /^[+-]?[01]+$/
@@ -35,7 +35,7 @@ module SXP; class Reader
     #
     # @param  [IO, StringIO, String]   input
     # @param  [Hash{Symbol => Object}] options
-    # @option options [Object]         :nil      (nil)
+    # @option options [Object]         :nil      (false)
     # @option options [Object]         :t        (true)
     # @option options [Object]         :quote    (:quote)
     # @option options [Object]         :function (:function)
@@ -70,6 +70,21 @@ module SXP; class Reader
     end
 
     ##
+    # Based on Basic#read_atom, but adds 't' and 'nil' atoms.
+    # @return [Object]
+    def read_atom
+      case buffer = read_literal
+        when '.'      then buffer.to_sym
+        when RATIONAL then Rational($1.to_i, $2.to_i)
+        when DECIMAL  then Float(buffer) # FIXME?
+        when INTEGER  then Integer(buffer)
+        when /^t$/i   then true
+        when /^nil$/i then nil
+        else buffer.to_sym
+      end
+    end
+
+    ##
     # @return [Symbol]
     def read_symbol(delimiter = nil)
       buffer = ""
@@ -77,7 +92,7 @@ module SXP; class Reader
       until delimiter === peek_char
         buffer <<
           case char = read_char
-            when ?\\ then read_character
+            when ?\\ then read_char
             else char
           end
       end
