@@ -30,7 +30,7 @@ Gem::Specification.new do |gem|
   gem.required_ruby_version      = '>= 2.6'
   gem.requirements               = []
   gem.add_runtime_dependency     'rdf',   '~> 3.2'
-  gem.add_runtime_dependency     'matrix'
+  gem.add_runtime_dependency     'matrix', '~> 0.4'
 
   gem.add_development_dependency 'amazing_print',   '~> 1.4'
   gem.add_development_dependency 'rspec', '~> 3.10'
