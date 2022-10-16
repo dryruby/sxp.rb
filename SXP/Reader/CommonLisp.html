@@ -133,7 +133,7 @@
         <dt id="OPTIONS-constant" class="">OPTIONS =
           
         </dt>
-        <dd><pre class="code"><span class='lbrace'>{</span><span class='label'>nil:</span> <span class='kw'>nil</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='label'>quote:</span> <span class='symbol'>:quote</span><span class='comma'>,</span> <span class='label'>function:</span> <span class='symbol'>:function</span><span class='rbrace'>}</span></pre></dd>
+        <dd><pre class="code"><span class='lbrace'>{</span><span class='label'>nil:</span> <span class='kw'>false</span><span class='comma'>,</span> <span class='label'>t:</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='label'>quote:</span> <span class='symbol'>:quote</span><span class='comma'>,</span> <span class='label'>function:</span> <span class='symbol'>:function</span><span class='rbrace'>}</span></pre></dd>
       
         <dt id="DECIMAL-constant" class="">DECIMAL =
           
@@ -246,6 +246,30 @@
   
     <span class="summary_desc"><div class='inline'>
 <p>Initializes the reader.</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#read_atom-instance_method" title="#read_atom (instance method)">#<strong>read_atom</strong>  &#x21d2; Object </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'>
+<p>Based on Basic#read_atom, but adds ‘t’ and ‘nil’ atoms.</p>
 </div></span>
   
 </li>
@@ -448,7 +472,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="Basic.html" title="SXP::Reader::Basic (class)">Basic</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="Basic.html#read_atom-instance_method" title="SXP::Reader::Basic#read_atom (method)">#read_atom</a></span>, <span class='object_link'><a href="Basic.html#read_literal-instance_method" title="SXP::Reader::Basic#read_literal (method)">#read_literal</a></span>, <span class='object_link'><a href="Basic.html#read_string-instance_method" title="SXP::Reader::Basic#read_string (method)">#read_string</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="Basic.html#read_literal-instance_method" title="SXP::Reader::Basic#read_literal (method)">#read_literal</a></span>, <span class='object_link'><a href="Basic.html#read_string-instance_method" title="SXP::Reader::Basic#read_string (method)">#read_string</a></span></p>
 
   
   
@@ -459,7 +483,7 @@
   
   
   <h3 class="inherited">Methods inherited from <span class='object_link'><a href="../Reader.html" title="SXP::Reader (class)">SXP::Reader</a></span></h3>
-  <p class="inherited"><span class='object_link'><a href="../Reader.html#each-instance_method" title="SXP::Reader#each (method)">#each</a></span>, <span class='object_link'><a href="../Reader.html#eof%3F-instance_method" title="SXP::Reader#eof? (method)">#eof?</a></span>, <span class='object_link'><a href="../Reader.html#peek_char-instance_method" title="SXP::Reader#peek_char (method)">#peek_char</a></span>, <span class='object_link'><a href="../Reader.html#read-class_method" title="SXP::Reader.read (method)">read</a></span>, <span class='object_link'><a href="../Reader.html#read-instance_method" title="SXP::Reader#read (method)">#read</a></span>, <span class='object_link'><a href="../Reader.html#read_all-class_method" title="SXP::Reader.read_all (method)">read_all</a></span>, <span class='object_link'><a href="../Reader.html#read_all-instance_method" title="SXP::Reader#read_all (method)">#read_all</a></span>, <span class='object_link'><a href="../Reader.html#read_atom-instance_method" title="SXP::Reader#read_atom (method)">#read_atom</a></span>, <span class='object_link'><a href="../Reader.html#read_char-instance_method" title="SXP::Reader#read_char (method)">#read_char</a></span>, <span class='object_link'><a href="../Reader.html#read_chars-instance_method" title="SXP::Reader#read_chars (method)">#read_chars</a></span>, <span class='object_link'><a href="../Reader.html#read_file-class_method" title="SXP::Reader.read_file (method)">read_file</a></span>, <span class='object_link'><a href="../Reader.html#read_files-instance_method" title="SXP::Reader#read_files (method)">#read_files</a></span>, <span class='object_link'><a href="../Reader.html#read_integer-instance_method" title="SXP::Reader#read_integer (method)">#read_integer</a></span>, <span class='object_link'><a href="../Reader.html#read_list-instance_method" title="SXP::Reader#read_list (method)">#read_list</a></span>, <span class='object_link'><a href="../Reader.html#read_literal-instance_method" title="SXP::Reader#read_literal (method)">#read_literal</a></span>, <span class='object_link'><a href="../Reader.html#read_string-instance_method" title="SXP::Reader#read_string (method)">#read_string</a></span>, <span class='object_link'><a href="../Reader.html#read_url-class_method" title="SXP::Reader.read_url (method)">read_url</a></span>, <span class='object_link'><a href="../Reader.html#skip_line-instance_method" title="SXP::Reader#skip_line (method)">#skip_line</a></span>, <span class='object_link'><a href="../Reader.html#unread-instance_method" title="SXP::Reader#unread (method)">#unread</a></span></p>
+  <p class="inherited"><span class='object_link'><a href="../Reader.html#each-instance_method" title="SXP::Reader#each (method)">#each</a></span>, <span class='object_link'><a href="../Reader.html#eof%3F-instance_method" title="SXP::Reader#eof? (method)">#eof?</a></span>, <span class='object_link'><a href="../Reader.html#peek_char-instance_method" title="SXP::Reader#peek_char (method)">#peek_char</a></span>, <span class='object_link'><a href="../Reader.html#read-class_method" title="SXP::Reader.read (method)">read</a></span>, <span class='object_link'><a href="../Reader.html#read-instance_method" title="SXP::Reader#read (method)">#read</a></span>, <span class='object_link'><a href="../Reader.html#read_all-class_method" title="SXP::Reader.read_all (method)">read_all</a></span>, <span class='object_link'><a href="../Reader.html#read_all-instance_method" title="SXP::Reader#read_all (method)">#read_all</a></span>, <span class='object_link'><a href="../Reader.html#read_char-instance_method" title="SXP::Reader#read_char (method)">#read_char</a></span>, <span class='object_link'><a href="../Reader.html#read_chars-instance_method" title="SXP::Reader#read_chars (method)">#read_chars</a></span>, <span class='object_link'><a href="../Reader.html#read_file-class_method" title="SXP::Reader.read_file (method)">read_file</a></span>, <span class='object_link'><a href="../Reader.html#read_files-instance_method" title="SXP::Reader#read_files (method)">#read_files</a></span>, <span class='object_link'><a href="../Reader.html#read_integer-instance_method" title="SXP::Reader#read_integer (method)">#read_integer</a></span>, <span class='object_link'><a href="../Reader.html#read_list-instance_method" title="SXP::Reader#read_list (method)">#read_list</a></span>, <span class='object_link'><a href="../Reader.html#read_literal-instance_method" title="SXP::Reader#read_literal (method)">#read_literal</a></span>, <span class='object_link'><a href="../Reader.html#read_string-instance_method" title="SXP::Reader#read_string (method)">#read_string</a></span>, <span class='object_link'><a href="../Reader.html#read_url-class_method" title="SXP::Reader.read_url (method)">read_url</a></span>, <span class='object_link'><a href="../Reader.html#skip_line-instance_method" title="SXP::Reader#skip_line (method)">#skip_line</a></span>, <span class='object_link'><a href="../Reader.html#unread-instance_method" title="SXP::Reader#unread (method)">#unread</a></span></p>
 
   <div id="constructor_details" class="method_details_list">
   <h2>Constructor Details</h2>
@@ -523,7 +547,7 @@
           <span class="default">
             
               &mdash; default:
-              <tt>nil</tt>
+              <tt>false</tt>
             
           </span>
           
@@ -600,7 +624,77 @@
 
     
       <div class="method_details first">
-  <h3 class="signature first" id="read_character-instance_method">
+  <h3 class="signature first" id="read_atom-instance_method">
+  
+    #<strong>read_atom</strong>  &#x21d2; <tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt> 
+  
+
+  
+
+  
+</h3><div class="docstring">
+  <div class="discussion">
+    
+<p>Based on Basic#read_atom, but adds ‘t’ and ‘nil’ atoms.</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+<p class="tag_title">Returns:</p>
+<ul class="return">
+  
+    <li>
+      
+      
+        <span class='type'>(<tt><span class='object_link'><a href="../../Object.html" title="Object (class)">Object</a></span></tt>)</span>
+      
+      
+      
+    </li>
+  
+</ul>
+
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+75
+76
+77
+78
+79
+80
+81
+82
+83
+84
+85</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 75</span>
+
+<span class='kw'>def</span> <span class='id identifier rubyid_read_atom'>read_atom</span>
+  <span class='kw'>case</span> <span class='id identifier rubyid_buffer'>buffer</span> <span class='op'>=</span> <span class='id identifier rubyid_read_literal'>read_literal</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.</span><span class='tstring_end'>&#39;</span></span>      <span class='kw'>then</span> <span class='id identifier rubyid_buffer'>buffer</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
+    <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#RATIONAL-constant" title="SXP::Reader::CommonLisp::RATIONAL (constant)">RATIONAL</a></span></span> <span class='kw'>then</span> <span class='const'>Rational</span><span class='lparen'>(</span><span class='backref'>$1</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span> <span class='backref'>$2</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
+    <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#DECIMAL-constant" title="SXP::Reader::CommonLisp::DECIMAL (constant)">DECIMAL</a></span></span>  <span class='kw'>then</span> <span class='const'><span class='object_link'><a href="../../Float.html" title="Float (class)">Float</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_buffer'>buffer</span><span class='rparen'>)</span> <span class='comment'># FIXME?
+</span>    <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="Basic.html#INTEGER-constant" title="SXP::Reader::Basic::INTEGER (constant)">INTEGER</a></span></span>  <span class='kw'>then</span> <span class='const'><span class='object_link'><a href="../../Integer.html" title="Integer (class)">Integer</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_buffer'>buffer</span><span class='rparen'>)</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^t$</span><span class='regexp_end'>/i</span></span>   <span class='kw'>then</span> <span class='kw'>true</span>
+    <span class='kw'>when</span> <span class='tstring'><span class='regexp_beg'>/</span><span class='tstring_content'>^nil$</span><span class='regexp_end'>/i</span></span> <span class='kw'>then</span> <span class='kw'>nil</span>
+    <span class='kw'>else</span> <span class='id identifier rubyid_buffer'>buffer</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span></pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <h3 class="signature " id="read_character-instance_method">
   
     #<strong>read_character</strong>  &#x21d2; <tt><span class='object_link'><a href="../../String.html" title="String (class)">String</a></span></tt> 
   
@@ -645,19 +739,19 @@
       <pre class="lines">
 
 
-121
-122
-123
-124
-125
-126
-127
-128
-129
-130</pre>
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 121</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 136</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_character'>read_character</span>
   <span class='id identifier rubyid_lit'>lit</span> <span class='op'>=</span> <span class='id identifier rubyid_read_literal'>read_literal</span>
@@ -713,12 +807,12 @@
       <pre class="lines">
 
 
-110
-111
-112</pre>
+125
+126
+127</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 110</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 125</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_function'>read_function</span>
   <span class='lbracket'>[</span><span class='id identifier rubyid_options'>options</span><span class='lbracket'>[</span><span class='symbol'>:function</span><span class='rbracket'>]</span> <span class='op'>||</span> <span class='symbol'>:function</span><span class='comma'>,</span> <span class='id identifier rubyid_read'>read</span><span class='rbracket'>]</span>
@@ -767,13 +861,13 @@
       <pre class="lines">
 
 
-101
-102
-103
-104</pre>
+116
+117
+118
+119</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 101</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 116</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_quote'>read_quote</span>
   <span class='id identifier rubyid_skip_char'>skip_char</span> <span class='comment'># &quot;&#39;&quot;
@@ -891,22 +985,22 @@
       <pre class="lines">
 
 
-74
-75
-76
-77
-78
-79
-80
-81
-82
-83
-84
-85
-86</pre>
+89
+90
+91
+92
+93
+94
+95
+96
+97
+98
+99
+100
+101</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 74</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 89</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_symbol'>read_symbol</span><span class='lparen'>(</span><span class='id identifier rubyid_delimiter'>delimiter</span> <span class='op'>=</span> <span class='kw'>nil</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_buffer'>buffer</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
@@ -914,7 +1008,7 @@
 </span>  <span class='kw'>until</span> <span class='id identifier rubyid_delimiter'>delimiter</span> <span class='op'>===</span> <span class='id identifier rubyid_peek_char'>peek_char</span>
     <span class='id identifier rubyid_buffer'>buffer</span> <span class='op'>&lt;&lt;</span>
       <span class='kw'>case</span> <span class='id identifier rubyid_char'>char</span> <span class='op'>=</span> <span class='id identifier rubyid_read_char'>read_char</span>
-        <span class='kw'>when</span> <span class='CHAR'>?\\</span> <span class='kw'>then</span> <span class='id identifier rubyid_read_character'>read_character</span>
+        <span class='kw'>when</span> <span class='CHAR'>?\\</span> <span class='kw'>then</span> <span class='id identifier rubyid_read_char'>read_char</span>
         <span class='kw'>else</span> <span class='id identifier rubyid_char'>char</span>
       <span class='kw'>end</span>
   <span class='kw'>end</span>
@@ -1027,13 +1121,13 @@
       <pre class="lines">
 
 
-92
-93
-94
-95</pre>
+107
+108
+109
+110</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 92</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 107</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_vector'>read_vector</span>
   <span class='id identifier rubyid_list'>list</span> <span class='op'>=</span> <span class='id identifier rubyid_read_list'>read_list</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>)</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
@@ -1068,18 +1162,18 @@
       <pre class="lines">
 
 
-134
-135
-136
-137
-138
-139
-140
-141
-142</pre>
+149
+150
+151
+152
+153
+154
+155
+156
+157</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 134</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/common_lisp.rb', line 149</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_skip_comments'>skip_comments</span>
   <span class='kw'>until</span> <span class='id identifier rubyid_eof?'>eof?</span>
@@ -1100,9 +1194,9 @@
 </div>
 
       <div id="footer">
-  Generated on Mon Mar 14 18:40:02 2022 by
-  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.27 (ruby-3.1.1).
+  Generated on Sun Oct 16 21:58:50 2022 by
+  <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.28 (ruby-3.1.2).
 </div>
 
     </div>
