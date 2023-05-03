@@ -20,6 +20,25 @@ describe SXP::Reader::Basic do
     end
   end
 
+  context "when reading numbers" do
+    {
+      "1" => Integer("1"),
+      "+1" => Integer("+1"),
+      "-1" => Integer("-1"),
+      "1." => Float("1.0"),
+      "1.1" => Float("1.1"),
+      "+1.1" => Float("1.1"),
+      "-1.1" => Float("-1.1"),
+      "1/2" => Rational(1, 2),
+      "+1/2" => Rational(1, 2),
+      "-1/2" => Rational(-1, 2),
+    }.each do |c, result|
+      it "reads #{c.inspect} as #{result.inspect}" do
+        expect(read(c)).to eql result
+      end      
+    end
+  end
+
   context "when reading lists" do
     it "reads '()' as an empty list" do
       expect(read('()')).to eq []

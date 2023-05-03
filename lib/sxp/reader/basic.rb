@@ -26,7 +26,7 @@ module SXP; class Reader
       case buffer = read_literal
         when '.'      then buffer.to_sym
         when RATIONAL then Rational($1.to_i, $2.to_i)
-        when DECIMAL  then Float(buffer) # FIXME?
+        when DECIMAL  then Float(buffer.end_with?('.') ? "#{buffer}0" : buffer)
         when INTEGER  then Integer(buffer)
         else buffer.to_sym
       end
