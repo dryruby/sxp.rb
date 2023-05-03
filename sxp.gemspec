@@ -16,6 +16,7 @@ Gem::Specification.new do |gem|
     "homepage_uri"      => "https://github.com/dryruby/sxp",
     "mailing_list_uri"  => "https://lists.w3.org/Archives/Public/public-rdf-ruby/",
     "source_code_uri"   => "https://github.com/dryruby/sxp",
+    'rubygems_mfa_required' => 'true',
   }
 
   gem.author             = ['Arto Bendiken', 'Gregg Kellogg']
@@ -33,7 +34,7 @@ Gem::Specification.new do |gem|
   gem.add_runtime_dependency     'matrix', '~> 0.4'
 
   gem.add_development_dependency 'amazing_print',   '~> 1.4'
-  gem.add_development_dependency 'rspec', '~> 3.10'
+  gem.add_development_dependency 'rspec', '~> 3.12'
   gem.add_development_dependency 'yard' , '~> 0.9'
 
   gem.post_install_message       = nil
