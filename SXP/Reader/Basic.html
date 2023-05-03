@@ -368,8 +368,8 @@
   <span class='kw'>case</span> <span class='id identifier rubyid_buffer'>buffer</span> <span class='op'>=</span> <span class='id identifier rubyid_read_literal'>read_literal</span>
     <span class='kw'>when</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.</span><span class='tstring_end'>&#39;</span></span>      <span class='kw'>then</span> <span class='id identifier rubyid_buffer'>buffer</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
     <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#RATIONAL-constant" title="SXP::Reader::Basic::RATIONAL (constant)">RATIONAL</a></span></span> <span class='kw'>then</span> <span class='const'>Rational</span><span class='lparen'>(</span><span class='backref'>$1</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='comma'>,</span> <span class='backref'>$2</span><span class='period'>.</span><span class='id identifier rubyid_to_i'>to_i</span><span class='rparen'>)</span>
-    <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#DECIMAL-constant" title="SXP::Reader::Basic::DECIMAL (constant)">DECIMAL</a></span></span>  <span class='kw'>then</span> <span class='const'><span class='object_link'><a href="../../Float.html" title="Float (class)">Float</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_buffer'>buffer</span><span class='rparen'>)</span> <span class='comment'># FIXME?
-</span>    <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#INTEGER-constant" title="SXP::Reader::Basic::INTEGER (constant)">INTEGER</a></span></span>  <span class='kw'>then</span> <span class='const'><span class='object_link'><a href="../../Integer.html" title="Integer (class)">Integer</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_buffer'>buffer</span><span class='rparen'>)</span>
+    <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#DECIMAL-constant" title="SXP::Reader::Basic::DECIMAL (constant)">DECIMAL</a></span></span>  <span class='kw'>then</span> <span class='const'><span class='object_link'><a href="../../Float.html" title="Float (class)">Float</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_buffer'>buffer</span><span class='period'>.</span><span class='id identifier rubyid_end_with?'>end_with?</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>.</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span> <span class='op'>?</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_buffer'>buffer</span><span class='embexpr_end'>}</span><span class='tstring_content'>0</span><span class='tstring_end'>&quot;</span></span> <span class='op'>:</span> <span class='id identifier rubyid_buffer'>buffer</span><span class='rparen'>)</span>
+    <span class='kw'>when</span> <span class='const'><span class='object_link'><a href="#INTEGER-constant" title="SXP::Reader::Basic::INTEGER (constant)">INTEGER</a></span></span>  <span class='kw'>then</span> <span class='const'><span class='object_link'><a href="../../Integer.html" title="Integer (class)">Integer</a></span></span><span class='lparen'>(</span><span class='id identifier rubyid_buffer'>buffer</span><span class='rparen'>)</span>
     <span class='kw'>else</span> <span class='id identifier rubyid_buffer'>buffer</span><span class='period'>.</span><span class='id identifier rubyid_to_sym'>to_sym</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
@@ -647,9 +647,9 @@
 </div>
 
       <div id="footer">
-  Generated on Sun Oct 16 21:58:50 2022 by
+  Generated on Wed May  3 21:00:56 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
-  0.9.28 (ruby-3.1.2).
+  0.9.34 (ruby-3.1.4).
 </div>
 
     </div>
