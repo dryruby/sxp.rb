@@ -2,7 +2,7 @@
 
 This is a Ruby implementation of a universal [S-expression][] parser.
 
-[![Gem Version](https://badge.fury.io/rb/sxp.png)](https:/badge.fury.io/rb/sxp)
+[![Gem Version](https://badge.fury.io/rb/sxp.svg)](https:/badge.fury.io/rb/sxp)
 [![Build Status](https://github.com/dryruby/sxp.rb/workflows/CI/badge.svg?branch=develop)](https://github.com/dryruby/sxp.rb/actions?query=workflow%3ACI)
 [![Coverage Status](https://coveralls.io/repos/dryruby/sxp.rb/badge.svg?branch=develop)](https://coveralls.io/r/dryruby/sxp.rb?branch=develop)
 
@@ -11,7 +11,7 @@ This is a Ruby implementation of a universal [S-expression][] parser.
 * Parses S-expressions in universal, [Scheme][], [Common Lisp][], or
   [SPARQL][] syntax.
 * Adds a `#to_sxp` method to Ruby objects.
-* Compatible with Ruby >= 2.6, Rubinius >= 3.0, and JRuby 9+.
+* Compatible with Ruby >= 3.0, Rubinius >= 3.0, and JRuby 9+.
 
 ## Basic syntax
 
@@ -224,8 +224,8 @@ In addition to the standard datatypes, the SPARQL dialect supports the following
 
 #  Dependencies
 
-* [Ruby](https:/ruby-lang.org/) (>= 2.6)
-* [RDF.rb](https:/rubygems.org/gems/rdf) (~> 3.2), only needed for SPARQL
+* [Ruby](https:/ruby-lang.org/) (>= 3.0)
+* [RDF.rb](https:/rubygems.org/gems/rdf) (~> 3.3), only needed for SPARQL
   S-expressions
 
 #  Installation

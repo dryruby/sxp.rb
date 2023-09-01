@@ -28,12 +28,12 @@ Gem::Specification.new do |gem|
   gem.executables        = %w(sxp2rdf sxp2json sxp2xml sxp2yaml)
   gem.require_paths      = %w(lib)
 
-  gem.required_ruby_version      = '>= 2.6'
+  gem.required_ruby_version      = '>= 3.0'
   gem.requirements               = []
-  gem.add_runtime_dependency     'rdf',   '~> 3.2'
+  gem.add_runtime_dependency     'rdf',   '~> 3.3'
   gem.add_runtime_dependency     'matrix', '~> 0.4'
 
-  gem.add_development_dependency 'amazing_print',   '~> 1.4'
+  gem.add_development_dependency 'amazing_print',   '~> 1.5'
   gem.add_development_dependency 'rspec', '~> 3.12'
   gem.add_development_dependency 'yard' , '~> 0.9'
 
