@@ -94,6 +94,7 @@ module SXP; class Reader
     def read_token
       case peek_char
       when ?" then [:atom, read_rdf_literal] # "
+      when ?' then [:atom, read_rdf_literal] # '
       when ?< then [:atom, read_rdf_uri]
       else
         tok = super
@@ -144,6 +145,7 @@ module SXP; class Reader
     #
     # @example
     #   "a plain literal"
+    #   'another plain literal'
     #   "a literal with a language"@en
     #   "a typed literal"^^<http://example/>
     #   "a typed literal with a PNAME"^^xsd:string

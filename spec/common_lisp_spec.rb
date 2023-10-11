@@ -61,7 +61,9 @@ describe SXP::Reader::CommonLisp do
 
   context "when reading strings" do
     it "reads `\"foo\"` as a string" do
-      expect(read(%q("foo"))).to eq "foo"
+      res = read(%q("foo"))
+      expect(res).to eq "foo"
+      expect(res.quote_style == :squote)
     end
   end
 
