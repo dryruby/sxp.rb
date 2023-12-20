@@ -84,7 +84,7 @@
   <dt>Symbols</dt>
   <dd>Of the form <code>with-hyphen ?@!$ a\ symbol\ with\ spaces</code></dd>
   <dt>Strings</dt>
-  <dd>Of the form <code>"Hello, world!"</code><br/>
+  <dd>Of the form <code>"Hello, world!"</code> or <code>'Hello, world!'</code><br/>
       Strings may include the following special characters:
       <ul>
         <li><code>\b</code> &mdash; Backspace</li>
@@ -95,6 +95,7 @@
         <li><code>\u<i>xxxx</i></code> &mdash; 2-byte Unicode character escape</li>
         <li><code>\U<i>xxxxxxxx</i></code> &mdash; 4-byte Unicode character escape</li>
         <li><code>\"</code> &mdash; Double-quote character</li>
+        <li><code>\'</code> &mdash; Single-quote character</li>
         <li><code>\\</code> &mdash; Backspace</li>
       </ul>
       Additionally, any other character may follow <code>\</code>, representing the character itself.
@@ -177,6 +178,7 @@
   <dd>Strings are interpreted as an RDF Literal with datatype <code>xsd:string</code>. It can be followed by <code>@<i>lang</i></code> to create a language-tagged string, or <code>^^<i>IRI</i></code> to create a datatyped-literal. Examples:
     <ul>
       <li><code>"a plain literal"</code></li>
+      <li><code>'another plain literal'</code></li>
       <li><code>"a literal with a language"@en</code></li>
       <li><code>"a typed literal"^^&lt;http://example/></code></li>
       <li><code>"a typed literal with a PNAME"^^xsd:string</code></li>
@@ -331,6 +333,10 @@ EOF
 <p><a href="https://rubygems.org/gems/sxp.rb">rubygems.org/gems/sxp.rb</a></p>
 </li></ul>
 
+<h2 id="label-Change+Log">Change Log</h2>
+
+<p>See <a href="https://github.com/dryruby/sxp.rb/releases">Release Notes on GitHub</a></p>
+
 <h2 id="label-Authors">Authors</h2>
 <ul><li>
 <p><a href="https://github.com/artob">Arto Bendiken</a> - <a href="https://ar.to">ar.to</a>/</p>
@@ -366,7 +372,7 @@ EOF
 </div></div>
 
       <div id="footer">
-  Generated on Fri Sep  1 20:09:03 2023 by
+  Generated on Wed Dec 20 20:29:58 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-3.1.4).
 </div>

@@ -987,8 +987,6 @@
       <pre class="lines">
 
 
-213
-214
 215
 216
 217
@@ -1006,10 +1004,12 @@
 229
 230
 231
-232</pre>
+232
+233
+234</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 213</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 215</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_atom'>read_atom</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_buffer'>buffer</span> <span class='op'>=</span> <span class='id identifier rubyid_read_literal'>read_literal</span>
@@ -1060,6 +1060,7 @@
     
       
       <pre class="example code"><code>&quot;a plain literal&quot;
+&#39;another plain literal&#39;
 &quot;a literal with a language&quot;@en
 &quot;a typed literal&quot;^^&lt;http://example/&gt;
 &quot;a typed literal with a PNAME&quot;^^xsd:string</code></pre>
@@ -1086,8 +1087,6 @@
       <pre class="lines">
 
 
-152
-153
 154
 155
 156
@@ -1098,10 +1097,12 @@
 161
 162
 163
-164</pre>
+164
+165
+166</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 152</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 154</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_rdf_literal'>read_rdf_literal</span>
   <span class='id identifier rubyid_value'>value</span>   <span class='op'>=</span> <span class='id identifier rubyid_read_string'>read_string</span>
@@ -1168,8 +1169,6 @@
       <pre class="lines">
 
 
-173
-174
 175
 176
 177
@@ -1198,10 +1197,12 @@
 200
 201
 202
-203</pre>
+203
+204
+205</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 173</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 175</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_rdf_uri'>read_rdf_uri</span>
   <span class='id identifier rubyid_buffer'>buffer</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
@@ -1328,7 +1329,8 @@
 137
 138
 139
-140</pre>
+140
+141</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 94</span>
@@ -1336,6 +1338,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_read_token'>read_token</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_peek_char'>peek_char</span>
   <span class='kw'>when</span> <span class='CHAR'>?&quot;</span> <span class='kw'>then</span> <span class='lbracket'>[</span><span class='symbol'>:atom</span><span class='comma'>,</span> <span class='id identifier rubyid_read_rdf_literal'>read_rdf_literal</span><span class='rbracket'>]</span> <span class='comment'># &quot;
+</span>  <span class='kw'>when</span> <span class='CHAR'>?&#39;</span> <span class='kw'>then</span> <span class='lbracket'>[</span><span class='symbol'>:atom</span><span class='comma'>,</span> <span class='id identifier rubyid_read_rdf_literal'>read_rdf_literal</span><span class='rbracket'>]</span> <span class='comment'># &#39;
 </span>  <span class='kw'>when</span> <span class='CHAR'>?&lt;</span> <span class='kw'>then</span> <span class='lbracket'>[</span><span class='symbol'>:atom</span><span class='comma'>,</span> <span class='id identifier rubyid_read_rdf_uri'>read_rdf_uri</span><span class='rbracket'>]</span>
   <span class='kw'>else</span>
     <span class='id identifier rubyid_tok'>tok</span> <span class='op'>=</span> <span class='kw'>super</span>
@@ -1409,8 +1412,6 @@
       <pre class="lines">
 
 
-236
-237
 238
 239
 240
@@ -1418,10 +1419,12 @@
 242
 243
 244
-245</pre>
+245
+246
+247</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 236</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 238</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_skip_comments'>skip_comments</span>
   <span class='kw'>until</span> <span class='id identifier rubyid_eof?'>eof?</span>
@@ -1479,8 +1482,6 @@
       <pre class="lines">
 
 
-256
-257
 258
 259
 260
@@ -1490,10 +1491,12 @@
 264
 265
 266
-267</pre>
+267
+268
+269</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 256</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/sparql.rb', line 258</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_variable'>variable</span><span class='lparen'>(</span><span class='id identifier rubyid_id'>id</span><span class='comma'>,</span> <span class='label'>distinguished:</span> <span class='kw'>true</span><span class='comma'>,</span> <span class='label'>existential:</span> <span class='kw'>false</span><span class='rparen'>)</span>
   <span class='id identifier rubyid_id'>id</span> <span class='op'>=</span> <span class='kw'>nil</span> <span class='kw'>if</span> <span class='id identifier rubyid_id'>id</span><span class='period'>.</span><span class='id identifier rubyid_to_s'>to_s</span><span class='period'>.</span><span class='id identifier rubyid_empty?'>empty?</span>
@@ -1517,7 +1520,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Sep  1 20:09:05 2023 by
+  Generated on Wed Dec 20 20:29:59 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-3.1.4).
 </div>

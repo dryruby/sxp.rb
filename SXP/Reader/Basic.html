@@ -415,8 +415,6 @@
       <pre class="lines">
 
 
-53
-54
 55
 56
 57
@@ -428,10 +426,12 @@
 63
 64
 65
-66</pre>
+66
+67
+68</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/basic.rb', line 53</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/basic.rb', line 55</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_character'>read_character</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_char'>char</span> <span class='op'>=</span> <span class='id identifier rubyid_read_char'>read_char</span>
@@ -489,15 +489,15 @@
       <pre class="lines">
 
 
-70
-71
 72
 73
 74
-75</pre>
+75
+76
+77</pre>
     </td>
     <td>
-      <pre class="code"><span class="info file"># File 'lib/sxp/reader/basic.rb', line 70</span>
+      <pre class="code"><span class="info file"># File 'lib/sxp/reader/basic.rb', line 72</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_literal'>read_literal</span>
   <span class='id identifier rubyid_grammar'>grammar</span> <span class='op'>=</span> <span class='kw'>self</span><span class='period'>.</span><span class='id identifier rubyid_class'>class</span><span class='period'>.</span><span class='id identifier rubyid_const_get'>const_get</span><span class='lparen'>(</span><span class='symbol'>:ATOM</span><span class='rparen'>)</span>
@@ -559,23 +559,27 @@
 46
 47
 48
-49</pre>
+49
+50
+51</pre>
     </td>
     <td>
       <pre class="code"><span class="info file"># File 'lib/sxp/reader/basic.rb', line 37</span>
 
 <span class='kw'>def</span> <span class='id identifier rubyid_read_string'>read_string</span>
   <span class='id identifier rubyid_buffer'>buffer</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_end'>&quot;</span></span>
-  <span class='id identifier rubyid_skip_char'>skip_char</span> <span class='comment'># &#39;&quot;&#39;
-</span>  <span class='kw'>until</span> <span class='id identifier rubyid_peek_char'>peek_char</span> <span class='op'>==</span> <span class='CHAR'>?&quot;</span> <span class='comment'>#&quot;
+  <span class='id identifier rubyid_quote_char'>quote_char</span> <span class='op'>=</span> <span class='id identifier rubyid_read_char'>read_char</span>
+  <span class='kw'>until</span> <span class='id identifier rubyid_peek_char'>peek_char</span> <span class='op'>==</span> <span class='id identifier rubyid_quote_char'>quote_char</span> <span class='comment'># &quot; or &#39;
 </span>    <span class='id identifier rubyid_buffer'>buffer</span> <span class='op'>&lt;&lt;</span>
       <span class='kw'>case</span> <span class='id identifier rubyid_char'>char</span> <span class='op'>=</span> <span class='id identifier rubyid_read_char'>read_char</span>
         <span class='kw'>when</span> <span class='CHAR'>?\\</span> <span class='kw'>then</span> <span class='id identifier rubyid_read_character'>read_character</span>
         <span class='kw'>else</span> <span class='id identifier rubyid_char'>char</span>
       <span class='kw'>end</span>
   <span class='kw'>end</span>
-  <span class='id identifier rubyid_skip_char'>skip_char</span> <span class='comment'># &#39;&quot;&#39;
-</span>  <span class='id identifier rubyid_buffer'>buffer</span>
+  <span class='id identifier rubyid_skip_char'>skip_char</span> <span class='comment'># &quot; or &#39;
+</span>
+  <span class='comment'># Return string, annotating it with the quotation style used
+</span>  <span class='id identifier rubyid_buffer'>buffer</span><span class='period'>.</span><span class='id identifier rubyid_tap'>tap</span> <span class='lbrace'>{</span><span class='op'>|</span><span class='id identifier rubyid_s'>s</span><span class='op'>|</span> <span class='id identifier rubyid_s'>s</span><span class='period'>.</span><span class='id identifier rubyid_quote_style'>quote_style</span> <span class='op'>=</span> <span class='lparen'>(</span><span class='id identifier rubyid_quote_char'>quote_char</span> <span class='op'>==</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>&quot;</span><span class='tstring_end'>&#39;</span></span> <span class='op'>?</span> <span class='symbol'>:dquote</span> <span class='op'>:</span> <span class='symbol'>:squote</span><span class='rparen'>)</span><span class='rbrace'>}</span>
 <span class='kw'>end</span></pre>
     </td>
   </tr>
@@ -633,7 +637,7 @@
 <span class='kw'>def</span> <span class='id identifier rubyid_read_token'>read_token</span>
   <span class='kw'>case</span> <span class='id identifier rubyid_peek_char'>peek_char</span>
     <span class='kw'>when</span> <span class='CHAR'>?(</span><span class='comma'>,</span> <span class='CHAR'>?)</span> <span class='kw'>then</span> <span class='lbracket'>[</span><span class='symbol'>:list</span><span class='comma'>,</span> <span class='id identifier rubyid_read_char'>read_char</span><span class='rbracket'>]</span>
-    <span class='kw'>when</span> <span class='CHAR'>?&quot;</span>     <span class='kw'>then</span> <span class='lbracket'>[</span><span class='symbol'>:atom</span><span class='comma'>,</span> <span class='id identifier rubyid_read_string'>read_string</span><span class='rbracket'>]</span> <span class='comment'>#&quot;
+    <span class='kw'>when</span> <span class='CHAR'>?&quot;</span><span class='comma'>,</span> <span class='CHAR'>?&#39;</span> <span class='kw'>then</span> <span class='lbracket'>[</span><span class='symbol'>:atom</span><span class='comma'>,</span> <span class='id identifier rubyid_read_string'>read_string</span><span class='rbracket'>]</span> <span class='comment'>#&quot; or &#39;
 </span>    <span class='kw'>else</span> <span class='kw'>super</span>
   <span class='kw'>end</span>
 <span class='kw'>end</span></pre>
@@ -647,7 +651,7 @@
 </div>
 
       <div id="footer">
-  Generated on Fri Sep  1 20:09:05 2023 by
+  Generated on Wed Dec 20 20:29:59 2023 by
   <a href="https://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
   0.9.34 (ruby-3.1.4).
 </div>
