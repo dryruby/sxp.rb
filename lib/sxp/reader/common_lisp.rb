@@ -115,7 +115,7 @@ module SXP; class Reader
     # @return [Array]
     def read_quote
       skip_char # "'"
-      [options[:quote] || :quote, read]
+      [options[:quote] || :quote, read.tap {|s| s.quote_style = :squote if s.is_a?(String)}]
     end
 
     ##

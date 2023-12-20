@@ -25,7 +25,7 @@ S-Expressions derive from LISP, and include some basic datatypes common to all v
   <dt>Symbols</dt>
   <dd>Of the form <code>with-hyphen ?@!$ a\ symbol\ with\ spaces</code></dd>
   <dt>Strings</dt>
-  <dd>Of the form <code>"Hello, world!"</code><br/>
+  <dd>Of the form <code>"Hello, world!"</code> or <code>'Hello, world!'</code><br/>
       Strings may include the following special characters:
       <ul>
         <li><code>\b</code> &mdash; Backspace</li>
@@ -36,6 +36,7 @@ S-Expressions derive from LISP, and include some basic datatypes common to all v
         <li><code>\u<i>xxxx</i></code> &mdash; 2-byte Unicode character escape</li>
         <li><code>\U<i>xxxxxxxx</i></code> &mdash; 4-byte Unicode character escape</li>
         <li><code>\"</code> &mdash; Double-quote character</li>
+        <li><code>\'</code> &mdash; Single-quote character</li>
         <li><code>\\</code> &mdash; Backspace</li>
       </ul>
       Additionally, any other character may follow <code>\</code>, representing the character itself.
@@ -124,6 +125,7 @@ In addition to the standard datatypes, the SPARQL dialect supports the following
   <dd>Strings are interpreted as an RDF Literal with datatype <code>xsd:string</code>. It can be followed by <code>@<i>lang</i></code> to create a language-tagged string, or <code>^^<i>IRI</i></code> to create a datatyped-literal. Examples:
     <ul>
       <li><code>"a plain literal"</code></li>
+      <li><code>'another plain literal'</code></li>
       <li><code>"a literal with a language"@en</code></li>
       <li><code>"a typed literal"^^&lt;http://example/></code></li>
       <li><code>"a typed literal with a PNAME"^^xsd:string</code></li>
@@ -252,6 +254,10 @@ as follows:
 * <https://github.com/dryruby/sxp.rb>
 * <https://rubygems.org/gems/sxp.rb>
 
+## Change Log
+
+See [Release Notes on GitHub](https://github.com/dryruby/sxp.rb/releases)
+
 ## Authors
 
 * [Arto Bendiken](https://github.com/artob) - <https://ar.to/>
@@ -262,6 +268,7 @@ as follows:
 * [Ben Lavender](https://github.com/bhuga) - <https://bhuga.net/>
 
 ## Contributing
+
 This repository uses [Git Flow](https://github.com/nvie/gitflow) to mange development and release activity. All submissions _must_ be on a feature branch based on the _develop_ branch to ease staging and integration.
 
 * Do your best to adhere to the existing coding conventions and idioms.

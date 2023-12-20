@@ -60,6 +60,7 @@ describe SXP::Reader::Basic do
       %q{"\n"} => "\n",
       %q{"\r"} => "\r",
       %q{"\t"} => "\t",
+      %q{"\'"} => "\'",
       %q{"\u0080"} => "\u0080",
       %q("\u07FF") => "\u07FF",
       %q("\u0800") => "\u0800",
@@ -75,9 +76,18 @@ describe SXP::Reader::Basic do
       %q("\U000FFFFD") => "\u{FFFFD}",
       %q("\U00100000") => "\u{100000}",
       %q("\U0010FFFD") => "\u{10FFFD}",
+
+      %q{'\b'} => "\b",
+      %q{'\f'} => "\f",
+      %q{'\n'} => "\n",
+      %q{'\r'} => "\r",
+      %q{'\t'} => "\t",
+      %q{'\''} => "\'",
     }.each do |input, output|
       it "reads #{input} as #{output.inspect}" do
-        expect(read(input)).to eq output
+        res = read(input)
+        expect(res).to eq output
+        expect(res.quote_style).to eql (input.start_with?('"') ? :dquote : :squote)
       end
     end
   end

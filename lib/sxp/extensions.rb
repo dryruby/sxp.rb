@@ -56,6 +56,7 @@ end
 class String
   ##
   # Returns the SXP representation of this object. Uses SPARQL-like escaping.
+  # Uses any recorded quote style from an originally parsed string.
   #
   # @return [String]
   def to_sxp(**options)
@@ -69,14 +70,29 @@ class String
       when (0x0C)       then '\f'
       when (0x0D)       then '\r'
       when (0x0E..0x1F) then sprintf("\\u%04X", u.ord)
-      when (0x22)       then '\"'
+      when (0x22)       then as_dquote? ? '\"' : '"'
+      when (0x27)       then as_squote? ? "\'" : "'"
       when (0x5C)       then '\\\\'
       when (0x7F)       then sprintf("\\u%04X", u.ord)
       else u.chr
       end
     end
-    '"' + buffer + '"'
+    if as_dquote?
+      '"' + buffer + '"'
+    else
+      "'" + buffer + "'"
+    end
   end
+
+  # Record quote style used when parsing
+  # @return [:dquote, :squote]
+  attr_accessor :quote_style
+
+  # Render string using double quotes
+  def as_squote?; quote_style == :squote; end
+
+  # Render string using single quotes
+  def as_dquote?; quote_style != :squote; end
 end
 
 ##

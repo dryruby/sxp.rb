@@ -15,7 +15,7 @@ module SXP; class Reader
     def read_token
       case peek_char
         when ?(, ?) then [:list, read_char]
-        when ?"     then [:atom, read_string] #"
+        when ?", ?' then [:atom, read_string] #" or '
         else super
       end
     end
@@ -36,16 +36,18 @@ module SXP; class Reader
     # @return [String]
     def read_string
       buffer = ""
-      skip_char # '"'
-      until peek_char == ?" #"
+      quote_char = read_char
+      until peek_char == quote_char # " or '
         buffer <<
           case char = read_char
             when ?\\ then read_character
             else char
           end
       end
-      skip_char # '"'
-      buffer
+      skip_char # " or '
+
+      # Return string, annotating it with the quotation style used
+      buffer.tap {|s| s.quote_style = (quote_char == '"' ? :dquote : :squote)}
     end
 
     ##
