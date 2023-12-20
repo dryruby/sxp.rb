@@ -254,6 +254,10 @@ as follows:
 * <https://github.com/dryruby/sxp.rb>
 * <https://rubygems.org/gems/sxp.rb>
 
+## Change Log
+
+See [Release Notes on GitHub](https://github.com/dryruby/sxp.rb/releases)
+
 ## Authors
 
 * [Arto Bendiken](https://github.com/artob) - <https://ar.to/>
@@ -264,6 +268,7 @@ as follows:
 * [Ben Lavender](https://github.com/bhuga) - <https://bhuga.net/>
 
 ## Contributing
+
 This repository uses [Git Flow](https://github.com/nvie/gitflow) to mange development and release activity. All submissions _must_ be on a feature branch based on the _develop_ branch to ease staging and integration.
 
 * Do your best to adhere to the existing coding conventions and idioms.
